@@ -30,6 +30,7 @@ export const loginThunk = createAsyncThunk(
                 surname: res.surname,
                 email: res.email,
                 avatar: res.avatar,
+            
             };
             // Valore che sarà disponibile in fulfilled
             return { user, token: res.accessToken };

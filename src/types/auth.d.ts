@@ -5,6 +5,7 @@ export interface User{
     surname: string;
     email: string;
     avatar?: string;
+    roles?: string[];
 }
 // stato del Redux Store per authentication
 export interface AuthState{
