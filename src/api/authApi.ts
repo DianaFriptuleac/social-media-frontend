@@ -9,7 +9,7 @@ interface LoginResponce {
     surname: string;
     email: string;
     avatar?: string;  /// opzionale
-    roles?: string;
+    role: "ADMIN" | "USER" | string;
 }
 // Risposta register (cosa invio al backend per registrare)
 interface RegisterBody {

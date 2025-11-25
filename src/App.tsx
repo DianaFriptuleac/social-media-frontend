@@ -4,6 +4,8 @@ import RegisterPage from "./Components/RegisterPage";
 import HomePage from "./Components/HomePage";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import UserPage from "./Components/UserPage";
+import DepartmentsPage from "./Components/DepartmentsPage";
+
 
 const App = () => {
   return (
@@ -21,6 +23,14 @@ const App = () => {
       />
       <Route path="/me" element = {
         <ProtectedRoute><UserPage/></ProtectedRoute>}/>
+          <Route
+        path="/departments"
+        element={
+          <ProtectedRoute>
+            <DepartmentsPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };
