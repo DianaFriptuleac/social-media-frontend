@@ -1,53 +1,18 @@
-// src/api/departmentApi.ts
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { Department, DepartmentWithUsers } from '../types/departments';
+import emptyApi from './emptyApi';
 
-// da RTK Query:
-// - createApi: crea il "service" con tutte le chiamate
-// - fetchBaseQuery: una fetch semplificata
-
-// se hai già un baseUrl in env:
-const baseUrl = 'http://localhost:3001';
-
-
-// Creo l'API RTK Query per i departments - verranno generati:
-// - reducer
-// - middleware
+// Creo l'API RTK Query per i departments iniettandola dentro emptyApi
+// Da qui RTK Query genera:
+// - reducer (già agganciato tramite emptyApi)
+// - middleware (già agganciato tramite emptyApi)
 // - hook React (useGetDepartmentsQuery, ecc.)
-export const departmentApi = createApi({
-    // nome del "pezzo" di store dove RTK Query salverà cache, stato, ecc.
-    // diventerà la chiave nel reducer globale: state.departmentApi
-    reducerPath: 'departmentApi',
-
-    // baseQuery - funzione che effettua materialmente le richieste HTTP
-    // fetchBaseQuery-fornito da RTK Query (usa la fetch API nativa)
-    baseQuery: fetchBaseQuery({
-        // prefisso fisso per tutte le chiamate di questa API
-        baseUrl,
-        // prepareHeaders - eseguito PRIMA di ogni richiesta (per aggiungere header comuni (es. Authorization))
-        prepareHeaders: (headers, { getState }) => {
-
-            // recupero lo stato globale Redux
-            const state: any = getState();
-            // token da authSlice
-            const token = state.auth?.token;
-            // se esiste-aggiungi l'header Authorization: Bearer <token>
-            if (token) headers.set('Authorization', `Bearer ${token}`);
-            // IMPORTANTISSIMO: bisogna SEMPRE restituire gli headers
-            return headers;
-        },
-    }),
-    // tagTypes definisce i "nomi" dei tag usati per cache invalidation
-    // Usati poi con providesTags / invalidatesTags
-    tagTypes: ['Departments', 'Department'],
-
-    // Definisco tutti gli endpoint (GET, POST...)
+export const departmentApi = emptyApi.injectEndpoints({
+// Definisco tutti gli endpoint (GET, POST...)
     endpoints: (builder) => ({
         // builder.query = chiamata "di sola lettura" (GET)
         // <Department[], void> = tipo dei dati che tornano e tipo dell'argomento
         getDepartments: builder.query<Department[], void>({
-
-            // query definisce URL (relativo al baseUrl)
+             // query definisce URL (relativo al baseUrl)
             // qui nessun parametro, solo "/departments"
             query: () => '/departments',
 

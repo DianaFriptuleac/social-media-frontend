@@ -6,7 +6,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import UserPage from "./Components/UserPage";
 import DepartmentsPage from "./Components/DepartmentsPage";
 
-
+// Da coomentare- non utilizzo piu.
 const App = () => {
   return (
     <Routes>

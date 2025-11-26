@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import profileReducer from "./ptofileSlice";
 import departmentUIReducer from "./departmentSlice";
-import { departmentApi } from "../api/department";
+import emptyApi from "../api/emptyApi";
 //configureStore - crea lo store Redux in modo semplificato
 
 export const store = configureStore({
@@ -11,10 +11,10 @@ export const store = configureStore({
         profile: profileReducer, // stato di profilo (dati utente + departments)
         departmentUI: departmentUIReducer,
 
-        [departmentApi.reducerPath] : departmentApi.reducer,   /// RTK Query
+        [emptyApi.reducerPath] : emptyApi.reducer,   /// RTK Query
     },
     middleware: (getDefaultMiddleware) => 
-        getDefaultMiddleware().concat(departmentApi.middleware),
+        getDefaultMiddleware().concat(emptyApi.middleware),
     
 });
 // ReturnType<typeof store.getState>:

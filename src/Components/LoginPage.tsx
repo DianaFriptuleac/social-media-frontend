@@ -1,23 +1,29 @@
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../store/hooks";
 import React, { useState } from "react";
-import { loginThunk } from "../store/authSlice";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useLoginMutation } from "../api/authApi";
 
 const LoginPage = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { loading, error } = useAppSelector((state) => state.auth);
+
+   // mutation RTK Query
+  const [login] = useLoginMutation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const resultAction = await dispatch(loginThunk({ email, password }));
-    if (loginThunk.fulfilled.match(resultAction)) {
+    try {
+      // chiamata API tramite RTK Query
+      await login({ email, password }).unwrap();
+      // se arrivo qui → login ok, authSlice è già stato aggiornato
       navigate("/home");
+    } catch (err) {
+      // l’errore viene già salvato in auth.error da authFailed
     }
   };
   return (

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { registerThunk } from "../store/authSlice";
+import { useRegisterMutation } from "../api/authApi";
 
 const RegisterPage = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useAppSelector((state) => state.auth);
+  // mutation RTK Query per la registrazione
+  const [register, { isLoading, error }] = useRegisterMutation();
 
   // State x form
   const [name, setName] = useState("");
@@ -19,24 +18,24 @@ const RegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     //React.FormEvent type di TS (da React) per tipizzare l’evento del form
     e.preventDefault(); // blocca il refresh della pagina
-    // Invio il registerThunk al Redux store
-    const resultAction = await dispatch(
-      registerThunk({ name, surname, email, password })
-    );
-
-    //match - controlla se l’action restituita dal dispatch è del tipo "fulfilled" del thunk"
-    if (registerThunk.fulfilled.match(resultAction)) {
+    try {
+      await register({ name, surname, email, password }).unwrap();
       // dopo la registrazione vado al login
       navigate("/login");
+    } catch (err) {
+      // l’errore è già visibile in "error" della mutation
     }
   };
+  // messaggio errore dalla mutation
+  const errorMessage =
+    (error as any)?.data?.message || (error as any)?.message || null;
 
   return (
     <Container className="mt-5">
       <Row className="justify-content-center">
         <Col xs={12} md={6} lg={4}>
           <h2 className="text-center mb-4">Register</h2>
-
+          {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
           <Form
             onSubmit={handleSubmit}
             className="p-4 border rounded shadow-sm"
@@ -85,15 +84,8 @@ const RegisterPage = () => {
               />
             </Form.Group>
 
-            {error && <Alert variant="danger">{error}</Alert>}
-
-            <Button
-              variant="primary"
-              type="submit"
-              className="w-100"
-              disabled={loading}
-            >
-              {loading ? "Registering..." : "Register"}
+            <Button type="submit" variant="primary" disabled={isLoading}>
+              {isLoading ? "Registrazione..." : "Registrati"}
             </Button>
 
             <p className="text-center mt-3">
