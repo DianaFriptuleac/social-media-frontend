@@ -1,29 +1,29 @@
 import type { User } from "../types/auth";
 import emptyApi from "./emptyApi";
 import { authStarted, authSuccess, authFailed } from '../store/authSlice';
-const API_BASE_URL = 'http://localhost:3001';  // backend Spring (URL base)
+//const API_BASE_URL = 'http://localhost:3001';  // backend Spring (URL base)
 
 // Risposta login (cosa ricevo dal backend quando faccio il login)
 interface LoginResponce {
-    accessToken: string;
-    id: string;
-    name: string;
-    surname: string;
-    email: string;
-    avatar?: string;  /// opzionale
-    role: "ADMIN" | "USER" | string;
+  accessToken: string;
+  id: string;
+  name: string;
+  surname: string;
+  email: string;
+  avatar?: string;  /// opzionale
+  role: "ADMIN" | "USER" | string;
 }
 // Risposta register (cosa invio al backend per registrare)
 interface RegisterBody {
-    name: string;
-    surname: string;
-    email: string;
-    password: string;
-    avatar?: string;
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+  avatar?: string;
 }
 interface LoginBody {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 // SOLO le chiamate API: qui non modifico lo stato Redux (prende i dati dal server)
@@ -56,16 +56,16 @@ export async function registerApi(body: RegisterBody): Promise<User> {    // Res
 }
  */
 export const authApi = emptyApi.injectEndpoints({
-    endpoints: (build) => ({
-        //Post /auth/login
-        login: build.mutation<LoginResponce, LoginBody>({
-            query: (body) => ({
+  endpoints: (build) => ({
+    //Post /auth/login
+    login: build.mutation<LoginResponce, LoginBody>({
+      query: (body) => ({
         url: '/auth/login',
         method: 'POST',
         body,
-            }),
-             // side-effect per aggiornare authSlice
-              async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+      }),
+      // side-effect per aggiornare authSlice
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         dispatch(authStarted());
         try {
           const { data } = await queryFulfilled;

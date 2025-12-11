@@ -1,11 +1,12 @@
-import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { useAppSelector } from "../store/hooks";
 import { useEffect, useState } from "react";
 import {
-  fetchDepartmentsThunk,
-  fetchProfileThunk,
-  updateProfileThunk,
-  uploadAvatarThunk,
-} from "../store/ptofileSlice";
+  useGetMyProfileQuery,
+  useGetMyDepartmentsQuery,
+  useUpdateMyProfileMutation,
+  useUploadAvatarMutation,
+} from "../api/userApi";
+
 import {
   Container,
   Row,
@@ -21,7 +22,8 @@ import {
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 const UserPage = () => {
-  const dispatch = useAppDispatch();
+  useGetMyProfileQuery();
+  useGetMyDepartmentsQuery();
 
   //Dati profilo e departments dal Redux
   const { profile, departments, loading, error } = useAppSelector(
@@ -34,14 +36,10 @@ const UserPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [updateMyProfile] = useUpdateMyProfileMutation();
+  const [uploadAvatar] = useUploadAvatarMutation();
 
-  // 1) Quando monto la pagina, carico profilo + departments
-  useEffect(() => {
-    dispatch(fetchProfileThunk());
-    dispatch(fetchDepartmentsThunk());
-  }, [dispatch]);
-
-  // 2) Quando profile arriva da Redux, riempio i campi del form
+  //Quando profile arriva da Redux, riempio i campi del form
   useEffect(() => {
     if (profile) {
       setName(profile.name);
@@ -69,8 +67,8 @@ const UserPage = () => {
       if (password.trim()) {
         payload.password = password;
       }
-      // thunk x aggiornate il profilo
-      await dispatch(updateProfileThunk(payload)).unwrap();
+      // RTK Query
+      await updateMyProfile(payload).unwrap();
       // svuoto password dopo salvataggio
       setPassword("");
       alert("Profile updated successfully!");
@@ -82,9 +80,9 @@ const UserPage = () => {
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+  
     try {
-      await dispatch(uploadAvatarThunk(file)).unwrap();
+      await uploadAvatar(file).unwrap();
       alert("Avatar updated!");
     } catch (err) {
       console.error("Error uploading avatar:", err);
