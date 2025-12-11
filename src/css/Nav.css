@@ -1,0 +1,21 @@
+/* Transizione per lo spostamento della pagina */
+#page-wrapper {
+  transition: transform 0.3s ease;
+}
+
+/* Quando il menu è aperto, sposto la pagina a destra */
+#page-wrapper.push-right {
+  transform: translateX(260px); /* stessa larghezza dell’offcanvas */
+}
+
+/* Imposto la larghezza del menu laterale */
+#offcanvasNavbar.offcanvas-start {
+  width: 260px; /* puoi cambiare a 300px, 320px, ecc. */
+}
+
+/* Offcanvas dall'alto: usa l'altezza del contenuto, niente scroll interno */
+.offcanvas-top {
+  height: 350px !important;
+  max-height: none !important;
+  overflow-y: visible !important;
+}

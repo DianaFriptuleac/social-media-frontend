@@ -1,17 +1,12 @@
-import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { logout } from "../store/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Container, Row, Col, Card } from "react-bootstrap";
+import { useAppSelector } from "../store/hooks";
+
+
 
 const HomePage = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  
   const user = useAppSelector((state) => state.auth.user);
 
-   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login"); 
-   }
 
   return (
     <Container className="mt-5">
@@ -20,9 +15,7 @@ const HomePage = () => {
           <h2>Home</h2>
         </Col>
         <Col className="text-end">
-          <Button variant="outline-danger" onClick={handleLogout}>
-            Logout
-          </Button>
+    
         </Col>
       </Row>
 

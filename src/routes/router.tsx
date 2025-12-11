@@ -8,13 +8,16 @@ import UserPage from "../Components/UserPage";
 import DepartmentsPage from "../Components/DepartmentsPage";
 import AppNavbar from "../Components/AppNavbar";
 
+
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
     <>
+    <div id="page-wrapper"> 
     <AppNavbar/>
     {/* Navbar fixed="top" - serve un padding */}
       <div style={{ paddingTop: "70px" }}>
         <Outlet />             {/* Qui si renderizza la pagina corrente */}
+      </div>
       </div>
     </>
   </ProtectedRoute>
