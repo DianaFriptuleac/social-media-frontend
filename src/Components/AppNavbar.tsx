@@ -116,6 +116,9 @@ const AppNavbar = () => {
             <Nav.Link onClick={() => handleNavigate("/me")}>
               My Profile
             </Nav.Link>
+             <Nav.Link onClick={() => handleNavigate("/users")}>
+             Users List
+            </Nav.Link>
           </Nav>
         </Offcanvas.Body>
         {/* SOLO MOBILE: user + logout nella tendina */}

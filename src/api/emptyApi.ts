@@ -31,7 +31,12 @@ const emptyApi = createApi({
     }),
     // Elenco dei "nomi" dei tag che usero in TUTTE le API iniettate
     // (Departments, Department, MyProfile, ecc...)
-    tagTypes: ['Departments', 'Department'],
+    /**
+ * tagTypes:
+ * - elenco dei tipi di dati cache-izzati
+ * - usati da providesTags / invalidatesTags
+ */
+    tagTypes: ['Departments', 'Department', 'Users'],
 
     endpoints: () => ({}),   // nessun endpoint qui, li inietto dopo
 });

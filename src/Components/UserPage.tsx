@@ -20,6 +20,7 @@ import {
   InputGroup,
 } from "react-bootstrap";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import UserRoleBadgeModal from "./UserRoleBadgeModal";
 
 const UserPage = () => {
   useGetMyProfileQuery();
@@ -29,6 +30,7 @@ const UserPage = () => {
   const { profile, departments, loading, error } = useAppSelector(
     (state) => state.profile
   );
+  const currentUser = useAppSelector((state) => state.auth.user);
 
   //Stati locali
   const [name, setName] = useState("");
@@ -89,6 +91,7 @@ const UserPage = () => {
     }
   };
 
+
   return (
     <Container className="mt-4">
       <Row className="mb-3">
@@ -145,6 +148,15 @@ const UserPage = () => {
                     {profile.name} {profile.surname}
                   </Card.Title>
                   <Card.Text>{profile.email}</Card.Text>
+                  {profile && currentUser && (
+                    <div className="mt-2">
+                      <UserRoleBadgeModal
+                      currentRole={profile.role as "ADMIN" | "USER"}
+                      userId={profile.id}
+                      isCurrentUserAdmin={profile?.role === "ADMIN"}
+                      />
+                    </div>
+                  )}
                 </>
               )}
             </Card.Body>

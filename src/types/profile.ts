@@ -14,3 +14,23 @@ export interface ProfileState{
     loading: boolean;                            // x spinner
     error: string | null;                        //error msg
 }
+
+export type Role = "ADMIN" | "USER";
+
+export interface UserListItem {
+     id: string;
+  name: string;
+  surname: string;
+  email: string;
+  avatar: string;
+  role: Role;
+  username: string;
+}
+
+export interface PageResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  number: number; // page index (0-based)
+  size: number;
+}

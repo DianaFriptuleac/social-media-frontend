@@ -1,6 +1,6 @@
 import { avatarUpdated, departmentsLoaded, profileFailed, profileLoaded, profileStarted, profileUpdated } from "../store/profileSlice";
 import type { User } from "../types/auth";
-import type { UserDepartmentRolesView } from "../types/profile";
+import type { PageResponse, UserListItem, UserDepartmentRolesView } from "../types/profile";
 import emptyApi from "./emptyApi";
 
 
@@ -12,6 +12,11 @@ export interface UpdateUserBody {
     password?: string;            // opzionale: se presente cambio, altrimenti no
 }
 
+// Interface for the change the user Role (only for ADMIN)
+export interface UpdateRoleBody {
+    userId: string,
+    role: "ADMIN" | "USER";
+}
 
 export const userApi = emptyApi.injectEndpoints({
     endpoints: (build) => ({
@@ -126,6 +131,53 @@ export const userApi = emptyApi.injectEndpoints({
                 }
             },
         }),
+        // ---------------------------------------------------------
+        // PATCH /user/{userId}/role - Cambia ruolo utente (solo ADMIN)
+        updateUserRole: build.mutation<User, UpdateRoleBody>({
+            query: ({ userId, role }) => ({
+                url: `/user/${userId}/role`,
+                method: "PATCH",
+                body: { role },
+            }),
+            /**
+            * invalidatesTags: // Forza il refetch automatico di utenti e lista dopo il cambio ruolo
+            * - segnala a RTK Query che, dopo questa mutation, i dati in cache NON sono più validi
+            * Invalida:
+            * - l'utente specifico (id) → per aggiornare badge/ruolo
+            * - la LIST → per aggiornare le liste paginate
+            * Le query che forniscono questi tag verranno refetchate automaticamente.
+            */
+            invalidatesTags: (_res, _err, arg) => [
+                { type: "Users", id: arg.userId },
+                { type: "Users", id: "LIST" },
+            ],
+        }),
+        // ---------------------------------------------------------
+        // GET/user - get All users
+        getAllUsers: build.query<PageResponse<UserListItem>, { page?: number; size?: number }>({
+            query: ({ page = 0, size = 10 } = {}) => ({
+                url: "/user",
+                method: "GET",
+                params: { page, size },
+            }),
+            /**
+            * providesTags: // Rende la lista e i singoli utenti "osservabili" da RTK Query
+            * - indica a RTK Query quali "pezzi di cache" questa query fornisce
+            * - la LIST serve per invalidare/refetchare l'intera lista utenti
+            * - id servono per invalidare/refetchare un singolo utente
+            * In questo modo, quando un utente viene aggiornato (es. cambio ruolo),
+            * RTK Query sa automaticamente quali query devono essere ricaricate.
+            */
+            providesTags: (result) =>
+                result
+                    ? [
+                        // tag per ogni singolo utente
+                        ...result.content.map((u) => ({ type: "Users" as const, id: u.id })),
+                        // tag per l'intera lista utenti
+                        { type: "Users" as const, id: "LIST" },
+                    ]
+                    : [{ type: "Users" as const, id: "LIST" }],
+        }),
     }),
     // Non sovrascrivere eventuali endpoint già presenti in emptyApi
     overrideExisting: false,
@@ -136,4 +188,6 @@ export const {
     useGetMyDepartmentsQuery,
     useUpdateMyProfileMutation,
     useUploadAvatarMutation,
+    useUpdateUserRoleMutation,
+    useGetAllUsersQuery,
 } = userApi;
