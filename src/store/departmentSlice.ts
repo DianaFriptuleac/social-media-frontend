@@ -1,10 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { DepartmentUIState } from "../types/departments";
 
-interface DepartmentUIState {
-    selectedDepartmentId: string | null;
-    page: number;
-    pageSize: number;
-}
 
 const initialState: DepartmentUIState = {
     selectedDepartmentId: null,

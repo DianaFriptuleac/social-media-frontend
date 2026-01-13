@@ -4,6 +4,12 @@ export interface Department {
     description: string;
 }
 
+export interface DepartmentUIState {
+    selectedDepartmentId: string | null;
+    page: number;
+    pageSize: number;
+}
+
 export interface UserInDepartment{
     id: string;
     name: string;
