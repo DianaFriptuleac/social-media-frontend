@@ -120,7 +120,7 @@ const DepartmentsPage: React.FC = () => {
                   <Table striped bordered hover size="sm">
                     <thead>
                       <tr>
-                        <th>NAme</th>
+                        <th>Name</th>
                         <th>Email</th>
                         <th>Ruoli</th>
                         {isAdmin && <th>Actions</th>}

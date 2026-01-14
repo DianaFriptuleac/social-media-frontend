@@ -16,6 +16,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
+    //e: React.FormEvent) - tipo per TypeScript- evento di form React 
     e.preventDefault();
     try {
       // chiamata API tramite RTK Query
