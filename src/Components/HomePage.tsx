@@ -1,22 +1,14 @@
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { useAppSelector } from "../store/hooks";
-
-
-
 const HomePage = () => {
-  
   const user = useAppSelector((state) => state.auth.user);
-
-
   return (
     <Container className="mt-5">
       <Row className="justify-content-between align-items-center mb-4">
         <Col>
           <h2>Home</h2>
         </Col>
-        <Col className="text-end">
-    
-        </Col>
+        <Col className="text-end"></Col>
       </Row>
 
       <Row className="justify-content-center">

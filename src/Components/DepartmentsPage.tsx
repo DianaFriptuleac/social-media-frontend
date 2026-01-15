@@ -1,5 +1,4 @@
-// src/Components/DepartmentsPage.tsx
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Container,
   Row,
@@ -19,9 +18,12 @@ import {
 
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setSelectedDepartment, setPage } from "../store/departmentSlice";
+import DepartmentRolesModal from "./DepartmentRolesModal";
+import AddUserToDepartmentModal from "./AddUserToDepartmentModal";
 
 const DepartmentsPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [showAddUserModal, setShowAddUserModal] = useState(false);
 
   const { selectedDepartmentId, page, pageSize } = useAppSelector(
     (state) => state.departmentUI
@@ -30,9 +32,7 @@ const DepartmentsPage: React.FC = () => {
   const [removeUserFromDepartment] = useRemoveUserFromDepartmentMutation();
 
   // info utente (x btn admin)
-  const isAdmin = useAppSelector(
-    (state) => state.auth.user?.role === "ADMIN"
-  );
+  const isAdmin = useAppSelector((state) => state.auth.user?.role === "ADMIN");
 
   // QUERY LISTA
   const { data: departments, isLoading: loadingDepartments } =
@@ -63,10 +63,10 @@ const DepartmentsPage: React.FC = () => {
           <Card>
             <Card.Header className="fw-bold">Departments</Card.Header>
             <Card.Body style={{ maxHeight: "80vh", overflowY: "auto" }}>
-              {loadingDepartments && <p>Caricamento...</p>}
+              {loadingDepartments && <p>Loading...</p>}
 
               {!loadingDepartments && departments?.length === 0 && (
-                <p>Nessun department trovato</p>
+                <p>No departments found</p>
               )}
 
               {departments?.map((dept) => (
@@ -91,12 +91,12 @@ const DepartmentsPage: React.FC = () => {
         {/* COL DESTRA – DETTAGLIO */}
         <Col md={8}>
           <Card>
-            <Card.Header className="fw-bold">Dettaglio Department</Card.Header>
+            <Card.Header className="fw-bold">Department Detail</Card.Header>
             <Card.Body>
-              {!selectedDepartmentId && <p>Seleziona un department...</p>}
+              {!selectedDepartmentId && <p>Select a department...</p>}
 
               {selectedDepartmentId && loadingDepartment && (
-                <p>Caricamento dati...</p>
+                <p>Loading data...</p>
               )}
 
               {selectedDepartment && (
@@ -105,16 +105,28 @@ const DepartmentsPage: React.FC = () => {
                   <p>{selectedDepartment.description}</p>
 
                   <p>
-                    <strong>Nr. utenti:</strong>{" "}
+                    <strong>Users number:</strong>{" "}
                     <Badge bg="secondary">{selectedDepartment.userCount}</Badge>
                   </p>
 
                   {isAdmin && (
                     <div className="mb-3 d-flex gap-2">
-                      <Button variant="secondary">Modifica department</Button>
-                      <Button variant="primary">Aggiungi utente</Button>
+                      <Button variant="secondary">Edit department</Button>
+                      <Button
+                        variant="primary"
+                        disabled={!selectedDepartmentId}
+                        onClick={() => setShowAddUserModal(true)}
+                      >
+                       Add user
+                      </Button>
                     </div>
                   )}
+                  <AddUserToDepartmentModal
+                    show={showAddUserModal}
+                    onHide={() => setShowAddUserModal(false)}
+                    departmentId={selectedDepartmentId!}
+                    existingUserIds={selectedDepartment.users.map((u) => u.id)}
+                  />
 
                   {/* TAB. UTENTI */}
                   <Table striped bordered hover size="sm">
@@ -122,7 +134,7 @@ const DepartmentsPage: React.FC = () => {
                       <tr>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Ruoli</th>
+                        <th>Role</th>
                         {isAdmin && <th>Actions</th>}
                       </tr>
                     </thead>
@@ -130,7 +142,7 @@ const DepartmentsPage: React.FC = () => {
                       {pagedUsers.length === 0 && (
                         <tr>
                           <td colSpan={isAdmin ? 4 : 3} className="text-center">
-                            Nessun utente presente
+                            No users found
                           </td>
                         </tr>
                       )}
@@ -156,13 +168,14 @@ const DepartmentsPage: React.FC = () => {
 
                           {isAdmin && (
                             <td>
-                              <Button
-                                variant="warning"
-                                size="sm"
-                                className="me-2"
-                              >
-                                Modifica Ruoli
-                              </Button>
+                              <span className="me-2">
+                                <DepartmentRolesModal
+                                  userId={u.id}
+                                  departmentId={selectedDepartmentId!}
+                                  currentRoles={u.roles}
+                                  canEdit={isAdmin}
+                                />
+                              </span>
                               <Button
                                 variant="danger"
                                 size="sm"
@@ -174,7 +187,7 @@ const DepartmentsPage: React.FC = () => {
                                   });
                                 }}
                               >
-                                Rimuovi
+                                Remove
                               </Button>
                             </td>
                           )}

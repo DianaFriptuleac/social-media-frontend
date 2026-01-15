@@ -58,6 +58,13 @@ include i ruoli nel reparto:
 - reparto + metadati + elenco utenti:
 - `userCount` → numero utenti (utile per UI)
 - `users: UserInDepartment[]` → lista completa
+
+4. **RolePickerProps**
+- le props del componente UI per la gestione dei ruoli utente nei department
+- `availableRoles` → ruoli suggeriti/selezionabili (es. MANAGER, HR, IT)
+- `disabledRoles?` → ruoli non cliccabili (es. già assegnati all’utente nel department)
+- `onToggle` → callback per aggiungere/rimuovere un ruolo dalla selezione
+- `onAddCustom` → callback per aggiungere un ruolo inserito manualmente
 -----------------------------------------------------------------------------------------------------
 
 **`profile.ts`** (profile + users list + pagination)

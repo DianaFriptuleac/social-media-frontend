@@ -85,7 +85,7 @@ const RegisterPage = () => {
             </Form.Group>
 
             <Button type="submit" variant="primary" disabled={isLoading}>
-              {isLoading ? "Registrazione..." : "Registrati"}
+              {isLoading ? "Registration..." : "Register"}
             </Button>
 
             <p className="text-center mt-3">

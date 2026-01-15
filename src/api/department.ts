@@ -79,6 +79,17 @@ export const departmentApi = emptyApi.injectEndpoints({
                 { type: 'Department', id: departmentId },
             ],
         }),
+
+        //-----------------------------DELETE /departments/{departmentId}/members/{userId}/roles/{role}----
+        removeDepartmentRoleFromUser: builder.mutation<void, { departmentId: string; userId: string; role: string}>({
+            query:({departmentId, userId, role}) => ({
+                url: `/departments/${departmentId}/members/${userId}/roles/${encodeURIComponent(role)}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: (result, error, {departmentId}) => [
+                {type: 'Department', id: departmentId},
+            ],
+        }),
     }),
 });
 
@@ -90,6 +101,7 @@ export const departmentApi = emptyApi.injectEndpoints({
 // - useUpdateDepartmentMutation()      → mutation PUT (ritorna una funzione)
 // - useAssignRolesMutation()           → mutation POST
 // - useRemoveUserFromDepartmentMutation() → mutation DELETE
+// - useRemoveDepartmentRoleFromUserMutation() → mutation DELETE 
 //
 export const {
     useGetDepartmentsQuery,
@@ -97,4 +109,5 @@ export const {
     useUpdateDepartmentMutation,
     useAssignRolesMutation,
     useRemoveUserFromDepartmentMutation,
+    useRemoveDepartmentRoleFromUserMutation,
 } = departmentApi;

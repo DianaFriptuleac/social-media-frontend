@@ -86,6 +86,8 @@ Il login non è solo una chiamata, ma aggiorna anche lo stato globale di autenti
 *5.`removeUserFromDepartment — DELETE /departments/{departmentId}/members/{userId}`*
 - rimuove utente dal reparto
 - invalida il department coinvolto
+*5.`removeDepartmentRoleFromUser — DELETE /departments/{departmentId}/members/{userId}/role{(role)}`*
+- rimuove ruolo dipartimento dallo user
 
 **Hook esportati**
 **`useGetDepartmentsQuery()`**
@@ -93,6 +95,7 @@ Il login non è solo una chiamata, ma aggiorna anche lo stato globale di autenti
 **`useUpdateDepartmentMutation()`**
 **`useAssignRolesMutation()`**
 **`useRemoveUserFromDepartmentMutation()`**
+**`useRemoveDepartmentRoleFromUserMutation()`**
 
 -----------------------------------------------------------------------------------------------------
 
