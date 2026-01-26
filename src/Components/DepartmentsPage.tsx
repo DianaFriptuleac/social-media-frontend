@@ -14,12 +14,16 @@ import {
   useGetDepartmentsQuery,
   useGetDepartmentByIdQuery,
   useRemoveUserFromDepartmentMutation,
+  useCreateDepartmentMutation,
 } from "../api/department";
 
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setSelectedDepartment, setPage } from "../store/departmentSlice";
 import DepartmentRolesModal from "./DepartmentRolesModal";
 import AddUserToDepartmentModal from "./AddUserToDepartmentModal";
+import { isFetchBaseQueryError } from "../utils/rtkQuery";
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import CreateDepartmentModal from "./CreateDepartmentModal";
 
 const DepartmentsPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -55,13 +59,41 @@ const DepartmentsPage: React.FC = () => {
     ? Math.ceil(selectedDepartment.users.length / pageSize)
     : 1;
 
+  // crate new department
+  const [showCreateDept, setShowCreateDept] = useState(false);
+  const [
+    createDepartment,
+    { isLoading: isCreatingDept, error: createDeptError },
+  ] = useCreateDepartmentMutation();
+
+  const createDeptErrorMsg = useMemo(() => {
+    if (!createDeptError) return null;
+
+    if (
+      isFetchBaseQueryError(createDeptError) &&
+      createDeptError.status === 403
+    ) {
+      const maybe = (createDeptError as FetchBaseQueryError).data as any;
+      return maybe?.msg ?? "Administrator only.";
+    }
+    return "Error creating department.";
+  }, [createDeptError]);
+
   return (
     <Container className="py-4">
       <Row>
         {/* COLSINISTRA – LISTA DEPARTMENTS */}
         <Col md={4}>
           <Card>
-            <Card.Header className="fw-bold">Departments</Card.Header>
+            <Card.Header className="fw-bold d-flex justify-content-between align-items-center">
+              <span>Departments</span>
+
+              {isAdmin && (
+                <Button size="sm" onClick={() => setShowCreateDept(true)}>
+                 Add New
+                </Button>
+              )}
+            </Card.Header>
             <Card.Body style={{ maxHeight: "80vh", overflowY: "auto" }}>
               {loadingDepartments && <p>Loading...</p>}
 
@@ -86,6 +118,21 @@ const DepartmentsPage: React.FC = () => {
               ))}
             </Card.Body>
           </Card>
+          {isAdmin && (
+            <CreateDepartmentModal
+              show={showCreateDept}
+              onHide={() => setShowCreateDept(false)}
+              isLoading={isCreatingDept}
+              errorMsg={createDeptErrorMsg}
+              onCreate={async (payload) => {
+                try {
+                  await createDepartment(payload).unwrap();
+                  setShowCreateDept(false);
+                } catch {
+                }
+              }}
+            />
+          )}
         </Col>
 
         {/* COL DESTRA – DETTAGLIO */}
@@ -117,7 +164,7 @@ const DepartmentsPage: React.FC = () => {
                         disabled={!selectedDepartmentId}
                         onClick={() => setShowAddUserModal(true)}
                       >
-                       Add user
+                        Add user
                       </Button>
                     </div>
                   )}

@@ -7,18 +7,28 @@ import emptyApi from './emptyApi';
 // - middleware (già agganciato tramite emptyApi)
 // - hook React (useGetDepartmentsQuery, ecc.)
 export const departmentApi = emptyApi.injectEndpoints({
-// Definisco tutti gli endpoint (GET, POST...)
+    // Definisco tutti gli endpoint (GET, POST...)
     endpoints: (builder) => ({
         // builder.query = chiamata "di sola lettura" (GET)
         // <Department[], void> = tipo dei dati che tornano e tipo dell'argomento
         getDepartments: builder.query<Department[], void>({
-             // query definisce URL (relativo al baseUrl)
+            // query definisce URL (relativo al baseUrl)
             // qui nessun parametro, solo "/departments"
             query: () => '/departments',
 
             // questa query "fornisce" il tag "Departments"
             // quando faccio invalidatesTags: ['Departments'] RTK Query sa che deve ricaricare questa lista
             providesTags: ['Departments'],
+        }),
+        // --------------------POST /departments (crea dipartimento)----------------
+        createDepartment: builder.mutation<Department, { name: string, description?: string }>({
+            query: (body) => ({
+                url: "/departments",
+                method: 'POST',
+                body,
+            }),
+            invalidatesTags: ["Departments"],
+
         }),
 
         // --------------------GET /departments/{id} (singolo department con la lista utenti)----------------
@@ -81,13 +91,13 @@ export const departmentApi = emptyApi.injectEndpoints({
         }),
 
         //-----------------------------DELETE /departments/{departmentId}/members/{userId}/roles/{role}----
-        removeDepartmentRoleFromUser: builder.mutation<void, { departmentId: string; userId: string; role: string}>({
-            query:({departmentId, userId, role}) => ({
+        removeDepartmentRoleFromUser: builder.mutation<void, { departmentId: string; userId: string; role: string }>({
+            query: ({ departmentId, userId, role }) => ({
                 url: `/departments/${departmentId}/members/${userId}/roles/${encodeURIComponent(role)}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: (result, error, {departmentId}) => [
-                {type: 'Department', id: departmentId},
+            invalidatesTags: (result, error, { departmentId }) => [
+                { type: 'Department', id: departmentId },
             ],
         }),
     }),
@@ -105,6 +115,7 @@ export const departmentApi = emptyApi.injectEndpoints({
 //
 export const {
     useGetDepartmentsQuery,
+    useCreateDepartmentMutation,
     useGetDepartmentByIdQuery,
     useUpdateDepartmentMutation,
     useAssignRolesMutation,

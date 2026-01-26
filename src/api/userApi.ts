@@ -152,6 +152,27 @@ export const userApi = emptyApi.injectEndpoints({
                 { type: "Users", id: "LIST" },
             ],
         }),
+         // ---------------------------------------------------------
+        // GET/user/{id} - get single user
+        getUserById: build.query<UserListItem, string>({
+            query: (id) => ({
+                url: `/user/${id}`,
+                method: "GET",
+            }),
+            providesTags: (_res, _err, id) => [{ type: "Users", id }],
+        }),
+        // ---------------------------------------------------------
+        // DELETE /user/{id} - delete user (ADMIN)
+        deleteUserById: build.mutation<void, {userId: string}>({
+            query: ({userId}) => ({
+                url: `/user/${userId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: (_res, _err, {userId}) => [
+                {type: "Users", id: userId},
+                {type: "Users", id: "LIST"}
+            ],
+        }),
         // ---------------------------------------------------------
         // GET/user - get All users
         getAllUsers: build.query<PageResponse<UserListItem>, { page?: number; size?: number }>({
@@ -189,5 +210,7 @@ export const {
     useUpdateMyProfileMutation,
     useUploadAvatarMutation,
     useUpdateUserRoleMutation,
+    useGetUserByIdQuery,
+    useDeleteUserByIdMutation,
     useGetAllUsersQuery,
 } = userApi;

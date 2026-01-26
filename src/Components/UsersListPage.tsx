@@ -17,6 +17,8 @@ import UserRoleBadgeModal from "./UserRoleBadgeModal";
 import { useNavigate } from "react-router-dom";
 import { isFetchBaseQueryError } from "../utils/rtkQuery";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { BsTrash } from "react-icons/bs";
+import { useDeleteUserByIdMutation } from "../api/userApi";
 
 const PAGE_SIZE = 10;
 
@@ -56,6 +58,22 @@ const UsersListPage = () => {
     for (let p = start; p <= end; p++) items.push(p);
     return items;
   }, [page, totalPages]);
+
+  // Delete user
+  const [deleteUserById, { isLoading: isDeleting }] =
+    useDeleteUserByIdMutation();
+
+  const handleDelete = async (userId: string, label: string) => {
+    const ok = window.confirm( `Are you sure you want to delete ${label}?\nThis action cannot be undone.`);
+    if (!ok) return;
+
+    try {
+      await deleteUserById({ userId }).unwrap();
+    } catch (err) {
+      console.log("error deteting user: ", err);
+      alert("Error deleting user!");
+    }
+  };
 
   return (
     <Container className="mt-4">
@@ -111,39 +129,63 @@ const UsersListPage = () => {
                         <th>Avatar</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Username</th>
                         <th>Role</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map((u) => (
-                        <tr key={u.id}>
-                          <td style={{ width: 80 }}>
-                            <Image
-                              src={u.avatar}
-                              roundedCircle
-                              style={{
-                                width: 42,
-                                height: 42,
-                                objectFit: "cover",
-                              }}
-                              alt="avatar"
-                            />
-                          </td>
-                          <td>
-                            {u.name} {u.surname}
-                          </td>
-                          <td>{u.email}</td>
-                          <td>{u.username}</td>
-                          <td>
-                            <UserRoleBadgeModal
-                              currentRole={u.role}
-                              userId={u.id}
-                              isCurrentUserAdmin={isCurrentUserAdmin}
-                            />
-                          </td>
-                        </tr>
-                      ))}
+                      {users.map((u) => {
+                        const isSelf = currentUser?.id === u.id;
+                        return (
+                          <tr
+                            key={u.id}
+                            onClick={() => navigate(`/users/${u.id}`)}
+                            style={{ cursor: "pointer" }}
+                          >
+                            <td style={{ width: 80 }}>
+                              <Image
+                                src={u.avatar}
+                                roundedCircle
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  objectFit: "cover",
+                                }}
+                                alt="avatar"
+                              />
+                            </td>
+                            <td>
+                              {u.name} {u.surname}
+                            </td>
+                            <td>{u.email}</td>
+                            <td onClick={(e) => e.stopPropagation()}>
+                              <UserRoleBadgeModal
+                                currentRole={u.role}
+                                userId={u.id}
+                                isCurrentUserAdmin={isCurrentUserAdmin}
+                              />
+                            </td>
+                            {/* cestino solo admin */}
+                            {isCurrentUserAdmin && !isSelf && (
+                              <td
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-end"
+                              >
+                                <Button
+                                  variant="outline-danger"
+                                  size="sm"
+                                  disabled={isDeleting}
+                                  title={"Delete user"}
+                                  onClick={() =>
+                                    handleDelete(u.id, `${u.name} ${u.surname}`)
+                                  }
+                                >
+                                  <BsTrash />
+                                </Button>
+                              </td>
+                            )}
+                          </tr>
+                        );
+                      })}
 
                       {users.length === 0 && (
                         <tr>

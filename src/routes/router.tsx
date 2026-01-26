@@ -8,6 +8,7 @@ import UserPage from "../Components/UserPage";
 import DepartmentsPage from "../Components/DepartmentsPage";
 import AppNavbar from "../Components/AppNavbar";
 import UsersListPage from "../Components/UsersListPage";
+import SingleUserDetail from "../Components/SingleUserDetail";
 
 
 const ProtectedLayout: React.FC = () => (
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "/users",
         element: <UsersListPage />,
+      },
+      {
+        path: "/users/:id",
+        element: <SingleUserDetail/>,
       },
     ],
   },
