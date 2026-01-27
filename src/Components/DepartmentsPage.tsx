@@ -15,7 +15,9 @@ import {
   useGetDepartmentByIdQuery,
   useRemoveUserFromDepartmentMutation,
   useCreateDepartmentMutation,
-} from "../api/department";
+  useUpdateDepartmentMutation,
+  useDeleteDepartmentMutation,
+} from "../api/departmentApi";
 
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setSelectedDepartment, setPage } from "../store/departmentSlice";
@@ -24,13 +26,14 @@ import AddUserToDepartmentModal from "./AddUserToDepartmentModal";
 import { isFetchBaseQueryError } from "../utils/rtkQuery";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import CreateDepartmentModal from "./CreateDepartmentModal";
+import EditDepartmentModal from "./EditDepartmentModal";
 
 const DepartmentsPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [showAddUserModal, setShowAddUserModal] = useState(false);
 
   const { selectedDepartmentId, page, pageSize } = useAppSelector(
-    (state) => state.departmentUI
+    (state) => state.departmentUI,
   );
 
   const [removeUserFromDepartment] = useRemoveUserFromDepartmentMutation();
@@ -79,6 +82,29 @@ const DepartmentsPage: React.FC = () => {
     return "Error creating department.";
   }, [createDeptError]);
 
+  // Mostra edit department modal
+  const [showEditDepartment, setShowEditDepartment] = useState(false);
+  const [
+    updateDepartment,
+    { isLoading: isUpdatingDepartment, error: updateDepartmentError },
+  ] = useUpdateDepartmentMutation();
+
+  const [
+    deleteDepartment,
+    { isLoading: isDeletingDepartment, error: deleteDepartmentError },
+  ] = useDeleteDepartmentMutation();
+
+  const editDepErrorMsg = useMemo(() => {
+    const error = updateDepartmentError ?? deleteDepartmentError;
+    if (!error) return null;
+
+    if (isFetchBaseQueryError(error) && error.status === 403) {
+      const maybe = (error as FetchBaseQueryError).data as any;
+      return maybe?.msg ?? "Administrator only.";
+    }
+    return "Operation failed";
+  }, [updateDepartmentError, deleteDepartmentError]);
+
   return (
     <Container className="py-4">
       <Row>
@@ -90,7 +116,7 @@ const DepartmentsPage: React.FC = () => {
 
               {isAdmin && (
                 <Button size="sm" onClick={() => setShowCreateDept(true)}>
-                 Add New
+                  Add New
                 </Button>
               )}
             </Card.Header>
@@ -128,8 +154,7 @@ const DepartmentsPage: React.FC = () => {
                 try {
                   await createDepartment(payload).unwrap();
                   setShowCreateDept(false);
-                } catch {
-                }
+                } catch {}
               }}
             />
           )}
@@ -158,7 +183,13 @@ const DepartmentsPage: React.FC = () => {
 
                   {isAdmin && (
                     <div className="mb-3 d-flex gap-2">
-                      <Button variant="secondary">Edit department</Button>
+                      <Button
+                        variant="secondary"
+                        disabled={!selectedDepartment}
+                        onClick={() => setShowEditDepartment(true)}
+                      >
+                        Edit department
+                      </Button>
                       <Button
                         variant="primary"
                         disabled={!selectedDepartmentId}
@@ -174,6 +205,29 @@ const DepartmentsPage: React.FC = () => {
                     departmentId={selectedDepartmentId!}
                     existingUserIds={selectedDepartment.users.map((u) => u.id)}
                   />
+                  {isAdmin && selectedDepartment && (
+                    <EditDepartmentModal
+                      show={showEditDepartment}
+                      onHide={() => setShowEditDepartment(false)}
+                      department={selectedDepartment}
+                      isSaving={isUpdatingDepartment}
+                      isDeleting={isDeletingDepartment}
+                      errorMsg={editDepErrorMsg}
+                      onSave={async (payload) => {
+                        try {
+                          await updateDepartment(payload).unwrap();
+                          setShowEditDepartment(false);
+                        } catch {}
+                      }}
+                      onDelete={async (id) => {
+                        try {
+                          await deleteDepartment(id).unwrap();
+                          setShowEditDepartment(false);
+                          dispatch(setSelectedDepartment(null));
+                        } catch {}
+                      }}
+                    />
+                  )}
 
                   {/* TAB. UTENTI */}
                   <Table striped bordered hover size="sm">

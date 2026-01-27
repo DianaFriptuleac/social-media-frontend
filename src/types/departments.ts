@@ -49,3 +49,20 @@ export interface CreateDepartmentModalProps {
     isLoading: boolean;
     errorMsg?: string | null;
 }
+
+export interface UpdateDepartmentPayload {
+  id: string;
+  name?: string;
+  description?: string;
+}
+
+export interface EditDepartmentModalProps {
+    show: boolean;
+    onHide: () => void;
+    department: DepartmentWithUsers;
+    onSave: (payload: UpdateDepartmentPayload)=> void;
+    onDelete: (id: string) => void;
+    isSaving: boolean;
+    isDeleting: boolean;
+    errorMsg?: string | null;
+}

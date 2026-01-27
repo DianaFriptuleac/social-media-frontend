@@ -36,8 +36,6 @@ const AppNavbar = () => {
     }
   }, [show, isMobile]);
 
-
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -54,7 +52,6 @@ const AppNavbar = () => {
         bg="dark"
         variant="dark"
         expand="md"
-        className="mb-4"
         fixed="top" // sempre in alto
       >
         <Container fluid>
@@ -76,16 +73,20 @@ const AppNavbar = () => {
           {/* Parte destra: icona utente + logout (sempre visibile) */}
           <div className="d-none d-md-flex align-items-center ms-auto">
             {user && (
-              <span
-                className="text-light me-3 d-flex align-items-center"
+              <div
+                className="nav-user me-3"
                 style={{ cursor: "pointer" }}
                 onClick={() => handleNavigate("/me")}
               >
-                <BsPersonCircle size={24} className="me-1" />
-                {/*  <span className="d-none d-sm-inline">
+                <img
+                  className="nav-avatar"
+                  src={user.avatar ?? "/public/images/default-avatar.jpg"}
+                  alt="avatar"
+                />
+                <span className="nav-user-name">
                   {user.name} {user.surname}
-                </span> */}
-              </span>
+                </span>
+              </div>
             )}
             <Button variant="outline-danger" size="sm" onClick={handleLogout}>
               <BsBoxArrowRight size={20} />
@@ -98,7 +99,7 @@ const AppNavbar = () => {
       <Offcanvas
         id="offcanvasNavbar"
         aria-labelledby="offcanvasNavbarLabel"
-         placement={isMobile ? "top" : "start"}  // TOP su mobile, START su desktop
+        placement={isMobile ? "top" : "start"} // TOP su mobile, START su desktop
         show={show}
         onHide={() => setShow(false)}
         backdrop={false}
@@ -116,23 +117,27 @@ const AppNavbar = () => {
             <Nav.Link onClick={() => handleNavigate("/me")}>
               My Profile
             </Nav.Link>
-             <Nav.Link onClick={() => handleNavigate("/users")}>
-             Users List
+            <Nav.Link onClick={() => handleNavigate("/users")}>
+              Users List
             </Nav.Link>
           </Nav>
         </Offcanvas.Body>
         {/* SOLO MOBILE: user + logout nella tendina */}
-        <div className="d-md-none mt-4 border-top pt-3">
+        <div className="d-md-none mt-4">
           {user && (
             <div
-              className="d-flex align-items-center mb-3"
+              className="nav-user-mobiler mb-3"
               style={{ cursor: "pointer" }}
               onClick={() => handleNavigate("/me")}
             >
-              <BsPersonCircle size={24} className="me-2" />
-              <span>
+              <img
+                className="nav-avatar"
+                src={user.avatar ?? "/public/images/default-avatar.jpg"}
+                alt="avatar"
+              />
+              <div className="nav-user-name">
                 {user.name} {user.surname}
-              </span>
+              </div>
             </div>
           )}
 

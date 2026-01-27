@@ -6,6 +6,7 @@ import { store } from "./store/store";
 import { loadFromStorage } from "./store/authSlice";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./css/theme.css"
 import { router } from "./routes/router";
 
 // carico token/utente da localStorage all'avvio (per mantenere l'utente loggato anche dopo refresh della pagina)

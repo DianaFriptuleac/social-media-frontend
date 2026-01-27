@@ -19,3 +19,49 @@
   max-height: none !important;
   overflow-y: visible !important;
 }
+/* Navbar branding più “premium” */
+.navbar{
+  background: linear-gradient(90deg, var(--brand-900), var(--brand-700)) !important;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* Avatar + nome in navbar */
+.nav-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 10px;
+  border-radius: 999px;
+  transition: background .2s ease;
+}
+
+.nav-user:hover{
+  background: rgba(255,255,255,.08);
+}
+
+.nav-avatar{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,.55);
+}
+
+.nav-user-name{
+  color:#fff;
+  font-weight:600;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* Mobile in offcanvas */
+.nav-user-mobile{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.nav-user-email{
+  font-size: 12px;
+  color: rgba(255,255,255,.75);
+}

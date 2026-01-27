@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   useAssignRolesMutation,
   useRemoveDepartmentRoleFromUserMutation,
-} from "../api/department";
+} from "../api/departmentApi";
 import { Button, Modal, Alert, Badge } from "react-bootstrap";
 import RolePicker from "./RolePicker";
 

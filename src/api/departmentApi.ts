@@ -100,7 +100,20 @@ export const departmentApi = emptyApi.injectEndpoints({
                 { type: 'Department', id: departmentId },
             ],
         }),
+
+         //-----------------------------DELETE /departments/{departmentId}---------------------
+         deleteDepartment: builder.mutation<void, string> ({
+            query: (id) => ({
+                url: `/departments/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: (result, error, id) => [
+             "Departments",
+             {type: "Department", id}
+            ],
+         }),
     }),
+
 });
 
 // Da questo "service" RTK Query genera automaticamente gli hook React.
@@ -121,4 +134,5 @@ export const {
     useAssignRolesMutation,
     useRemoveUserFromDepartmentMutation,
     useRemoveDepartmentRoleFromUserMutation,
+    useDeleteDepartmentMutation,
 } = departmentApi;

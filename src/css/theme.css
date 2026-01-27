@@ -1,0 +1,21 @@
+:root{
+  --brand-900:#2d3038;
+  --brand-700:#3d5684;
+  --brand-600:#6a7194;
+  --brand-500:#5e586f;
+  --brand-400:#895e72;
+
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#1f2430;
+  --muted:#6b7280;
+
+  --radius:14px;
+  --shadow: 0 10px 24px rgba(0,0,0,.10);
+}
+
+/* background */
+body{
+  background: var(--bg);
+  color: var(--text);
+}

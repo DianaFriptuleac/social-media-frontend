@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useGetAllUsersQuery } from "../api/userApi";
-import { useAssignRolesMutation } from "../api/department";
+import { useAssignRolesMutation } from "../api/departmentApi";
 import type { UserListItem } from "../types/profile";
 import RolePicker from "./RolePicker";
 
