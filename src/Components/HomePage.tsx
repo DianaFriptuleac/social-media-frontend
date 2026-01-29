@@ -5,11 +5,11 @@ const HomePage = () => {
   const user = useAppSelector((state) => state.auth.user);
 
   return (
-    <Container fluid className="app-page">
+    <Container fluid className="px-0">
       {/* HERO */}
-      <Row className="mb-4">
-        <Col>
-          <div className="home-hero">
+      <Row>
+        <Col className="px-0">
+          <div className="home-hero mb-3">
             <div className="home-hero-content">
               <h1 className="home-hero-title">Let&apos;s build our future.</h1>
               <div className="home-hero-sub">

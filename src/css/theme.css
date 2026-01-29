@@ -4,6 +4,7 @@
   --brand-600:#6a7194;
   --brand-500:#5e586f;
   --brand-400:#895e72;
+  
 
   --bg:#f6f7fb;
   --card:#ffffff;
@@ -12,10 +13,17 @@
 
   --radius:14px;
   --shadow: 0 10px 24px rgba(0,0,0,.10);
+  --overlay-light: 255 255 255;
+  --overlay-dark: 45 48 56; 
+
+  --drawer-w: 260px;
+  --drawer-gap: 24px; /* quanto si “sposta” a destra */
+  --content-max: 1200px; 
 }
 
 /* background */
 body{
+  margin: 0;
   background: var(--bg);
   color: var(--text);
 }

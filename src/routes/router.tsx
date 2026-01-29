@@ -17,7 +17,7 @@ const ProtectedLayout: React.FC = () => (
     <div id="page-wrapper"> 
     <AppNavbar/>
     {/* Navbar fixed="top" - serve un padding */}
-      <div style={{ paddingTop: "70px" }}>
+      <div className="pt-5">
         <Outlet />             {/* Qui si renderizza la pagina corrente */}
       </div>
       </div>

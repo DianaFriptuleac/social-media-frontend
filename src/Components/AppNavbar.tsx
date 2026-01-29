@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useState } from "react";
 import { logout } from "../store/authSlice";
 import { Navbar, Container, Nav, Offcanvas, Button } from "react-bootstrap";
-import { BsPersonCircle, BsBoxArrowRight } from "react-icons/bs";
+import { BsBoxArrowRight } from "react-icons/bs";
 import "../css/Nav.css";
 import { useEffect } from "react";
 
@@ -30,9 +30,9 @@ const AppNavbar = () => {
     if (!wrapper) return;
 
     if (!isMobile && show) {
-      wrapper.classList.add("push-right");
+     document.body.classList.add("offcanvas-open");
     } else {
-      wrapper.classList.remove("push-right");
+     document.body.classList.remove("offcanvas-open");
     }
   }, [show, isMobile]);
 
@@ -49,10 +49,10 @@ const AppNavbar = () => {
     <>
       <Navbar
         key="md"
-        bg="dark"
         variant="dark"
         expand="md"
         fixed="top" // sempre in alto
+        className="navbar"
       >
         <Container fluid>
           {/* Brand / Home */}
@@ -126,7 +126,7 @@ const AppNavbar = () => {
         <div className="d-md-none mt-4">
           {user && (
             <div
-              className="nav-user-mobiler mb-3"
+              className="nav-user-mobile mb-3"
               style={{ cursor: "pointer" }}
               onClick={() => handleNavigate("/me")}
             >

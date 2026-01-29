@@ -6,6 +6,7 @@ import { store } from "./store/store";
 import { loadFromStorage } from "./store/authSlice";
 
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css"
 import "./css/theme.css"
 import { router } from "./routes/router";
 

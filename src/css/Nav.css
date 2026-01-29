@@ -21,8 +21,9 @@
 }
 /* Navbar branding più “premium” */
 .navbar{
-  background: linear-gradient(90deg, var(--brand-900), var(--brand-700)) !important;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+ /* background: linear-gradient(90deg, var(--brand-900), var(--brand-700)) !important;*/
+  border-bottom: 1px solid rgb(var(--overlay-light) / 8%);
+ background: rgb(var(--overlay-dark) / 100%);
 }
 
 /* Avatar + nome in navbar */
@@ -36,7 +37,7 @@
 }
 
 .nav-user:hover{
-  background: rgba(255,255,255,.08);
+  background: rgb(var(--overlay-light) / 8%);
 }
 
 .nav-avatar{
@@ -44,7 +45,7 @@
   height: 34px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255,255,255,.55);
+  border: 2px solid rgb(var(--overlay-light) / 55%);
 }
 
 .nav-user-name{
@@ -60,8 +61,62 @@
   align-items:center;
   gap:12px;
 }
+/* Offcanvas: stesso look della navbar */
+#offcanvasNavbar.offcanvas {
+ background: rgb(var(--overlay-dark) / 95%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-right: 1px solid rgb(var(--overlay-light) / 10%);
+  color: #fff;
+}
 
-.nav-user-email{
-  font-size: 12px;
-  color: rgba(255,255,255,.75);
+/* Header: bordo e titolo */
+#offcanvasNavbar .offcanvas-header {
+  border-bottom: 1px solid rgb(var(--overlay-light) / 10%);
+}
+
+#offcanvasNavbar .offcanvas-title {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Bottone X visibile su sfondo scuro */
+#offcanvasNavbar .btn-close {
+  filter: invert(1) grayscale(100%);
+  opacity: .85;
+}
+#offcanvasNavbar .btn-close:hover {
+  opacity: 1;
+}
+
+/* Link menu */
+#offcanvasNavbar .nav-link {
+  color: rgba(255,255,255,.90);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: background .2s ease, color .2s ease;
+}
+
+#offcanvasNavbar .nav-link:hover,
+#offcanvasNavbar .nav-link:focus {
+  color: #fff;
+  background: rgb(var(--overlay-light) / 10%);
+}
+
+/* Link attivo */
+#offcanvasNavbar .nav-link.active {
+  background: rgb(var(--overlay-light) / 14%);
+  color: #fff;
+}
+
+/* User box mobile */
+.nav-user-mobile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgb(var(--overlay-light) / 8%);
+  border: 1px solid rgb(var(--overlay-light) / 10%);
 }
