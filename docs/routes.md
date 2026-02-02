@@ -5,6 +5,7 @@
 - **gestire le rotte pubbliche e protette**
 - **centralizzare la logica di protezione delle pagine**
 - **configurare layout condivisi (navbar + outlet)**
+- **gestire redirect e catch-all**
 
 -------------------------------------------------------
 
@@ -23,6 +24,7 @@
   - `UserPage`
   - `DepartmentsPage`
   - `UsersListPage`
+  - `SingleUserDetail`
 - layout:
   - `AppNavbar`
 
@@ -34,20 +36,24 @@
 - **wrappare tutte le pagine che richiedono autenticazione**
 - **mostrare la navbar solo sulle pagine protette**
 - **applicare un layout comune alle pagine private**
+- **fornire wrapper DOM per effetti CSS (es. push menu Offcanvas)**
 
 *Struttura:*
 - `ProtectedRoute`
   - controlla la presenza del token
+- `div#page-wrapper`
+  - wrapper pagina usato per gestione layout/CSS
 - `AppNavbar`
   - navbar fissa in alto
+- `div.pt-5`
+  - padding top per evitare sovrapposizione contenuti con navbar `fixed="top"`
 - `Outlet`
   - punto in cui viene renderizzata la pagina corrente
 
 *Note layout:*
-- il `div` con id `page-wrapper`:
-  - viene usato per gestire effetti CSS (es. push menu)
-- `paddingTop: "70px"`:
-  - necessario perché la navbar è `fixed="top"`
+- `#page-wrapper` è richiesto per le logiche CSS legate alla navbar/offcanvas
+- il padding top viene applicato con classe bootstrap:
+  - `pt-5`
 
 -------------------------------------------------------
 
@@ -84,6 +90,10 @@
   - componente: `UsersListPage`
   - lista utenti (accesso effettivo controllato anche lato API)
 
+- **`/users/:id`**
+  - componente: `SingleUserDetail`
+  - dettaglio singolo utente
+
 -------------------------------------------------------
 
 **Protezione delle rotte**
@@ -93,7 +103,7 @@
   - presenza del `token` nello store Redux
 - se il token **non è presente**:
   - redirect automatico a `/login`
-  - uso di `replace` per evitare ritorno con back
+  - (la logica specifica è implementata nel componente `ProtectedRoute`)
 
 -------------------------------------------------------
 
@@ -123,7 +133,7 @@
 - la protezione dei ruoli (ADMIN) **non è gestita qui**
   - è demandata a:
     - API
-    - componenti specifici (es. `UsersListPage`)
+    - componenti specifici (es. `UsersListPage`, `DepartmentsPage`)
 
 -------------------------------------------------------
 
@@ -136,3 +146,4 @@
 - `src/components/UserPage.tsx`
 - `src/components/DepartmentsPage.tsx`
 - `src/components/UsersListPage.tsx`
+- `src/components/SingleUserDetail.tsx`

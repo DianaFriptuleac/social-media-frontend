@@ -6,6 +6,7 @@ Cartella src/types/ (tipi TypeScript condivisi)
        - risposte del backend (DTO / paginazione)
        - stato Redux (`AuthState`, `ProfileState`)
        - dati per UI (es. `UserListItem`)
+        - props dei componenti (es. modali, RolePicker)
 -----------------------------------------------------------------------------------------------------
 
 **`auth.d.ts`** (auth types + auth store state)
@@ -39,32 +40,73 @@ Cartella src/types/ (tipi TypeScript condivisi)
 *Gestisce:*
 - struttura dati dei reparti
 - struttura dati dell’utente dentro un reparto (con ruoli)
-- struttura “department completo” con lista utenti
+- struttura “department completo” con lista utenti e metadati
+- stato UI per paginazione/selezione department
+- props per modali e componenti riutilizzabili
 
 *Tipi principali*
 1. **Department**
 - modello base reparto:
 id, name, description
 
-2. **UserInDepartment**
+2. **DepartmentUIState**
+- stato UI lato Redux per gestione schermata departments:
+- `selectedDepartmentId: string | null`
+- `page: number`
+- `pageSize: number`
+
+3. **UserInDepartment**
 - rappresenta un utente dentro un reparto
 include i ruoli nel reparto:
- - `roles: string[]`
+- `id: string`
+- `name: string`
+- `surname: string`
+- `email: string`
+- `avatar?: string | null`
+  - può mancare oppure essere `null` (dipende dal backend)
+- `roles: string[]`
 
-**Note:**
-`avatar?: string | null` → può mancare oppure essere `null` (dipende dal backend)
-
-3. **DepartmentWithUsers**
+4. **DepartmentWithUsers**
 - reparto + metadati + elenco utenti:
 - `userCount` → numero utenti (utile per UI)
 - `users: UserInDepartment[]` → lista completa
 
-4. **RolePickerProps**
+5. **RolePickerProps**
 - le props del componente UI per la gestione dei ruoli utente nei department
 - `availableRoles` → ruoli suggeriti/selezionabili (es. MANAGER, HR, IT)
 - `disabledRoles?` → ruoli non cliccabili (es. già assegnati all’utente nel department)
 - `onToggle` → callback per aggiungere/rimuovere un ruolo dalla selezione
 - `onAddCustom` → callback per aggiungere un ruolo inserito manualmente
+
+6. **CreateDepartmentPayload**
+- payload per creare un department:
+- `name: string`
+- `description?: string`
+
+7. **CreateDepartmentModalProps**
+- props del componente `CreateDepartmentModal`:
+- `show: boolean`
+- `onHide: () => void`
+- `onCreate: (payload: CreateDepartmentPayload) => void`
+- `isLoading: boolean`
+- `errorMsg?: string | null`
+
+8. **UpdateDepartmentPayload**
+- payload per aggiornare un department (edit):
+- `id: string`
+- `name?: string`
+- `description?: string`
+
+9. **EditDepartmentModalProps**
+- props del componente `EditDepartmentModal`:
+- `show: boolean`
+- `onHide: () => void`
+- `department: DepartmentWithUsers`
+- `onSave: (payload: UpdateDepartmentPayload) => void`
+- `onDelete: (id: string) => void`
+- `isSaving: boolean`
+- `isDeleting: boolean`
+- `errorMsg?: string | null`
 -----------------------------------------------------------------------------------------------------
 
 **`profile.ts`** (profile + users list + pagination)

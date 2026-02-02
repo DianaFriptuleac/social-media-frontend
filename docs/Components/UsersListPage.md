@@ -7,6 +7,8 @@
 - **gestire errori di rete e di permessi**
 - **bloccare la UI e mostrare messaggio dedicato per errore 403 (forbidden)**
 - **permettere cambio ruolo tramite `UserRoleBadgeModal` (solo ADMIN)**
+- **permettere la navigazione al dettaglio utente**
+- **permettere eliminazione utente (solo ADMIN, non su se stesso)**
 
 -------------------------------------------------------
 
@@ -31,11 +33,15 @@
   - `useAppSelector`
 - `userApi`
   - `useGetAllUsersQuery`
+  - `useDeleteUserByIdMutation`
+- componenti collegati
 - `UserRoleBadgeModal`
 - `utils`
   - `isFetchBaseQueryError`
 - `@reduxjs/toolkit/query`
   - `FetchBaseQueryError`
+- `react-icons/bs`
+  - `BsTrash`
 
 -------------------------------------------------------
 
@@ -48,6 +54,7 @@
 **Stato Redux utilizzato**
 - `state.auth.user`
   - per capire se l’utente corrente è ADMIN
+  - evitare eliminazione di se stesso
   - `isCurrentUserAdmin = currentUser?.role === "ADMIN"`
 
 -------------------------------------------------------
@@ -68,6 +75,17 @@
      - `error`
      - `refetch`
      - `isFetching`
+
+-------------------------------------------------------
+
+**Gestione permessi (403)**
+- variabile di controllo:
+  - `isForbidden = isError && isFetchBaseQueryError(error) && error.status === 403`
+- se `isForbidden` è true:
+  - viene mostrato **solo** un alert dedicato
+  - la tabella utenti **non viene renderizzata**
+  - viene mostrato un bottone:
+    - `Back to Home` → naviga a `/`
 
 -------------------------------------------------------
 
@@ -114,6 +132,8 @@
   3. genera array pagine `[start..end]`
 - componenti bootstrap:
   - `First`, `Prev`, `Item`, `Next`, `Last`
+- UI aggiuntiva:
+  - testo pagina: `Page {page + 1} / {totalPages}`
 
 -------------------------------------------------------
 
@@ -125,7 +145,16 @@
 
 -------------------------------------------------------
 
+**Refresh manuale**
+- bottone `Refresh`
+  - richiama `refetch()`
+  - non cambia pagina
+
+-------------------------------------------------------
+
 **Tabella utenti**
+- righe cliccabili:
+  - click su riga → naviga a `/users/{id}`
 - colonne:
   - `Avatar`
   - `Name`
@@ -134,13 +163,25 @@
   - `Role`
 - avatar:
   - `Image` con `roundedCircle`
+  - dimensioni 42x42
   - `objectFit: "cover"`
 - ruolo:
   - renderizzato tramite `UserRoleBadgeModal`
-  - passa:
-    - `currentRole`
-    - `userId`
-    - `isCurrentUserAdmin`
+  - la cella blocca la navigazione con:
+    - `onClick={(e) => e.stopPropagation()}`
+
+-------------------------------------------------------
+
+**Azioni admin (delete)**
+- icona cestino (`BsTrash`) visibile solo se:
+  - `isCurrentUserAdmin === true`
+  - utente in riga non è l’utente corrente (`!isSelf`)
+- click cestino:
+  - blocca navigazione riga con `stopPropagation()`
+  - mostra `window.confirm`
+  - invoca `deleteUserById({ userId }).unwrap()`
+- stato bottone:
+  - disabilitato durante `isDeleting`
 
 -------------------------------------------------------
 
@@ -163,6 +204,10 @@
 - `refetch()` permette refresh manuale senza cambiare pagina
 - il cambio ruolo reale è demandato a `UserRoleBadgeModal`
 - la paginazione è basata su `PageResponse` del backend
+- l’eliminazione utente è protetta da:
+  - controllo admin
+  - blocco self-delete
+  - confirm dialog
 
 -------------------------------------------------------
 

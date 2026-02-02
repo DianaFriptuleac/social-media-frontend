@@ -51,6 +51,17 @@
 
 -------------------------------------------------------
 
+**Mutazioni RTK Query**
+1. **`useUpdateMyProfileMutation`**
+   - aggiorna i dati del profilo (name/surname/email)
+   - aggiorna password solo se inviata nel payload
+
+2. **`useUploadAvatarMutation`**
+   - carica un file immagine e aggiorna l’avatar profilo
+
+
+-------------------------------------------------------
+
 **Stato Redux utilizzato**
 - `state.profile.profile`
 - `state.profile.departments`
@@ -91,6 +102,7 @@
 
 2. **`handleAvatarChange`**
    - legge il file selezionato
+  - se non c’è file esce subito
    - chiama `uploadAvatar(file).unwrap()`
    - mostra messaggio di conferma
 
@@ -110,22 +122,39 @@
 -------------------------------------------------------
 
 **Rendering condizionale**
-- spinner mostrato se `loading === true`
-- alert mostrato se `error !== null`
-- avatar mostrato solo se presente
-- lista departments:
-  - messaggio se vuota
-  - elenco se presente
+- `loading === true`
+  - mostra spinner centrale
+- `error !== null`
+  - mostra alert globale
+- avatar
+  - mostrato solo se `profile.avatar` esiste
+- lista departments
+  - se vuota: `No departments assigned.`
+  - altrimenti: elenco con `departmentName` e `roles`
 
 -------------------------------------------------------
 
 **Gestione password**
 - campo opzionale
-- toggle visibilità con:
-  - `BsEye`
-  - `BsEyeSlash`
-- se vuota:
-  - password **non inviata** al backend
+- visibilità password gestita da:
+  - `showPassword`
+- toggle con icone:
+  - `BsEye` (mostra)
+  - `BsEyeSlash` (nasconde)
+- se password vuota:
+  - **non viene inviata** al backend
+
+-------------------------------------------------------
+
+**Gestione ruolo utente**
+- il ruolo è mostrato/gestito tramite `UserRoleBadgeModal`
+- il componente riceve:
+  - `currentRole` (cast a `"ADMIN" | "USER"`)
+  - `userId`
+  - `isCurrentUserAdmin`
+- nota: nel codice `isCurrentUserAdmin` viene passato come:
+  - `profile?.role === "ADMIN"`
+
 
 -------------------------------------------------------
 

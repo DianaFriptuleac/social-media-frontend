@@ -5,6 +5,7 @@
 - gestire caching, loading/error state e refetch automatici
 - allegare il token JWT in automatico alle richieste (Authorization header)
 - generare hook React pronti all’uso (useLoginMutation, useGetAllUsersQuery, ecc.)
+- sincronizzare alcuni dati con slice Redux dedicati (authSlice, profileSlice)
 
 **Struttura**
 1. **`emptyApi.ts`** → base “service” RTK Query condiviso (baseUrl, headers, tagTypes)
@@ -67,35 +68,50 @@ Il login non è solo una chiamata, ma aggiorna anche lo stato globale di autenti
 - `providesTags: ['Departments']`
 - permette refetch automatico quando invalidato
 
-*2.`getDepartmentById — GET /departments/{id}`*
+*2. `createDepartment — POST /departments`*
+- Input: `{ name, description? }`
+- Output: `Department`
+- `invalidatesTags: ['Departments']`
+
+*3.`getDepartmentById — GET /departments/{id}`*
 - ritorna **`DepartmentWithUsers`**
 - `providesTags: [{ type: 'Department', id }]`
 - cache specifica per singolo department
 
-*3.`updateDepartment — PUT /departments/{id}`*
+*4.`updateDepartment — PUT /departments/{id}`*
 - aggiorna un reparto
 - **invalidatesTags:**
          -`'Departments'` (lista)
          - `{ type: 'Department', id }` (singolo)
 
-*4.`assignRoles — POST /departments/assign`*
+*5.`assignRoles — POST /departments/assign`*
 - assegna ruoli a un utente dentro un department
 - invalida solo il department coinvolto:
       - `{ type: 'Department', id: departmentId }`
 
-*5.`removeUserFromDepartment — DELETE /departments/{departmentId}/members/{userId}`*
+*6.`removeUserFromDepartment — DELETE /departments/{departmentId}/members/{userId}`*
 - rimuove utente dal reparto
 - invalida il department coinvolto
-*5.`removeDepartmentRoleFromUser — DELETE /departments/{departmentId}/members/{userId}/role{(role)}`*
+
+*7.`removeDepartmentRoleFromUser — DELETE /departments/{departmentId}/members/{userId}/role{(role)}`*
 - rimuove ruolo dipartimento dallo user
+
+*8. `deleteDepartment — DELETE /departments/{id}`*
+- Input: `id: string`
+- Output: `void`
+- `invalidatesTags`:
+  - `'Departments'`
+  - `{ type: 'Department', id }`
 
 **Hook esportati**
 **`useGetDepartmentsQuery()`**
+**`useCreateDepartmentMutation()`**
 **`useGetDepartmentByIdQuery(id)`**
 **`useUpdateDepartmentMutation()`**
 **`useAssignRolesMutation()`**
 **`useRemoveUserFromDepartmentMutation()`**
 **`useRemoveDepartmentRoleFromUserMutation()`**
+**`useDeleteDepartmentMutation()`**
 
 -----------------------------------------------------------------------------------------------------
 
@@ -104,8 +120,9 @@ Il login non è solo una chiamata, ma aggiorna anche lo stato globale di autenti
 - profilo dell’utente loggato
 - reparti dell’utente loggato
 - update profilo e avatar
-- funzioni admin: cambio ruolo
+- funzioni admin: cambio ruolo, delete utente
 - lista utenti paginata
+- dettaglio singolo utente
 
 *Endpoint principali*
 *1.`getMyProfile — GET /user/me`*
@@ -127,7 +144,7 @@ Il login non è solo una chiamata, ma aggiorna anche lo stato globale di autenti
 - manda `FormData` (file)
 - aggiorna lo slice con `avatarUpdated(avatarUrl)`
 
-*5. `updateUserRole — PATCH /user/{userId}/role`* (solo ADMIN)
+*5.`updateUserRole — PATCH /user/{userId}/role`* (solo ADMIN)
 - invalida cache con tag:
             - `{ type: "Users", id: userId }`
             - `{ type: "Users", id: "LIST" }`
@@ -135,7 +152,19 @@ Così si aggiornano automaticamente:
 - il singolo utente (badge/ruolo)
 - le liste paginated
 
-*6 `getAllUsers — GET /user?page=&size=` (solo ADMIN)*
+*6.`getUserById — GET /user/{id}`*
+- Input: `id: string`
+- Output: `UserListItem`
+- `providesTags: [{ type: "Users", id }]`
+
+*7.`deleteUserById — DELETE /user/{id}`* (solo ADMIN)
+- Input: `{ userId: string }`
+- Output: `void`
+- `invalidatesTags`:
+  - `{ type: "Users", id: userId }`
+  - `{ type: "Users", id: "LIST" }`
+
+*8 `getAllUsers — GET /user?page=&size=` (solo ADMIN)*
 - ritorna `PageResponse<UserListItem>`
 - `providesTags`:
       - tag per ogni user id
@@ -147,4 +176,6 @@ Così si aggiornano automaticamente:
 `useUpdateMyProfileMutation()`
 `useUploadAvatarMutation()`
 `useUpdateUserRoleMutation()`
+- `useGetUserByIdQuery(id)`
+- `useDeleteUserByIdMutation()`
 `useGetAllUsersQuery({ page, size })`

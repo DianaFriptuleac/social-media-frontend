@@ -2,10 +2,12 @@
 
 *Serve per:*
 - **mostrare la barra di navigazione principale**
-- **gestire la navigazione tra le pagine**
-- **gestire logout utente**
-- **adattare il menu a desktop e mobile**
-- **mostrare informazioni dell’utente loggato**
+- **gestire la navigazione tra le pagine con useNavigate()**
+- **gestire logout utente(dispatch(logout()) + redirect /login)**
+- **gestire menu Offcanvas in modo responsive:**
+       -**mobile: menu dall'alto**
+       -**desktop: menu laterale da sinistra**
+
 
 -------------------------------------------------------
 
@@ -29,8 +31,8 @@
 **Stato Redux utilizzato**
 - `state.auth.user`
   - usato per:
-    - mostrare icona / nome utente
-    - mostrare link al profilo
+    - mostrare avatar + nome utente
+    - link al profilo /me
     - gestire logout
 
 -------------------------------------------------------
@@ -50,8 +52,9 @@
 **Gestione responsive**
 - su **desktop**
   - navbar sempre visibile
-  - icona utente + logout sulla destra
-  - offcanvas laterale da sinistra
+  - user + logout sulla destra
+  - offcanvas placement="start"
+  - quando offcanvas aperto: aggiunge una classe al body per spingere il contenuto
 - su **mobile**
   - menu offcanvas dall’alto (`placement="top"`)
   - user info e logout spostati dentro la tendina

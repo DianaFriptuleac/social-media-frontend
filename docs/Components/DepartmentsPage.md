@@ -6,6 +6,8 @@
 - **visualizzare gli utenti appartenenti al department**
 - **gestire paginazione utenti**
 - **abilitare azioni amministrative (solo ADMIN)**
+- **creare, modificare ed eliminare departments**
+- **gestire utenti e ruoli nei departments**
 
 -------------------------------------------------------
 
@@ -13,7 +15,10 @@
 - layout a **due colonne**
   - **colonna sinistra**
     - lista dei departments
+    - pulsante *Add New* (solo ADMIN)
   - **colonna destra**
+    - dettaglio del department selezionato
+    - informazioni generali
     - dettaglio del department selezionato
     - tabella utenti
     - azioni admin
@@ -21,6 +26,9 @@
 -------------------------------------------------------
 
 **Dipendenze principali**
+- `react`
+  - `useState`
+  - `useMemo`
 - `react-bootstrap`
   - `Container`, `Row`, `Col`
   - `Card`, `Table`, `Button`, `Pagination`, `Badge`
@@ -28,10 +36,20 @@
   - `useGetDepartmentsQuery`
   - `useGetDepartmentByIdQuery`
   - `useRemoveUserFromDepartmentMutation`
+  - `useCreateDepartmentMutation`
+  - `useUpdateDepartmentMutation`
+  - `useDeleteDepartmentMutation`
 - `redux store`
   - `useAppDispatch`
   - `useAppSelector`
-  - `departmentSlice` (`setSelectedDepartment`, `setPage`)
+  - `departmentSlice`
+    - `setSelectedDepartment`
+    - `setPage`
+- componenti collegati
+  - `DepartmentRolesModal`
+  - `AddUserToDepartmentModal`
+  - `CreateDepartmentModal`
+  - `EditDepartmentModal`
 
 -------------------------------------------------------
 
@@ -56,12 +74,39 @@
    - rimuove un utente dal department
    - disponibile solo per ADMIN
 
+4. **`useCreateDepartmentMutation`**
+   - crea un nuovo department
+   - disponibile solo per ADMIN
+
+5. **`useUpdateDepartmentMutation`**
+   - aggiorna un department
+   - disponibile solo per ADMIN
+
+6. **`useDeleteDepartmentMutation`**
+   - elimina un department
+   - disponibile solo per ADMIN
+
 -------------------------------------------------------
 
-**Stato locale / derivato**
+**Stato locale**
+- `showAddUserModal`
+  - controlla la visibilità della modale di aggiunta utente
+- `showCreateDept`
+  - controlla la visibilità della modale di creazione department
+- `showEditDepartment`
+  - controlla la visibilità della modale di modifica department
+
+-------------------------------------------------------
+
+**Stato derivato / memoizzato**
 - `pagedUsers`
   - calcolato con `useMemo`
   - contiene solo gli utenti della pagina corrente
+  - dipende da:
+    - `selectedDepartment`
+    - `page`
+    - `pageSize`
+
 
 ************
   **Note per `useMemo`** :
@@ -94,40 +139,8 @@
 
 -------------------------------------------------------
 
-**Gestione selezione department**
-- al click su un department:
-  - dispatch di `setSelectedDepartment(dept.id)`
-  - reset automatico della pagina a `1`
-- il department selezionato:
-  - viene evidenziato con `border-primary`
-
--------------------------------------------------------
-
-**Gestione ruoli (ADMIN)**
-- se `user.role === "ADMIN"`:
-  - mostra pulsanti:
-    - `Modifica department`
-    - `Aggiungi utente`
-  - mostra colonna `Actions` nella tabella utenti
-  - abilita:
-    - `Modifica Ruoli`
-    - `Rimuovi utente`
-
--------------------------------------------------------
-
-**Tabella utenti**
-- colonne:
-  - `Name`
-  - `Email`
-  - `Ruoli`
-  - `Actions` *(solo ADMIN)*
-- ruoli visualizzati come `Badge`
-- stato vuoto:
-  - mostra `Nessun utente presente`
-
--------------------------------------------------------
-
 **Paginazione**
+- completamente **lato frontend**
 - attiva solo se:
   - `selectedDepartment.users.length > pageSize`
 - controllata da:
@@ -141,20 +154,67 @@
 
 -------------------------------------------------------
 
+**Gestione selezione department**
+- al click su un department:
+  - dispatch di `setSelectedDepartment(dept.id)`
+  - reset automatico della pagina a `1`
+- il department selezionato:
+  - viene evidenziato con `border-primary`
+- se un department viene eliminato:
+  - la selezione viene resettata (`setSelectedDepartment(null)`)
+
+-------------------------------------------------------
+
+**Gestione ruoli (ADMIN)**
+- se `user.role === "ADMIN"`:
+  - mostra pulsanti:
+    - *Add New*
+    - *Edit department*
+    - *Add user*
+  - mostra colonna `Actions` nella tabella utenti
+  - abilita:
+    - modifica ruoli (`DepartmentRolesModal`)
+    - rimozione utenti dal department
+    - creazione / modifica / eliminazione department
+
+-------------------------------------------------------
+
+**Tabella utenti**
+- colonne:
+  - `Name`
+  - `Email`
+  - `Ruoli`
+  - `Actions` *(solo ADMIN)*
+- ruoli visualizzati come `Badge`
+- stato vuoto:
+  - mostra `No users found`
+
+-------------------------------------------------------
+
+
 **Stati di caricamento**
 - lista departments:
-  - mostra `Caricamento...`
+  - mostra `Loading...`
 - dettaglio department:
-  - mostra `Caricamento dati...`
+  - mostra `Loading data...`
 - nessun department selezionato:
-  - mostra `Seleziona un department...`
+  - mostra `Select a department...`
+
+-------------------------------------------------------
+
+**Gestione errori**
+- errori di creazione / modifica / eliminazione:
+  - intercettati tramite `isFetchBaseQueryError`
+  - gestione dedicata per `403 (ADMIN only)`
+- messaggi mostrati nelle rispettive modali
 
 -------------------------------------------------------
 
 **Note**
 - la paginazione è **lato frontend**
 - il numero utenti (`userCount`) viene mostrato separatamente
-- la rimozione utente invalida automaticamente la cache RTK Query
+- le mutazioni RTK Query invalidano automaticamente la cache
+- il componente funge da **container principale** per la gestione departments
 
 -------------------------------------------------------
 
@@ -163,3 +223,7 @@
 - `src/store/departmentSlice.ts`
 - `src/store/hooks.ts`
 - `src/types/departments.ts`
+- `src/components/DepartmentRolesModal.tsx`
+- `src/components/AddUserToDepartmentModal.tsx`
+- `src/components/CreateDepartmentModal.tsx`
+- `src/components/EditDepartmentModal.tsx`
