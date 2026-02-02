@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { EditDepartmentModalProps } from "../types/departments";
 import { Alert, Modal, Form, Button, Spinner } from "react-bootstrap";
+import "../css/Departments.css"
 
 const EditDepartmentModal = ({
   show,
@@ -52,7 +53,7 @@ const EditDepartmentModal = ({
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered>
+    <Modal show={show} onHide={onHide} centered className="dept-modal">
       <Modal.Header closeButton>
         <Modal.Title>Edit department</Modal.Title>
       </Modal.Header>
@@ -105,12 +106,13 @@ const EditDepartmentModal = ({
       <Modal.Footer>
         <Button
           variant="secondary"
+          className="dept-btn-secondary"
           onClick={onHide}
           disabled={isSaving || isDeleting}
         >
           Cancel
         </Button>
-        <Button variant="primary" onClick={handleSave} disabled={!canSave}>
+        <Button variant="primary" className="dept-btn-primary" onClick={handleSave} disabled={!canSave}>
           {isSaving ? (
             <>
               <Spinner size="sm" className="me-2" />

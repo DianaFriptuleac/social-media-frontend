@@ -11,6 +11,7 @@ import {
   Card,
 } from "react-bootstrap";
 import UserRoleBadgeModal from "./UserRoleBadgeModal";
+import "../css/Users.css";
 
 const SingleUserDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,11 +36,12 @@ const SingleUserDetail = () => {
     );
   }
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 user-detail-page">
       <Row className="mb-3">
         <Col className="d-flex justify-content-between align-items-center">
-          <h2>User details</h2>
+          <h2 className="user-detail-title">User details</h2>
           <Button
+            className="u-btn-outline"
             variant="outline-secondary"
             onClick={() => navigate("/users")}
           >
@@ -65,20 +67,11 @@ const SingleUserDetail = () => {
       {user && (
         <Row>
           <Col xs={12} md={4} className="mb-4">
-            <Card className="text-center">
+            <Card className="text-center u-card">
               <Card.Body>
                 {user.avatar && (
                   <div className="mb-3">
-                    <img
-                      src={user.avatar}
-                      alt="avatar"
-                      style={{
-                        width: "120px",
-                        height: "120px",
-                        borderRadius: "50%",
-                        objectFit: "cover",
-                      }}
-                    />
+                    <img src={user.avatar} alt="avatar" className="u-avatar" />
                   </div>
                 )}
 
@@ -99,7 +92,7 @@ const SingleUserDetail = () => {
           </Col>
 
           <Col xs={12} md={8}>
-            <Card>
+            <Card className="u-card">
               <Card.Body>
                 <h4>Info</h4>
                 <div>

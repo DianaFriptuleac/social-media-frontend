@@ -1,0 +1,186 @@
+/* Users (SingleUserRole/ UserPage/ UserRoleBadgeModal/ UsresListPage) */
+
+.users-page,
+.user-detail-page,
+.user-profile-page {
+  max-width: var(--content-max);
+}
+
+/* Titoli */
+.users-title,
+.user-detail-title,
+.user-profile-title {
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  margin: 0;
+}
+
+/* Card “theme” */
+.u-card {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background: var(--card);
+  overflow: hidden;
+}
+
+.u-card__header {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--overlay-light), 0.92),
+    rgba(var(--overlay-light), 0.72)
+  );
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.u-card__header .card-header {
+  background: transparent;
+  border: 0;
+}
+
+/* Avatar */
+.u-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid rgba(61, 86, 132, 0.18); /* brand-700 soft */
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.u-avatar--sm {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Actions top-right (refresh/back) */
+.u-top-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Table (UsersListPage) */
+.u-table {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--card);
+  margin-bottom: 14px;
+}
+
+.u-table thead th {
+  background: rgba(45, 48, 56, 0.06); /* brand-900 soft */
+  color: var(--text);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-weight: 800;
+}
+
+.u-table tbody td {
+  vertical-align: middle;
+}
+
+/* Row hover nicer */
+.u-table tbody tr {
+  transition: background 0.12s ease;
+}
+.u-table tbody tr:hover {
+  background: rgba(61, 86, 132, 0.06); /* brand-700 soft */
+}
+
+/* Pagination */
+.u-pagination .page-item .page-link {
+  color: var(--text);
+}
+.u-pagination .page-item.active .page-link {
+  background: var(--brand-700);
+  border-color: var(--brand-700);
+}
+.u-pagination .page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(61, 86, 132, 0.22);
+}
+
+/* Profile form */
+.u-form .form-control,
+.u-form .form-select {
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.u-form .form-control:focus,
+.u-form .form-select:focus {
+  border-color: rgba(61, 86, 132, 0.55);
+  box-shadow: 0 0 0 0.2rem rgba(61, 86, 132, 0.18);
+}
+
+/* Buttons theme */
+.u-btn-primary {
+  background: var(--brand-700) !important;
+  border-color: var(--brand-700) !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+}
+.u-btn-primary:hover {
+  filter: brightness(0.96);
+}
+
+.u-btn-outline {
+  border-color: rgba(61, 86, 132, 0.55) !important;
+  color: var(--brand-700) !important;
+  border-radius: 12px !important;
+}
+.u-btn-outline:hover {
+  background: rgba(61, 86, 132, 0.12) !important;
+}
+
+/* Role badge (clickable) */
+.u-role-badge {
+  border-radius: 999px !important;
+  padding: 0.4rem 0.8rem !important;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+/* Role modal theme */
+.u-modal .modal-content {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--card);
+}
+
+.u-modal .modal-header {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--overlay-light), 0.92),
+    rgba(var(--overlay-light), 0.72)
+  );
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.u-modal .modal-title {
+  color: var(--text);
+  font-weight: 900;
+}
+
+.u-modal .list-group-item {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+.u-modal .list-group-item.active {
+  background: var(--brand-700);
+  border-color: var(--brand-700);
+}
+
+/* Departments list inside UserPage */
+.u-dep-list .list-group-item {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+.u-dep-list strong {
+  color: var(--text);
+}
+.u-dep-list span {
+  color: var(--muted);
+}

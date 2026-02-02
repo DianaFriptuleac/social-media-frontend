@@ -5,6 +5,7 @@ import {
 } from "../api/departmentApi";
 import { Button, Modal, Alert, Badge } from "react-bootstrap";
 import RolePicker from "./RolePicker";
+import "../css/RolePicker.css"
 
 interface DepartmentRolesModalProps {
   userId: string;
@@ -152,7 +153,7 @@ const DepartmentRolesModal = ({
         Edit Roles
       </Button>
 
-      <Modal show={showModal} onHide={handleClose} centered>
+      <Modal show={showModal} onHide={handleClose} centered className="dept-modal">
         <Modal.Header closeButton>
           <Modal.Title>Roles in the Department</Modal.Title>
         </Modal.Header>

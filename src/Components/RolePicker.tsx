@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Badge, Button, Form, ListGroup } from "react-bootstrap";
 import type { RolePickerProps } from "../types/departments";
+import "../css/RolePicker.css";
 
 const normalizeRole = (role: string) =>
   role.trim().toUpperCase().replace(/\s+/g, "_");
-
-
 
 const RolePicker: React.FC<RolePickerProps> = ({
   title = "Select roles",
@@ -27,10 +26,10 @@ const RolePicker: React.FC<RolePickerProps> = ({
   };
 
   return (
-    <>
-      <p className="mb-2">{title}:</p>
+    <div className="dept-rolepicker">
+      <p className="mb-2 dept-rolepicker__title">{title}:</p>
 
-      <ListGroup className="mb-3">
+      <ListGroup className="mb-3 dept-rolepicker__list">
         {availableRoles.map((r) => {
           const role = normalizeRole(r);
           const already = disabledSet.has(role);
@@ -44,21 +43,25 @@ const RolePicker: React.FC<RolePickerProps> = ({
               active={active}
               onClick={() => onToggle(role)}
               style={{ cursor: already ? "not-allowed" : "pointer" }}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex justify-content-between align-items-center dept-rolepicker__item"
             >
               <div>
-                <Badge bg="info" text="dark" className="me-2">
+                <Badge className="me-2 dept-rolepicker__role-badge">
                   {role}
                 </Badge>
               </div>
-              {already && <Badge bg="secondary">Already exist</Badge>}
+              {already && (
+                <Badge className="dept-rolepicker__already">
+                  Already exist
+                </Badge>
+              )}
             </ListGroup.Item>
           );
         })}
       </ListGroup>
 
       {/* Custom role */}
-      <Form.Group className="mb-2">
+      <Form.Group className="mb-2 dept-rolepicker__input">
         <Form.Label className="small">Add role manually</Form.Label>
         <div className="d-flex gap-2">
           <Form.Control
@@ -74,6 +77,7 @@ const RolePicker: React.FC<RolePickerProps> = ({
           />
           <Button
             variant="outline-primary"
+            className="dept-rolepicker__add-btn"
             onClick={addCustom}
             disabled={!customRole.trim()}
           >
@@ -90,8 +94,7 @@ const RolePicker: React.FC<RolePickerProps> = ({
             {selectedRoles.map((r) => (
               <Badge
                 key={r}
-                bg="primary"
-                style={{ cursor: "pointer" }}
+                className="dept-rolepicker__selected-pill"
                 onClick={() => onToggle(r)}
                 title="Remove from selection"
               >
@@ -101,7 +104,7 @@ const RolePicker: React.FC<RolePickerProps> = ({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

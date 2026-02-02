@@ -19,6 +19,7 @@ import { isFetchBaseQueryError } from "../utils/rtkQuery";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { BsTrash } from "react-icons/bs";
 import { useDeleteUserByIdMutation } from "../api/userApi";
+import "../css/Users.css";
 
 const PAGE_SIZE = 10;
 
@@ -64,7 +65,9 @@ const UsersListPage = () => {
     useDeleteUserByIdMutation();
 
   const handleDelete = async (userId: string, label: string) => {
-    const ok = window.confirm( `Are you sure you want to delete ${label}?\nThis action cannot be undone.`);
+    const ok = window.confirm(
+      `Are you sure you want to delete ${label}?\nThis action cannot be undone.`,
+    );
     if (!ok) return;
 
     try {
@@ -76,14 +79,17 @@ const UsersListPage = () => {
   };
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 users-page">
       <Row className="mb-3">
         <Col className="d-flex align-items-center justify-content-between">
-          <h2>Users</h2>
+          <h2
+            className="users-title">
+            Users
+          </h2>
           <div className="d-flex align-items-center gap-2">
             {isFetching && <Spinner animation="border" size="sm" />}
             <button
-              className="btn btn-outline-secondary btn-sm"
+              className="btn btn-outline-secondary btn-sm u-btn-outline"
               onClick={() => refetch()}
             >
               Refresh
@@ -115,7 +121,7 @@ const UsersListPage = () => {
             </Alert>
           )}
 
-          <Card>
+          <Card className="u-card">
             <Card.Body>
               {isLoading ? (
                 <div className="text-center py-5">
@@ -123,7 +129,7 @@ const UsersListPage = () => {
                 </div>
               ) : (
                 <>
-                  <Table responsive hover>
+                  <Table responsive hover className="u-table">
                     <thead>
                       <tr>
                         <th>Avatar</th>
@@ -145,11 +151,7 @@ const UsersListPage = () => {
                               <Image
                                 src={u.avatar}
                                 roundedCircle
-                                style={{
-                                  width: 42,
-                                  height: 42,
-                                  objectFit: "cover",
-                                }}
+                                className="u-avatar--sm"
                                 alt="avatar"
                               />
                             </td>
@@ -203,7 +205,7 @@ const UsersListPage = () => {
                       Page {page + 1} / {totalPages}
                     </div>
 
-                    <Pagination className="mb-0">
+                    <Pagination className="mb-0 u-pagination">
                       <Pagination.First
                         disabled={page === 0}
                         onClick={() => setPage(0)}

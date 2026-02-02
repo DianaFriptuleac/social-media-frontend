@@ -1,0 +1,95 @@
+.dept-rolepicker {
+  padding: 12px;
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* titolo */
+.dept-rolepicker__title {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* lista */
+.dept-rolepicker__list {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* item */
+.dept-rolepicker__item {
+  border-color: rgba(0, 0, 0, 0.06);
+  transition:
+    background 0.12s ease,
+    transform 0.12s ease,
+    border-color 0.12s ease;
+}
+.dept-rolepicker__item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* active */
+.dept-rolepicker__item.active {
+  background: var(--brand-700) !important;
+  border-color: var(--brand-700) !important;
+  color: #fff !important;
+}
+
+/* disabled */
+.dept-rolepicker__item:disabled,
+.dept-rolepicker__item.disabled {
+  opacity: 0.65;
+  cursor: not-allowed !important;
+}
+
+/* badge ruolo nella lista */
+.dept-rolepicker__role-badge {
+  background: rgba(61, 86, 132, 0.16) !important; /* brand-700 soft */
+  border: 1px solid rgba(61, 86, 132, 0.22);
+  color: var(--text) !important;
+}
+.dept-rolepicker__item.active .dept-rolepicker__role-badge {
+  background: rgba(255, 255, 255, 0.18) !important;
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff !important;
+}
+
+/* badge "Already exist" */
+.dept-rolepicker__already {
+  background: rgba(45, 48, 56, 0.14) !important; /* brand-900 soft */
+  color: var(--text) !important;
+  border: 1px solid rgba(45, 48, 56, 0.18);
+}
+
+/* input + button custom role */
+.dept-rolepicker__input .form-control {
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.dept-rolepicker__input .form-control:focus {
+  border-color: rgba(61, 86, 132, 0.55);
+  box-shadow: 0 0 0 0.2rem rgba(61, 86, 132, 0.18);
+}
+
+.dept-rolepicker__add-btn {
+  border-color: rgba(61, 86, 132, 0.55) !important;
+  color: var(--brand-700) !important;
+  border-radius: 12px !important;
+}
+.dept-rolepicker__add-btn:hover {
+  background: rgba(61, 86, 132, 0.12) !important;
+}
+
+/* selected roles */
+.dept-rolepicker__selected-pill {
+  background: var(--brand-700) !important;
+  border: 1px solid rgba(61, 86, 132, 0.22);
+  cursor: pointer;
+}
+.dept-rolepicker__selected-pill:hover {
+  filter: brightness(0.96);
+}

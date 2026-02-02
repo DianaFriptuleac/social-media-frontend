@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useRegisterMutation } from "../api/authApi";
+import "../css/auth.css";
+
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -31,11 +33,15 @@ const RegisterPage = () => {
     (error as any)?.data?.message || (error as any)?.message || null;
 
   return (
-    <Container className="mt-5">
-      <Row className="justify-content-center">
+    <Container className="auth-page">
+      <Row className="justify-content-center w-100">
         <Col xs={12} md={6} lg={4}>
-          <h2 className="text-center mb-4">Register</h2>
-          {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+            <div className="auth-card">
+          <div className="auth-card__header text-center">
+            <h2 className="auth-title">Register</h2>
+          </div>
+          <div className="auth-card__body">
+          {errorMessage && <Alert variant="danger" className="auth-alert">{errorMessage}</Alert>}
           <Form
             onSubmit={handleSubmit}
             className="p-4 border rounded shadow-sm"
@@ -84,17 +90,20 @@ const RegisterPage = () => {
               />
             </Form.Group>
 
-            <Button type="submit" variant="primary" disabled={isLoading}>
+            <Button type="submit" className="w-100 auth-btn-primary" disabled={isLoading}>
               {isLoading ? "Registration..." : "Register"}
             </Button>
+            </Form>
 
-            <p className="text-center mt-3">
+           <div className="auth-divider" />
+             <div className="auth-footer">
               Already have an account?{" "}
-              <Link to="/login" style={{ textDecoration: "none" }}>
+              <Link to="/login" className="auth-link">
                 Login
               </Link>
-            </p>
-          </Form>
+            </div>
+          </div>
+          </div>
         </Col>
       </Row>
     </Container>

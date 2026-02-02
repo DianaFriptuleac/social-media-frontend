@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useUpdateUserRoleMutation } from "../api/userApi";
 import { Alert, Badge, Button, ListGroup, Modal } from "react-bootstrap";
+import "../css/Users.css";
 
 interface RoleBadgeModalProps {
   currentRole: "ADMIN" | "USER";
@@ -15,7 +16,7 @@ const UserRoleBadgeModal = ({
 }: RoleBadgeModalProps) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedRole, setSelectedRole] = useState<"ADMIN" | "USER" | null>(
-    null
+    null,
   );
   const [showConfirm, setShowConfirm] = useState(false);
   const [updateUserRole, { isLoading }] = useUpdateUserRoleMutation();
@@ -76,13 +77,7 @@ const UserRoleBadgeModal = ({
       {/*Badge cliccabile */}
       <Badge
         bg={currentRole === "ADMIN" ? "danger" : "success"}
-        style={{
-          cursor: isCurrentUserAdmin ? "pointer" : "default",
-          pointerEvents: canClick ? "auto" : "none",
-          opacity: canClick ? 1 : 0.7,
-          fontSize: "0.9rem",
-          padding: "0.4rem 0.8rem",
-        }}
+        className="u-role-badge"
         onClick={canClick ? handleBadgeClick : undefined}
         title={
           canClick ? "Click to change role" : "Only admins can change roles"
@@ -91,7 +86,12 @@ const UserRoleBadgeModal = ({
         {currentRole}
       </Badge>
       {/*Modale cambio ruolo */}
-      <Modal show={showModal} onHide={handleCloseModal} centered>
+      <Modal
+        show={showModal}
+        onHide={handleCloseModal}
+        centered
+        className="u-modal"
+      >
         <Modal.Header closeButton>
           <Modal.Title>Change User Role</Modal.Title>
         </Modal.Header>

@@ -21,6 +21,7 @@ import {
 } from "react-bootstrap";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import UserRoleBadgeModal from "./UserRoleBadgeModal";
+import "../css/Users.css";
 
 const UserPage = () => {
   useGetMyProfileQuery();
@@ -28,7 +29,7 @@ const UserPage = () => {
 
   //Dati profilo e departments dal Redux
   const { profile, departments, loading, error } = useAppSelector(
-    (state) => state.profile
+    (state) => state.profile,
   );
   const currentUser = useAppSelector((state) => state.auth.user);
 
@@ -82,7 +83,7 @@ const UserPage = () => {
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-  
+
     try {
       await uploadAvatar(file).unwrap();
       alert("Avatar updated!");
@@ -91,12 +92,11 @@ const UserPage = () => {
     }
   };
 
-
   return (
-    <Container className="mt-4">
+    <Container className="mt-4 user-profile-page">
       <Row className="mb-3">
         <Col>
-          <h2>My Profile</h2>
+          <h2 className="user-profile-title">My Profile</h2>
         </Col>
       </Row>
 
@@ -121,20 +121,11 @@ const UserPage = () => {
       <Row>
         {/* Colonna sinistra: info base + avatar */}
         <Col xs={12} md={4} className="mb-4">
-          <Card className="text-center">
+          <Card className="text-center u-card">
             <Card.Body>
               {profile && profile.avatar && (
                 <div className="mb-3">
-                  <img
-                    src={profile.avatar}
-                    alt="avatar"
-                    style={{
-                      width: "120px",
-                      height: "120px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                    }}
-                  />
+                  <img src={profile.avatar} alt="avatar" className="u-avatar" />
                 </div>
               )}
               <Form.Group controlId="formAvatar" className="mb-3">
@@ -151,9 +142,9 @@ const UserPage = () => {
                   {profile && currentUser && (
                     <div className="mt-2">
                       <UserRoleBadgeModal
-                      currentRole={profile.role as "ADMIN" | "USER"}
-                      userId={profile.id}
-                      isCurrentUserAdmin={profile?.role === "ADMIN"}
+                        currentRole={profile.role as "ADMIN" | "USER"}
+                        userId={profile.id}
+                        isCurrentUserAdmin={profile?.role === "ADMIN"}
                       />
                     </div>
                   )}
@@ -163,9 +154,11 @@ const UserPage = () => {
           </Card>
 
           {/* Lista departments e ruoli */}
-          <Card className="mt-4">
-            <Card.Header>Departments & Roles</Card.Header>
-            <ListGroup variant="flush">
+          <Card className="mt-4 u-card">
+            <Card.Header className="u-card__header">
+              Departments & Roles
+            </Card.Header>
+            <ListGroup variant="flush" className="u-dep-list">
               {departments.length === 0 && (
                 <ListGroup.Item>No departments assigned.</ListGroup.Item>
               )}
@@ -185,7 +178,7 @@ const UserPage = () => {
           <Card>
             <Card.Body>
               <h4>Edit Profile</h4>
-              <Form onSubmit={handleSubmit} className="mt-3">
+              <Form onSubmit={handleSubmit} className="mt-3 u-form">
                 <Form.Group className="mb-3" controlId="formName">
                   <Form.Label>Name</Form.Label>
                   <Form.Control
@@ -235,7 +228,12 @@ const UserPage = () => {
                   </InputGroup>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" disabled={loading}>
+                <Button
+                  variant="primary"
+                  className="u-btn-primary"
+                  type="submit"
+                  disabled={loading}
+                >
                   {loading ? "Saving..." : "Save changes"}
                 </Button>
               </Form>

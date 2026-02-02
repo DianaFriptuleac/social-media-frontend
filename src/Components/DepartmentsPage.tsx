@@ -27,6 +27,7 @@ import { isFetchBaseQueryError } from "../utils/rtkQuery";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import CreateDepartmentModal from "./CreateDepartmentModal";
 import EditDepartmentModal from "./EditDepartmentModal";
+import "../css/Departments.css";
 
 const DepartmentsPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -106,21 +107,25 @@ const DepartmentsPage: React.FC = () => {
   }, [updateDepartmentError, deleteDepartmentError]);
 
   return (
-    <Container className="py-4">
+    <Container className="py-4 dept-page">
       <Row>
         {/* COLSINISTRA – LISTA DEPARTMENTS */}
         <Col md={4}>
-          <Card>
-            <Card.Header className="fw-bold d-flex justify-content-between align-items-center">
+          <Card className="dept-card">
+            <Card.Header className="dept-card-header fw-bold d-flex justify-content-between align-items-center">
               <span>Departments</span>
 
               {isAdmin && (
-                <Button size="sm" onClick={() => setShowCreateDept(true)}>
+                <Button
+                  size="sm"
+                  className="dept-btn-primary"
+                  onClick={() => setShowCreateDept(true)}
+                >
                   Add New
                 </Button>
               )}
             </Card.Header>
-            <Card.Body style={{ maxHeight: "80vh", overflowY: "auto" }}>
+            <Card.Body className="dept-list">
               {loadingDepartments && <p>Loading...</p>}
 
               {!loadingDepartments && departments?.length === 0 && (
@@ -130,15 +135,19 @@ const DepartmentsPage: React.FC = () => {
               {departments?.map((dept) => (
                 <Card
                   key={dept.id}
-                  className={`mb-2 ${
-                    dept.id === selectedDepartmentId ? "border-primary" : ""
+                  className={`mb-2 dept-item ${
+                    dept.id === selectedDepartmentId
+                      ? "dept-item--selected"
+                      : ""
                   }`}
                   style={{ cursor: "pointer" }}
                   onClick={() => dispatch(setSelectedDepartment(dept.id))}
                 >
                   <Card.Body>
-                    <h6 className="fw-bold mb-1">{dept.name}</h6>
-                    <p className="text-muted small mb-0">{dept.description}</p>
+                    <h6 className="fw-bold mb-1 dept-item-name">{dept.name}</h6>
+                    <p className="small mb-0 dept-item-desc">
+                      {dept.description}
+                    </p>
                   </Card.Body>
                 </Card>
               ))}
@@ -162,8 +171,10 @@ const DepartmentsPage: React.FC = () => {
 
         {/* COL DESTRA – DETTAGLIO */}
         <Col md={8}>
-          <Card>
-            <Card.Header className="fw-bold">Department Detail</Card.Header>
+          <Card className="dept-card">
+            <Card.Header className="dept-card-header fw-bold">
+              Department Detail
+            </Card.Header>
             <Card.Body>
               {!selectedDepartmentId && <p>Select a department...</p>}
 
@@ -182,9 +193,10 @@ const DepartmentsPage: React.FC = () => {
                   </p>
 
                   {isAdmin && (
-                    <div className="mb-3 d-flex gap-2">
+                    <div className="mb-3 dept-actions">
                       <Button
                         variant="secondary"
+                        className="dept-btn-secondary"
                         disabled={!selectedDepartment}
                         onClick={() => setShowEditDepartment(true)}
                       >
@@ -192,6 +204,7 @@ const DepartmentsPage: React.FC = () => {
                       </Button>
                       <Button
                         variant="primary"
+                        className="dept-btn-primary"
                         disabled={!selectedDepartmentId}
                         onClick={() => setShowAddUserModal(true)}
                       >
@@ -230,7 +243,13 @@ const DepartmentsPage: React.FC = () => {
                   )}
 
                   {/* TAB. UTENTI */}
-                  <Table striped bordered hover size="sm">
+                  <Table
+                    striped
+                    bordered
+                    hover
+                    size="sm"
+                    className="dept-table"
+                  >
                     <thead>
                       <tr>
                         <th>Name</th>
@@ -259,7 +278,7 @@ const DepartmentsPage: React.FC = () => {
                               <Badge
                                 bg="info"
                                 text="dark"
-                                className="me-1"
+                                className="me-1 dept-role-badge"
                                 key={role}
                               >
                                 {role}
@@ -299,7 +318,7 @@ const DepartmentsPage: React.FC = () => {
 
                   {/* PAGINATION */}
                   {selectedDepartment.users.length > pageSize && (
-                    <Pagination>
+                    <Pagination className="dept-pagination">
                       <Pagination.Prev
                         disabled={page === 1}
                         onClick={() => dispatch(setPage(page - 1))}

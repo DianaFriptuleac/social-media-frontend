@@ -12,6 +12,8 @@ import { useGetAllUsersQuery } from "../api/userApi";
 import { useAssignRolesMutation } from "../api/departmentApi";
 import type { UserListItem } from "../types/profile";
 import RolePicker from "./RolePicker";
+import "../css/Departments.css";
+
 
 interface AddUserToDepartmentModalProps {
   show: boolean;
@@ -144,7 +146,7 @@ const AddUserToDepartmentModal = ({
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered size="lg">
+    <Modal show={show} onHide={handleClose} centered size="lg" className="dept-modal">
       <Modal.Header closeButton>
         <Modal.Title>Add user to department</Modal.Title>
       </Modal.Header>
@@ -262,6 +264,7 @@ const AddUserToDepartmentModal = ({
             </Button>
             <Button
               variant="primary"
+              className="dept-btn-primary"
               onClick={handleContinue}
               disabled={!selectedUser}
             >
@@ -270,11 +273,12 @@ const AddUserToDepartmentModal = ({
           </>
         ) : (
           <>
-            <Button variant="secondary" onClick={() => setShowConfirm(false)}>
+            <Button variant="secondary" className="dept-btn-secondary" onClick={() => setShowConfirm(false)}>
               No, go back
             </Button>
             <Button
               variant="primary"
+              className="dept-btn-primary"
               onClick={handleConfirm}
               disabled={isSaving}
             >
