@@ -12,6 +12,8 @@ import {
 } from "react-bootstrap";
 import UserRoleBadgeModal from "./UserRoleBadgeModal";
 import "../css/Users.css";
+import { useGetPostsByUserQuery } from "../api/postApi";
+import PostCard from "./Posts/PostCard";
 
 const SingleUserDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +37,17 @@ const SingleUserDetail = () => {
       </Container>
     );
   }
+  const {
+    data: postsPage,
+    isLoading: postsLoading,
+    isError: postsError,
+    refetch: refetchPosts,
+  } = useGetPostsByUserQuery(
+    { userId: id!, page: 0, size: 8, sortBy: "createdAt" },
+    { skip: !id },
+  );
+  const canEditPosts = currentUser?.id === id;
+
   return (
     <Container className="mt-4 user-detail-page">
       <Row className="mb-3">
@@ -104,6 +117,47 @@ const SingleUserDetail = () => {
                 <div>
                   <strong>Email:</strong> {user.email}
                 </div>
+              </Card.Body>
+            </Card>
+            <Card className="u-card mt-4">
+              <Card.Body>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h4 className="mb-0">Posts</h4>
+
+                  {postsError && (
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => refetchPosts()}
+                    >
+                      Retry
+                    </Button>
+                  )}
+                </div>
+
+                {postsLoading && (
+                  <div className="text-center py-3">
+                    <Spinner animation="border" />
+                  </div>
+                )}
+
+                {postsError && (
+                  <Alert variant="danger" className="mb-3">
+                    Error loading posts.
+                  </Alert>
+                )}
+
+                {!postsLoading &&
+                  postsPage &&
+                  postsPage.content.length === 0 && (
+                    <Alert variant="light" className="mb-0">
+                      No posts yet.
+                    </Alert>
+                  )}
+
+                {postsPage?.content.map((p) => (
+                  <PostCard key={p.id} post={p} canEdit={!!canEditPosts} />
+                ))}
               </Card.Body>
             </Card>
           </Col>

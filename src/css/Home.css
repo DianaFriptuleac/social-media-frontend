@@ -1,7 +1,7 @@
 .home-hero{
   position: relative;
   overflow: hidden;
-  min-height: 300px;
+  min-height: 200px;
   box-shadow: var(--shadow);
   background: url("/public/images/new-york-city.jpg") center/cover no-repeat;
 }

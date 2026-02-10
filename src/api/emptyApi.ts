@@ -36,7 +36,7 @@ const emptyApi = createApi({
  * - elenco dei tipi di dati cache-izzati
  * - usati da providesTags / invalidatesTags
  */
-    tagTypes: ['Departments', 'Department', 'Users'],
+    tagTypes: ['Departments', 'Department', 'Users', 'Posts', 'UserPosts'],
 
     endpoints: () => ({}),   // nessun endpoint qui, li inietto dopo
 });

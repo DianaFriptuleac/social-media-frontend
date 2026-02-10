@@ -22,6 +22,9 @@ import {
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import UserRoleBadgeModal from "./UserRoleBadgeModal";
 import "../css/Users.css";
+import { useGetPostsByUserQuery } from "../api/postApi";
+import PostCard from "./Posts/PostCard";
+import CreatePostBox from "./Posts/CreatePostBox";
 
 const UserPage = () => {
   useGetMyProfileQuery();
@@ -91,6 +94,19 @@ const UserPage = () => {
       console.error("Error uploading avatar:", err);
     }
   };
+
+  // Posts
+  const myUserId = currentUser?.id;
+
+  const {
+    data: myPostsPage,
+    isLoading: myPostsLoading,
+    isError: myPostsError,
+    refetch: refetchMyPosts,
+  } = useGetPostsByUserQuery(
+    { userId: myUserId!, page: 0, size: 8, sortBy: "createdAt" },
+    { skip: !myUserId },
+  );
 
   return (
     <Container className="mt-4 user-profile-page">
@@ -240,6 +256,53 @@ const UserPage = () => {
             </Card.Body>
           </Card>
         </Col>
+        {/*Posts */}
+
+        {/* CREATE POST */}
+        <CreatePostBox />
+
+        {/* MY POSTS */}
+        <Card className="u-card mb-4">
+          <Card.Body>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h4 className="mb-0">My posts</h4>
+
+              {myPostsError && (
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={() => refetchMyPosts()}
+                >
+                  Retry
+                </Button>
+              )}
+            </div>
+
+            {myPostsLoading && (
+              <div className="text-center py-3">
+                <Spinner animation="border" />
+              </div>
+            )}
+
+            {myPostsError && (
+              <Alert variant="danger" className="mb-3">
+                Error loading posts.
+              </Alert>
+            )}
+
+            {!myPostsLoading &&
+              myPostsPage &&
+              myPostsPage.content.length === 0 && (
+                <Alert variant="light" className="mb-0">
+                  No posts yet.
+                </Alert>
+              )}
+
+            {myPostsPage?.content.map((p) => (
+              <PostCard key={p.id} post={p} canEdit={true} />
+            ))}
+          </Card.Body>
+        </Card>
       </Row>
     </Container>
   );
