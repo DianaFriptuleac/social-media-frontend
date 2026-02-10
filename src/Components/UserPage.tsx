@@ -256,53 +256,57 @@ const UserPage = () => {
             </Card.Body>
           </Card>
         </Col>
+
         {/*Posts */}
+        <Row className="d-flex justify-content-center">
+        <Col xs={12} md={8} lg={8}>
+          {/* CREATE POST */}
+          <CreatePostBox />
 
-        {/* CREATE POST */}
-        <CreatePostBox />
+          {/* MY POSTS */}
+          <Card className="u-card mb-4">
+            <Card.Body>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h4 className="mb-0">My posts</h4>
 
-        {/* MY POSTS */}
-        <Card className="u-card mb-4">
-          <Card.Body>
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4 className="mb-0">My posts</h4>
+                {myPostsError && (
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    onClick={() => refetchMyPosts()}
+                  >
+                    Retry
+                  </Button>
+                )}
+              </div>
+
+              {myPostsLoading && (
+                <div className="text-center py-3">
+                  <Spinner animation="border" />
+                </div>
+              )}
 
               {myPostsError && (
-                <Button
-                  variant="outline-secondary"
-                  size="sm"
-                  onClick={() => refetchMyPosts()}
-                >
-                  Retry
-                </Button>
-              )}
-            </div>
-
-            {myPostsLoading && (
-              <div className="text-center py-3">
-                <Spinner animation="border" />
-              </div>
-            )}
-
-            {myPostsError && (
-              <Alert variant="danger" className="mb-3">
-                Error loading posts.
-              </Alert>
-            )}
-
-            {!myPostsLoading &&
-              myPostsPage &&
-              myPostsPage.content.length === 0 && (
-                <Alert variant="light" className="mb-0">
-                  No posts yet.
+                <Alert variant="danger" className="mb-3">
+                  Error loading posts.
                 </Alert>
               )}
 
-            {myPostsPage?.content.map((p) => (
-              <PostCard key={p.id} post={p} canEdit={true} />
-            ))}
-          </Card.Body>
-        </Card>
+              {!myPostsLoading &&
+                myPostsPage &&
+                myPostsPage.content.length === 0 && (
+                  <Alert variant="light" className="mb-0">
+                    No posts yet.
+                  </Alert>
+                )}
+
+              {myPostsPage?.content.map((p) => (
+                <PostCard key={p.id} post={p} canEdit={true} />
+              ))}
+            </Card.Body>
+          </Card>
+        </Col>
+        </Row>
       </Row>
     </Container>
   );

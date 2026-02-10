@@ -4,7 +4,9 @@ import {
   useUpdatePostWithMediaMutation,
 } from "../../api/postApi";
 import type { PostResponseDTO } from "../../types/post";
-import { Card, Form, ListGroup, Button, Spinner } from "react-bootstrap";
+import { Card, Form, Button, Spinner, Modal } from "react-bootstrap";
+import ExpandableText from "./ExpandableText";
+import PostMediaCarousel from "./PostMediaCarousel";
 
 const PostCard = ({
   post,
@@ -18,6 +20,7 @@ const PostCard = ({
     useUpdatePostWithMediaMutation();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [title, setTitle] = useState(post.title ?? "");
   const [description, setDescription] = useState(post.description ?? "");
   const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
@@ -36,15 +39,20 @@ const PostCard = ({
   };
 
   const onDelete = async () => {
-    await deletePost({ postId: post.id, authorId: post.author.id }).unwrap();
+    try {
+      await deletePost({ postId: post.id, authorId: post.author.id }).unwrap();
+      setShowDelete(false);
+    } catch (e) {
+      console.error(e);
+    }
   };
   return (
-    <Card className="mb-3">
+    <Card className="post-card mb-3">
       <Card.Body>
         {!isEditing ? (
           <>
             <Card.Title>{post.title}</Card.Title>
-            <Card.Text>{post.description}</Card.Text>
+            <ExpandableText text={post.description} lines={2} />
           </>
         ) : (
           <>
@@ -69,23 +77,15 @@ const PostCard = ({
 
         {/* MEDIA */}
         {post.media?.length ? (
-          <ListGroup variant="flush" className="mb-3">
-            {post.media.map((m) => (
-              <ListGroup.Item key={m.id}>
-                <img
-                  src={m.url}
-                  alt="post media"
-                  style={{
-                    width: "100%",
-                    maxHeight: "400px",
-                    objectFit: "cover",
-                    borderRadius: "6px",
-                  }}
-                />
+          <>
+            <PostMediaCarousel media={post.media} />
 
-                {isEditing && (
+            {isEditing && (
+              <div className="mt-2">
+                {post.media.map((m) => (
                   <Form.Check
-                    className="mt-2"
+                    key={m.id}
+                    className="mb-1"
                     type="checkbox"
                     label="Remove"
                     checked={mediaToRemove.includes(m.id)}
@@ -97,10 +97,10 @@ const PostCard = ({
                       );
                     }}
                   />
-                )}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+                ))}
+              </div>
+            )}
+          </>
         ) : null}
 
         {/* ADD FILES */}
@@ -153,7 +153,7 @@ const PostCard = ({
             <Button
               size="sm"
               variant="outline-danger"
-              onClick={onDelete}
+              onClick={() => setShowDelete(true)}
               disabled={deleting}
             >
               {deleting ? (
@@ -168,6 +168,37 @@ const PostCard = ({
           </div>
         )}
       </Card.Body>
+      <Modal show={showDelete} onHide={() => setShowDelete(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete post</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          Are you sure you want to delete this post? This action cannot be
+          undone.
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowDelete(false)}
+            disabled={deleting}
+          >
+            Cancel
+          </Button>
+
+          <Button variant="danger" onClick={onDelete} disabled={deleting}>
+            {deleting ? (
+              <>
+                <Spinner size="sm" className="me-2" />
+                Deleting...
+              </>
+            ) : (
+              "Yes, delete"
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Card>
   );
 };

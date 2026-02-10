@@ -1,0 +1,145 @@
+/* Create Post */
+.createpost-card {
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.createpost-trigger {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.createpost-trigger-input {
+  flex: 1;
+  border-radius: 999px !important;
+  background: rgba(0,0,0,.03);
+  border: 1px solid rgba(0,0,0,.08) !important;
+  padding: 10px 14px !important;
+  cursor: pointer;
+}
+
+.createpost-trigger-input:hover {
+  background: rgba(0,0,0,.05);
+}
+
+.createpost-actions {
+  display: flex;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,.08);
+  margin-top: 12px;
+}
+
+.createpost-action-btn {
+  flex: 1;
+  border-radius: 10px;
+}
+
+/* Modal */
+.createpost-modal .modal-content {
+  border-radius: 16px;
+}
+
+.createpost-textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+/* Post card */
+.post-card {
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.post-media {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.post-meta {
+  font-size: 12px;
+  color: rgba(0,0,0,.55);
+}
+/*User avatar for create post*/
+.createpost-avatar,
+.createpost-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.createpost-avatar-placeholder {
+  background: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #555;
+}
+
+/*TESTO E CAROUSEL POST*/
+/* testo post */
+.post-text {
+  white-space: pre-wrap;
+  line-height: 1.35;
+  font-size: 14px;
+}
+
+.post-text-toggle {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin-top: 4px;
+  color: rgba(0,0,0,.6);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.post-text-toggle:hover {
+  text-decoration: underline;
+}
+
+/* clamp 2 righe */
+.post-text-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.post-text-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* media + carosello */
+.post-media-wrap {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+.post-media {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+/* frecce carousel */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 12%;
+}

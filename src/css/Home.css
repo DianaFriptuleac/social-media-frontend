@@ -1,7 +1,15 @@
+/* layout generale */
+.home-wrap{
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-bottom: 24px;
+}
+
+/* HERO */
 .home-hero{
   position: relative;
   overflow: hidden;
-  min-height: 200px;
+  min-height: 170px;
   box-shadow: var(--shadow);
   background: url("/public/images/new-york-city.jpg") center/cover no-repeat;
 }
@@ -36,18 +44,56 @@
   color: rgba(255,255,255,.85);
   max-width: 720px;
 }
+/* cards laterali */
+.home-side-card{
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(0,0,0,.06);
+  position: sticky;
+  top: 92px; /* sotto navbar */
+}
 
-.profile-card{
-  border-radius: var(--radius);
+.home-side-title{
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+/* colonna centrale*/
+.home-center{
+  max-width: 640px;
+}
+
+/* feed container */
+.home-feed-card{
+  border-radius: 14px;
   box-shadow: var(--shadow);
   border: 1px solid rgba(0,0,0,.06);
 }
 
-.avatar-lg{
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid rgba(255,255,255,.75);
-  box-shadow: 0 8px 16px rgba(0,0,0,.20);
+.home-retry-link{
+  font-size: 13px;
+  color: #0a66c2;
+  cursor: pointer;
+}
+
+.home-retry-link:hover{
+  text-decoration: underline;
+}
+
+/* eventi placeholder */
+.home-event{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+  background: rgba(0,0,0,.02);
+}
+
+.home-event-title{
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.home-event-sub{
+  font-size: 12px;
+  color: rgba(0,0,0,.55);
 }

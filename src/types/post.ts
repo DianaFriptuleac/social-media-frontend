@@ -10,6 +10,21 @@ export interface PostUpdateDTO {
     externalUrl?: string;
 }
 
+export type PostMediaType = "IMAGE" | "VIDEO" | "FILE";
+
+export interface PostMediaDTO {
+    id: string;
+    url: string;
+    type: PostMediaType;
+}
+
+
+export interface PostAuthorDTO {
+    id: string;
+    name: string;
+    surname: string;
+    avatar?: string;
+}
 export interface PostResponseDTO {
     id: string;
     title?: string;
@@ -17,18 +32,9 @@ export interface PostResponseDTO {
     externalUrl?: string;
     createdAt: string;
 
-    author: {
-        id: string;
-        name: string;
-        surname: string;
-        avatar?: string;
-    }
+    author: PostAuthorDTO;
 
-    // media come lista dal BE
-    media?: Array<{
-        id: string;
-        url: string;
-        type: string;  // "IMAGE" | "VIDEO"
-    }>;
+    media?: PostMediaDTO[];
+    
     isMine?: boolean;
 }
