@@ -7,6 +7,7 @@ import type { PostResponseDTO } from "../../types/post";
 import { Card, Form, Button, Spinner, Modal } from "react-bootstrap";
 import ExpandableText from "./ExpandableText";
 import PostMediaCarousel from "./PostMediaCarousel";
+import SharePostModal from "./SharePostModal";
 
 const PostCard = ({
   post,
@@ -25,6 +26,7 @@ const PostCard = ({
   const [description, setDescription] = useState(post.description ?? "");
   const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
   const [mediaToRemove, setMediaToRemove] = useState<string[]>([]);
+  const [showShare, setShowShare] = useState(false);
 
   const onSave = async () => {
     await updatePost({
@@ -117,56 +119,74 @@ const PostCard = ({
         )}
 
         {/* ACTIONS */}
-        {canEdit && (
-          <div className="d-flex gap-2">
-            {!isEditing ? (
-              <Button
-                variant="outline-primary"
-                size="sm"
-                onClick={() => setIsEditing(true)}
-              >
-                Edit
-              </Button>
-            ) : (
-              <>
-                <Button size="sm" onClick={onSave} disabled={updating}>
-                  {updating ? (
-                    <>
-                      <Spinner size="sm" className="me-2" />
-                      Saving...
-                    </>
-                  ) : (
-                    "Save"
-                  )}
-                </Button>
-
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => setIsEditing(false)}
-                >
-                  Cancel
-                </Button>
-              </>
-            )}
-
+        <div className="post-actions d-flex justify-content-between align-items-center mt-2">
+          {/* LEFT SIDE - SHARE */}
+          <div>
             <Button
               size="sm"
-              variant="outline-danger"
-              onClick={() => setShowDelete(true)}
-              disabled={deleting}
+              variant="outline-secondary"
+              onClick={() => setShowShare(true)}
             >
-              {deleting ? (
-                <>
-                  <Spinner size="sm" className="me-2" />
-                  Deleting...
-                </>
-              ) : (
-                "Delete"
-              )}
+              Share
             </Button>
           </div>
-        )}
+          {/* RIGHT SIDE - EDIT / DELETE */}
+          {canEdit && (
+            <div className="d-flex gap-2">
+              {!isEditing ? (
+                <Button
+                  variant="outline-primary"
+                  size="sm"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit
+                </Button>
+              ) : (
+                <>
+                  <Button size="sm" onClick={onSave} disabled={updating}>
+                    {updating ? (
+                      <>
+                        <Spinner size="sm" className="me-2" />
+                        Saving...
+                      </>
+                    ) : (
+                      "Save"
+                    )}
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => setIsEditing(false)}
+                  >
+                    Cancel
+                  </Button>
+                </>
+              )}
+
+              <Button
+                size="sm"
+                variant="outline-danger"
+                onClick={() => setShowDelete(true)}
+                disabled={deleting}
+              >
+                {deleting ? (
+                  <>
+                    <Spinner size="sm" className="me-2" />
+                    Deleting...
+                  </>
+                ) : (
+                  "Delete"
+                )}
+              </Button>
+            </div>
+          )}
+        </div>
+        <SharePostModal
+          show={showShare}
+          onHide={() => setShowShare(false)}
+          postId={post.id}
+        />
       </Card.Body>
       <Modal show={showDelete} onHide={() => setShowDelete(false)} centered>
         <Modal.Header closeButton>

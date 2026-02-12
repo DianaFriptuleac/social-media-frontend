@@ -40,6 +40,8 @@
 /* Modal */
 .createpost-modal .modal-content {
   border-radius: 16px;
+  background: var(--card);
+  box-shadow: var(--shadow);
 }
 
 .createpost-textarea {
@@ -143,3 +145,135 @@
 .carousel-control-next {
   width: 12%;
 }
+
+/*btn di post -> Edit, Delete, Share*/
+.post-actions {
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+
+.post-actions button {
+  border-radius: 8px;
+}
+/* ---------------------Inbox Page------------------------------- */
+.inbox-page{
+  max-width: 720px;
+}
+
+/* Header */
+.inbox-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  margin-top: 40px;
+}
+
+.inbox-refresh{
+  border-radius: 10px;
+}
+
+/* Empty */
+.inbox-empty{
+  color: var(--muted);
+  padding: 14px 2px;
+}
+
+/* List spacing */
+.inbox-list{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Card styling */
+.inbox-card{
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.inbox-card--unread{
+  border-color: rgba(13,110,253,.25);
+}
+
+/* Top row */
+.inbox-card-top{
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.inbox-sender{
+  font-weight: 700;
+}
+
+.inbox-date{
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Badge NEW */
+.inbox-badge{
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(13,110,253,.12);
+  color: #0d6efd;
+  border: 1px solid rgba(13,110,253,.25);
+}
+
+/* Message */
+.inbox-message{
+  margin-top: 10px;
+  white-space: pre-wrap;
+  line-height: 1.35;
+  font-size: 14px;
+  color: var(--text);
+  background: rgba(0,0,0,.03);
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+/* Actions*/
+.inbox-actions{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.inbox-actions .btn{
+  border-radius: 10px;
+}
+.share-user-list{
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.share-user-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s ease, border .15s ease;
+}
+
+.share-user-row:hover{
+  background: rgba(0,0,0,.04);
+}
+
+.share-user-row--checked{
+  background: rgba(13,110,253,.08);
+  border: 1px solid rgba(13,110,253,.2);
+}
+
+

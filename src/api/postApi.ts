@@ -1,5 +1,6 @@
 import type { PageResponse } from "../types/page";
 import type { PostCreateDTO, PostResponseDTO, PostUpdateDTO } from "../types/post";
+import type { SharePostDTO, PostShareResponseDTO } from "../types/postShare";
 import emptyApi from "./emptyApi";
 
 type FindAllArgs = {
@@ -144,6 +145,45 @@ export const postsApi = emptyApi.injectEndpoints({
                 ...(arg.authorId ? [{ type: "UserPosts" as const, id: arg.authorId }] : []),
             ]
         }),
+
+        //-----------------------  Share post -----------------------
+        sharePost: build.mutation<void, { postId: string, body: SharePostDTO }>({
+            query: ({ postId, body }) => ({
+                url: `/posts/${postId}/share`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: [{ type: "PostInbox" as const, id: "LIST" }],
+        }),
+
+        //-----------------------  get my inbox -----------------------
+        getMyInbox: build.query<PageResponse<PostShareResponseDTO>, { page?: number; size?: number } | void>({
+            query: (args) => {
+                const { page = 0, size = 20 } = args ?? {};
+                return {
+                    url: `/me/inbox`,
+                    method: "GET",
+                    params: { page, size },
+                };
+            },
+            providesTags: (result) =>
+                result
+                    ? [
+                        { type: "PostInbox" as const, id: "LIST" },
+                        ...result.content.map((x) => ({ type: "PostInbox" as const, id: x.id })),
+                    ]
+                    : [{ type: "PostInbox" as const, id: "LIST" }],
+        }),
+
+        //-----------------------  get post by id -----------------------
+        getPostById: build.query<PostResponseDTO, { postId: string }>({
+            query: ({ postId }) => ({
+                url: `/posts/${postId}`,
+                method: "GET",
+            }),
+            providesTags: (_res, _err, arg) => [{ type: "Posts" as const, id: arg.postId }],
+        }),
+
     }),
     // non sovrascrivere endpoint se già iniettati altrove
     overrideExisting: false,
@@ -155,4 +195,7 @@ export const {
     useGetPostsByUserQuery,
     useUpdatePostWithMediaMutation,
     useDeletePostMutation,
+    useSharePostMutation,
+    useGetMyInboxQuery,
+    useGetPostByIdQuery,
 } = postsApi;

@@ -52,36 +52,6 @@ const HomePage = () => {
           </div>
         </Col>
       </Row>
-
-      {/* PROFILE CARD */}
-      {/* <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}>
-          <Card className="profile-card">
-            <Card.Body>
-              {user ? (
-                <>
-                  <Card.Title>
-                    Welcome, {user.name} {user.surname}
-                  </Card.Title>
-                  {user.avatar && (
-                    <div className="mt-3 text-center">
-                      <img
-                        src={user.avatar}
-                        alt="avatar"
-                        className="avatar-lg"
-                      />
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Card.Text>
-                  You are not logged in. Please login to see your profile.
-                </Card.Text>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>*/}
       {/* LAYOUT */}
       <Row className="justify-content-center g-3">
         {/* LEFT */}
