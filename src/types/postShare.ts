@@ -23,3 +23,20 @@ export interface PostShareResponseDTO {
     createdAt: string;
     read: boolean;
 }
+
+// Posts comments
+export interface CommentCreateDTO{
+    text: string;
+    parentCommentId?:UUID | null;
+}
+
+export interface CommentResponseDTO {
+id: UUID;
+postId: UUID;
+author: UserPublicDTO;
+text: string;
+parentCommentId?: UUID | null;
+replies: CommentResponseDTO[];
+createdAt: string;
+updatedAt: string;
+}

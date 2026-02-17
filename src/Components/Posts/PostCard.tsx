@@ -8,6 +8,8 @@ import { Card, Form, Button, Spinner, Modal } from "react-bootstrap";
 import ExpandableText from "./ExpandableText";
 import PostMediaCarousel from "./PostMediaCarousel";
 import SharePostModal from "./SharePostModal";
+import CommentsSection from "./CommentsSection";
+import "../../css/Posts.css";
 
 const PostCard = ({
   post,
@@ -27,6 +29,8 @@ const PostCard = ({
   const [filesToAdd, setFilesToAdd] = useState<File[]>([]);
   const [mediaToRemove, setMediaToRemove] = useState<string[]>([]);
   const [showShare, setShowShare] = useState(false);
+
+  const [showComments, setShowComments] = useState(false);
 
   const onSave = async () => {
     await updatePost({
@@ -129,6 +133,13 @@ const PostCard = ({
             >
               Share
             </Button>
+            <Button
+              size="sm"
+              variant={showComments ? "secondary" : "outline-secondary"}
+              onClick={() => setShowComments((v) => !v)}
+            >
+              {showComments ? "Hide comments" : "Comments"}
+            </Button>
           </div>
           {/* RIGHT SIDE - EDIT / DELETE */}
           {canEdit && (
@@ -182,6 +193,9 @@ const PostCard = ({
             </div>
           )}
         </div>
+        {showComments && (
+  <CommentsSection postId={post.id} postAuthorId={post.author.id} />
+)}
         <SharePostModal
           show={showShare}
           onHide={() => setShowShare(false)}

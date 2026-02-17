@@ -1,6 +1,6 @@
 import type { PageResponse } from "../types/page";
 import type { PostCreateDTO, PostResponseDTO, PostUpdateDTO } from "../types/post";
-import type { SharePostDTO, PostShareResponseDTO } from "../types/postShare";
+import { type SharePostDTO, type PostShareResponseDTO, type CommentResponseDTO, type CommentCreateDTO } from "../types/postShare";
 import emptyApi from "./emptyApi";
 
 type FindAllArgs = {
@@ -184,6 +184,34 @@ export const postsApi = emptyApi.injectEndpoints({
             providesTags: (_res, _err, arg) => [{ type: "Posts" as const, id: arg.postId }],
         }),
 
+        //-------------------------POSTS COMMENTS ---------------------------------------
+        //-------------------------create comment -----------------
+        createComment: build.mutation<CommentResponseDTO, { postId: string; body: CommentCreateDTO }>({
+            query: ({ postId, body }) => ({
+                url: `/posts/${postId}/comments`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: (_res, _err, arg) => [{ type: "Comments" as const, id: arg.postId }],
+        }),
+
+        //-------------------------get comments-----------------
+        getComments: build.query<CommentResponseDTO[], { postId: string }>({
+            query: ({ postId }) => ({
+                url: `/posts/${postId}/comments`,
+                method: "GET"
+            }),
+            providesTags: (_res, _err, arg) => [{ type: "Comments" as const, id: arg.postId }],
+        }),
+        //-------------------------delete comment -----------------
+        deleteComment: build.mutation<void, { commentId: string; postId: string }>({
+            query: ({ commentId }) => ({
+                url: `/comments/${commentId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: (_res, _err, arg) => [{ type: "Comments" as const, id: arg.postId }],
+        }),
+
     }),
     // non sovrascrivere endpoint se già iniettati altrove
     overrideExisting: false,
@@ -198,4 +226,7 @@ export const {
     useSharePostMutation,
     useGetMyInboxQuery,
     useGetPostByIdQuery,
+    useCreateCommentMutation,
+    useGetCommentsQuery,
+    useDeleteCommentMutation,
 } = postsApi;

@@ -275,5 +275,24 @@
   background: rgba(13,110,253,.08);
   border: 1px solid rgba(13,110,253,.2);
 }
+/* -------- Comments: Reply box (compact) -------- */
+.comment-replybox{
+  background: rgba(0,0,0,.03);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.comment-replybox-textarea{
+  border-radius: 12px !important;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.10) !important;
+  resize: vertical;
+  min-height: 64px;
+}
+
+.comment-replybox-actions .btn{
+  border-radius: 10px;
+}
 
 
