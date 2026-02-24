@@ -2,7 +2,7 @@
 .createpost-card {
   border-radius: 14px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(0,0,0,.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .createpost-trigger {
@@ -14,21 +14,21 @@
 .createpost-trigger-input {
   flex: 1;
   border-radius: 999px !important;
-  background: rgba(0,0,0,.03);
-  border: 1px solid rgba(0,0,0,.08) !important;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
   padding: 10px 14px !important;
   cursor: pointer;
 }
 
 .createpost-trigger-input:hover {
-  background: rgba(0,0,0,.05);
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .createpost-actions {
   display: flex;
   gap: 10px;
   padding-top: 10px;
-  border-top: 1px solid rgba(0,0,0,.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   margin-top: 12px;
 }
 
@@ -53,7 +53,7 @@
 .post-card {
   border-radius: 14px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(0,0,0,.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .post-media {
@@ -65,7 +65,7 @@
 
 .post-meta {
   font-size: 12px;
-  color: rgba(0,0,0,.55);
+  color: rgba(0, 0, 0, 0.55);
 }
 /*User avatar for create post*/
 .createpost-avatar,
@@ -99,7 +99,7 @@
   background: transparent;
   padding: 0;
   margin-top: 4px;
-  color: rgba(0,0,0,.6);
+  color: rgba(0, 0, 0, 0.6);
   font-weight: 600;
   font-size: 13px;
   cursor: pointer;
@@ -130,7 +130,7 @@
   margin-bottom: 10px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid rgba(0,0,0,.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .post-media {
@@ -149,19 +149,19 @@
 /*btn di post -> Edit, Delete, Share*/
 .post-actions {
   padding-top: 10px;
-  border-top: 1px solid rgba(0,0,0,.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .post-actions button {
   border-radius: 8px;
 }
 /* ---------------------Inbox Page------------------------------- */
-.inbox-page{
+.inbox-page {
   max-width: 720px;
 }
 
 /* Header */
-.inbox-header{
+.inbox-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -169,54 +169,54 @@
   margin-top: 40px;
 }
 
-.inbox-refresh{
+.inbox-refresh {
   border-radius: 10px;
 }
 
 /* Empty */
-.inbox-empty{
+.inbox-empty {
   color: var(--muted);
   padding: 14px 2px;
 }
 
 /* List spacing */
-.inbox-list{
+.inbox-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 /* Card styling */
-.inbox-card{
+.inbox-card {
   background: var(--card);
-  border: 1px solid rgba(0,0,0,.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 14px;
   box-shadow: var(--shadow);
 }
 
-.inbox-card--unread{
-  border-color: rgba(13,110,253,.25);
+.inbox-card--unread {
+  border-color: rgba(13, 110, 253, 0.25);
 }
 
 /* Top row */
-.inbox-card-top{
+.inbox-card-top {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   align-items: flex-start;
 }
 
-.inbox-sender{
+.inbox-sender {
   font-weight: 700;
 }
 
-.inbox-date{
+.inbox-date {
   font-size: 13px;
   color: var(--muted);
 }
 
 /* Badge NEW */
-.inbox-badge{
+.inbox-badge {
   display: inline-flex;
   align-items: center;
   height: 22px;
@@ -224,75 +224,136 @@
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
-  background: rgba(13,110,253,.12);
+  background: rgba(13, 110, 253, 0.12);
   color: #0d6efd;
-  border: 1px solid rgba(13,110,253,.25);
+  border: 1px solid rgba(13, 110, 253, 0.25);
 }
 
 /* Message */
-.inbox-message{
+.inbox-message {
   margin-top: 10px;
   white-space: pre-wrap;
   line-height: 1.35;
   font-size: 14px;
   color: var(--text);
-  background: rgba(0,0,0,.03);
-  border: 1px solid rgba(0,0,0,.06);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 12px;
   padding: 10px 12px;
 }
 
 /* Actions*/
-.inbox-actions{
+.inbox-actions {
   display: flex;
   justify-content: flex-end;
   margin-top: 10px;
 }
 
-.inbox-actions .btn{
+.inbox-actions .btn {
   border-radius: 10px;
 }
-.share-user-list{
+.share-user-list {
   max-height: 240px;
   overflow-y: auto;
 }
 
-.share-user-row{
+.share-user-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 8px 10px;
   border-radius: 10px;
   cursor: pointer;
-  transition: background .15s ease, border .15s ease;
+  transition:
+    background 0.15s ease,
+    border 0.15s ease;
 }
 
-.share-user-row:hover{
-  background: rgba(0,0,0,.04);
+.share-user-row:hover {
+  background: rgba(0, 0, 0, 0.04);
 }
 
-.share-user-row--checked{
-  background: rgba(13,110,253,.08);
-  border: 1px solid rgba(13,110,253,.2);
+.share-user-row--checked {
+  background: rgba(13, 110, 253, 0.08);
+  border: 1px solid rgba(13, 110, 253, 0.2);
 }
 /* -------- Comments: Reply box (compact) -------- */
-.comment-replybox{
-  background: rgba(0,0,0,.03);
-  border: 1px solid rgba(0,0,0,.08);
+.comment-replybox {
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
   padding: 10px 12px;
 }
 
-.comment-replybox-textarea{
+.comment-replybox-textarea {
   border-radius: 12px !important;
   background: #fff;
-  border: 1px solid rgba(0,0,0,.10) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   resize: vertical;
   min-height: 64px;
 }
 
-.comment-replybox-actions .btn{
+.comment-replybox-actions .btn {
   border-radius: 10px;
 }
+/*Post btn*/
+.post-actions-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
 
+.post-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid #dee2e6;
+  background: #f8f9fa; 
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  color: #495057; /* colore testo + icona */
+}
 
+.post-action-btn svg {
+  color: inherit; /* icona prende colore del bottone */
+}
+
+.post-action-btn:hover {
+  background: #e9ecef;
+}
+
+.post-action-btn.active {
+  background: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+.post-action-btn.danger {
+  color: #dc3545;
+  background: #fff;
+  border-color: #dc3545;
+}
+
+.post-action-btn.danger:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.post-owner-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.like-count {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.like-count:hover {
+  text-decoration: underline;
+}

@@ -1,3 +1,4 @@
+import type { PostLikeStatusDTO, PostLikeUsersDTO } from "../types/likes";
 import type { PageResponse } from "../types/page";
 import type { PostCreateDTO, PostResponseDTO, PostUpdateDTO } from "../types/post";
 import { type SharePostDTO, type PostShareResponseDTO, type CommentResponseDTO, type CommentCreateDTO } from "../types/postShare";
@@ -212,6 +213,42 @@ export const postsApi = emptyApi.injectEndpoints({
             invalidatesTags: (_res, _err, arg) => [{ type: "Comments" as const, id: arg.postId }],
         }),
 
+        //-------------------------------------------Likes -------------------------------------
+        //-------------------------Post like -----------------
+        likePost: build.mutation<PostLikeStatusDTO, { postId: string }>({
+            query: ({ postId }) => ({
+                url: `/posts/${postId}/likes`,
+                method: "POST",
+            }),
+            invalidatesTags: (_res, _err, arg) => [{ type: "PostLike" as const, id: arg.postId }],
+        }),
+        //----------------------Delete Like --------------------------
+        unlikePost: build.mutation<PostLikeStatusDTO, { postId: string }>({
+            query: ({ postId }) => ({
+                url: `/posts/${postId}/likes`,
+                method: "DELETE",
+            }), invalidatesTags: (_res, _err, arg) => [{ type: "PostLike" as const, id: arg.postId }],
+        }),
+
+        //----------------------Likes Status--------------------------
+        getPostLikeStatus: build.query<PostLikeStatusDTO, { postId: string }>({
+            query: ({ postId }) => ({
+                url: `/posts/${postId}/likes/status`,
+                method: "GET",
+            }),
+            providesTags: (_res, _err, arg) => [{ type: "PostLike" as const, id: arg.postId }],
+        }),
+
+
+        //----------------------Get like users list--------------------------
+        getPostLikeUsers: build.query<PostLikeUsersDTO, { postId: string }>({
+            query: ({ postId }) => ({
+                url: `/posts/${postId}/likes/users`,
+                method: "GET",
+            }),
+            providesTags: (_res, _err, arg) => [{ type: "PostLike" as const, id: arg.postId }],
+        }),
+
     }),
     // non sovrascrivere endpoint se già iniettati altrove
     overrideExisting: false,
@@ -229,4 +266,8 @@ export const {
     useCreateCommentMutation,
     useGetCommentsQuery,
     useDeleteCommentMutation,
+    useLikePostMutation,
+    useUnlikePostMutation,
+    useGetPostLikeStatusQuery,
+    useGetPostLikeUsersQuery,
 } = postsApi;
