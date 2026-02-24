@@ -223,7 +223,6 @@ const PostCard = ({
                 onClick={() => setIsEditing(true)}
               >
                 <FiEdit2 size={16} />
-                <span>Edit</span>
               </Button>
 
               <Button
@@ -232,7 +231,6 @@ const PostCard = ({
                 disabled={deleting}
               >
                 <RiDeleteBin6Line size={16} />
-                <span>Delete</span>
               </Button>
             </div>
           )}
