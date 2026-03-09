@@ -37,4 +37,6 @@ export interface PostResponseDTO {
     media?: PostMediaDTO[];
     
     isMine?: boolean;
+
+    commentCount?: number;
 }

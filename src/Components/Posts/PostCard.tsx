@@ -51,6 +51,7 @@ const PostCard = ({
   const [showShare, setShowShare] = useState(false);
 
   const [showComments, setShowComments] = useState(false);
+  const commentCount = post.commentCount ?? 0;
 
   // Likes
   const [showLikes, setShowLikes] = useState(false);
@@ -188,6 +189,7 @@ const PostCard = ({
               onClick={() => setShowComments((v) => !v)}
             >
               <IoChatbubbleOutline size={18} />
+              <span className="like-count">{commentCount}</span>
             </Button>
             {/* LIKE */}
             <Button
