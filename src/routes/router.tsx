@@ -11,6 +11,8 @@ import UsersListPage from "../Components/UsersListPage";
 import SingleUserDetail from "../Components/SingleUserDetail";
 import PostPageInbox from "../Components/Posts/PostInboxPage";
 import PostDetailPage from "../Components/Posts/PostDetailPage";
+import MessagesPage from "../Components/Messages/MessagePage";
+
 
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
@@ -70,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: "/posts/:id",
         element: <PostDetailPage />,
+      },
+      {
+        path: "/messages",
+        element: <MessagesPage />,
       },
     ],
   },

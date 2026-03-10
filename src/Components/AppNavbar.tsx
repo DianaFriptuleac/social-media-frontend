@@ -2,10 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useState } from "react";
 import { logout } from "../store/authSlice";
-import { Navbar, Container, Nav, Offcanvas, Button } from "react-bootstrap";
+import { Navbar, Container, Nav, Offcanvas, Button, Badge } from "react-bootstrap";
 import { BsBoxArrowRight } from "react-icons/bs";
 import "../css/Nav.css";
 import { useEffect } from "react";
+import { useGetMyConversationsQuery } from "../api/messageApi";
 
 const AppNavbar = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +16,8 @@ const AppNavbar = () => {
   //Stato per aprire e chiudere il menu laterale
   const [show, setShow] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const { data: conversations } = useGetMyConversationsQuery();
+const unreadTotal = (conversations ?? []).reduce((sum, c) => sum + c.unreadCount, 0);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -30,9 +33,9 @@ const AppNavbar = () => {
     if (!wrapper) return;
 
     if (!isMobile && show) {
-     document.body.classList.add("offcanvas-open");
+      document.body.classList.add("offcanvas-open");
     } else {
-     document.body.classList.remove("offcanvas-open");
+      document.body.classList.remove("offcanvas-open");
     }
   }, [show, isMobile]);
 
@@ -120,8 +123,9 @@ const AppNavbar = () => {
             <Nav.Link onClick={() => handleNavigate("/users")}>
               Users List
             </Nav.Link>
-            <Nav.Link onClick={() => handleNavigate("/inbox")}>
-              Inbox
+            <Nav.Link onClick={() => handleNavigate("/inbox")}>Inbox</Nav.Link>
+            <Nav.Link onClick={() => handleNavigate("/messages")}>
+               Messages {unreadTotal > 0 && <Badge bg="danger">{unreadTotal}</Badge>}
             </Nav.Link>
           </Nav>
         </Offcanvas.Body>

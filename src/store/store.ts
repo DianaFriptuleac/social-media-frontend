@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import profileReducer from "./profileSlice"
 import departmentUIReducer from "./departmentSlice";
+import messageReducer from "./messageSlice";
 import emptyApi from "../api/emptyApi";
 //configureStore - crea lo store Redux in modo semplificato
 
@@ -10,6 +11,7 @@ export const store = configureStore({
         auth: authReducer, // stato di login, logout, registrazione, errori, token ecc.
         profile: profileReducer, // stato di profilo (dati utente + departments)
         departmentUI: departmentUIReducer,
+        message: messageReducer,
 
         [emptyApi.reducerPath]: emptyApi.reducer,   // RTK Query
     },
