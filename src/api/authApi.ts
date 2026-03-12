@@ -1,6 +1,7 @@
 import type { User } from "../types/auth";
 import emptyApi from "./emptyApi";
 import { authStarted, authSuccess, authFailed } from '../store/authSlice';
+import { resetMessageState } from "../store/messageSlice";
 
 // Risposta login (cosa ricevo dal backend quando faccio il login)
 interface LoginResponce {
@@ -40,6 +41,10 @@ export const authApi = emptyApi.injectEndpoints({
         dispatch(authStarted());
         try {
           const { data } = await queryFulfilled;
+
+          // pulizia sessione precedente
+          dispatch(resetMessageState());
+          dispatch(emptyApi.util.resetApiState());
 
           const user: User = {
             id: data.id,

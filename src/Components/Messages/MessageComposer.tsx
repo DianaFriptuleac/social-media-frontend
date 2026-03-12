@@ -3,7 +3,7 @@ import { Alert, Button, Form } from "react-bootstrap";
 import { useSendMessageMutation } from "../../api/messageApi";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setReplyToMessage } from "../../store/messageSlice";
-
+// scrivere e inviare un nuovo messaggio dentro una conversazione e gestisce la risposta a un msg specifico
 interface MessageComposerProps {
   conversationId: string;
 }
@@ -18,7 +18,7 @@ const MessageComposer = ({ conversationId }: MessageComposerProps) => {
   const [sendMessage, { isLoading }] = useSendMessageMutation();
 
   const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); // Evita il refresh della pagina
     setErrorMsg(null);
 
     if (!text.trim()) {
@@ -34,7 +34,7 @@ const MessageComposer = ({ conversationId }: MessageComposerProps) => {
       }).unwrap();
 
       setText("");
-      dispatch(setReplyToMessage(null));
+      dispatch(setReplyToMessage(null)); // Rimuove lo stato di reply
     } catch (err: any) {
       setErrorMsg(err?.data?.message || "Error sending message.");
     }
@@ -43,9 +43,13 @@ const MessageComposer = ({ conversationId }: MessageComposerProps) => {
   return (
     <div className="border-top p-3">
       {replyToMessage && (
-        <Alert variant="secondary" className="py-2 d-flex justify-content-between align-items-center">
+        <Alert
+          variant="secondary"
+          className="py-2 d-flex justify-content-between align-items-center"
+        >
           <div>
-            <strong>Replying to:</strong> {replyToMessage.text || "[Attachment]"}
+            <strong>Replying to:</strong>{" "}
+            {replyToMessage.text || "[Attachment]"}
           </div>
           <Button
             size="sm"

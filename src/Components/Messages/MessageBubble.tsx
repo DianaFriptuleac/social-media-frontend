@@ -7,15 +7,21 @@ import type { MessageResponseDTO } from "../../types/message";
 interface MessageBubbleProps {
   message: MessageResponseDTO;
   conversationId: string;
+  // Se il messaggio è una risposta, contiene il messaggio originale
   repliedMessage?: MessageResponseDTO | null;
 }
-
-const MessageBubble = ({ message, conversationId, repliedMessage }: MessageBubbleProps) => {
+//Singolo messaggio nella chat
+const MessageBubble = ({
+  message,
+  conversationId,
+  repliedMessage,
+}: MessageBubbleProps) => {
   const dispatch = useAppDispatch();
-  const currentUser = useAppSelector((s) => s.auth.user);
+  const currentUser = useAppSelector((u) => u.auth.user);
 
   const isMine = currentUser?.id === message.senderId;
-  const [deleteMessageForMe, { isLoading: isDeleting }] = useDeleteMessageForMeMutation();
+  const [deleteMessageForMe, { isLoading: isDeleting }] =
+    useDeleteMessageForMeMutation();
 
   const handleDelete = async () => {
     try {
@@ -23,17 +29,20 @@ const MessageBubble = ({ message, conversationId, repliedMessage }: MessageBubbl
         messageId: message.id,
         conversationId,
       }).unwrap();
-    } catch {
-    }
+    } catch {}
   };
 
   return (
-    <div className={`d-flex mb-3 ${isMine ? "justify-content-end" : "justify-content-start"}`}>
+    <div
+      className={`d-flex mb-3 ${isMine ? "justify-content-end" : "justify-content-start"}`}
+    >
       <Card style={{ maxWidth: "70%" }}>
         <Card.Body>
           {repliedMessage && (
             <div className="border-start ps-2 mb-2 text-muted small">
-              <div><strong>Reply to:</strong></div>
+              <div>
+                <strong>Reply to:</strong>
+              </div>
               <div>{repliedMessage.text || "[Attachment]"}</div>
             </div>
           )}

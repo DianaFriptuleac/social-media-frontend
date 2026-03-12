@@ -7,6 +7,8 @@ import { BsBoxArrowRight } from "react-icons/bs";
 import "../css/Nav.css";
 import { useEffect } from "react";
 import { useGetMyConversationsQuery } from "../api/messageApi";
+import { resetMessageState } from "../store/messageSlice";
+import emptyApi from "../api/emptyApi";
 
 const AppNavbar = () => {
   const dispatch = useAppDispatch();
@@ -16,10 +18,14 @@ const AppNavbar = () => {
   //Stato per aprire e chiudere il menu laterale
   const [show, setShow] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const { data: conversations } = useGetMyConversationsQuery();
+  const { data: conversations } = useGetMyConversationsQuery(undefined,{
+    skip: !user,
+  });
 const unreadTotal = (conversations ?? []).reduce((sum, c) => sum + c.unreadCount, 0);
 
   const handleLogout = () => {
+    dispatch(resetMessageState());
+    dispatch(emptyApi.util.resetApiState());
     dispatch(logout());
     navigate("/login");
   };

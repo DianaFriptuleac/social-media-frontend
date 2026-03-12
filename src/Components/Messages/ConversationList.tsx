@@ -9,7 +9,7 @@ import {
 const ConversationList = () => {
   const dispatch = useAppDispatch();
   const selectedConversationId = useAppSelector(
-    (s) => s.message.selectedConversationId
+    (s) => s.message.selectedConversationId,
   );
 
   const { data, isLoading, isError } = useGetMyConversationsQuery();
@@ -61,12 +61,17 @@ const ConversationList = () => {
                 <div className="d-flex justify-content-between align-items-start">
                   <div className="me-2">
                     <div className="fw-bold">{fullName}</div>
-                    <div className="small text-truncate" style={{ maxWidth: 220 }}>
+                    <div
+                      className="small text-truncate"
+                      style={{ maxWidth: 220 }}
+                    >
                       {c.lastMessageText ?? "No messages yet"}
                     </div>
                   </div>
 
-                  {c.unreadCount > 0 && <Badge bg="danger">{c.unreadCount}</Badge>}
+                  {c.unreadCount > 0 && selectedConversationId !== c.id && (
+                    <Badge bg="danger">{c.unreadCount}</Badge>
+                  )}
                 </div>
               </ListGroup.Item>
             );
