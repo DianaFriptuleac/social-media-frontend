@@ -17,6 +17,7 @@ import {
   setSelectedConversation,
 } from "../../store/messageSlice";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
+import "../../css/Messages.css";
 
 const NewConversationModal = () => {
   const dispatch = useAppDispatch();
@@ -95,6 +96,7 @@ const NewConversationModal = () => {
 
   return (
     <Modal
+      className="new-conversation-modal"
       show={isNewConversationModalOpen}
       onHide={handleClose}
       centered
@@ -111,6 +113,7 @@ const NewConversationModal = () => {
         <Form.Group className="mb-3">
           <Form.Label>Search user</Form.Label>
           <Form.Control
+            className="new-conversation-search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Name, surname, email..."
@@ -146,14 +149,13 @@ const NewConversationModal = () => {
                 action
                 active={active}
                 onClick={() => setSelectedUser(u)}
-                className="d-flex justify-content-between align-items-start"
+                className="new-conversation-item d-flex justify-content-between align-items-start"
               >
                 <div>
                   <div className="fw-bold">
                     {u.surname} {u.name}
                   </div>
                   <div className="small">{u.email}</div>
-                  <div className="small text-muted">{u.username}</div>
                 </div>
 
                 {active && (

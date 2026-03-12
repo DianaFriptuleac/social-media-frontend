@@ -10,6 +10,7 @@ import MessageBubble from "./MessageBubble";
 import MessageComposer from "./MessageComposer";
 import { useEffect, useMemo } from "react";
 import type { MessageResponseDTO } from "../../types/message";
+import "../../css/Messages.css"
 
 const ConversationPanel = () => {
   //conversazione selezionata dallo store Redux
@@ -102,10 +103,10 @@ const ConversationPanel = () => {
     detail?.partecipants?.filter((p) => p.id !== currentUser?.id) ?? [];
 
   return (
-    <div className="h-100 d-flex flex-column">
-      <div className="border-bottom p-3 d-flex justify-content-between align-items-center">
+    <div className="messages-panel h-100 d-flex flex-column">
+      <div className="messages-chat-header p-3 d-flex justify-content-between align-items-center">
         <div>
-          <h5 className="mb-0">
+          <h5 className="mb-0 messages-chat-name">
             {otherParticipants.map((p) => `${p.surname} ${p.name}`).join(", ")}
           </h5>
         </div>
@@ -122,7 +123,7 @@ const ConversationPanel = () => {
         </Button>
       </div>
 
-      <div className="flex-grow-1 overflow-auto p-3">
+      <div className="messages-scroll flex-grow-1 overflow-auto p-3">
         {(messages ?? []).length === 0 ? (
           <div className="text-muted">No messages yet.</div>
         ) : (

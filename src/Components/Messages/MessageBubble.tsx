@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setReplyToMessage } from "../../store/messageSlice";
 import { useDeleteMessageForMeMutation } from "../../api/messageApi";
 import type { MessageResponseDTO } from "../../types/message";
+import "../../css/Messages.css";
 
 interface MessageBubbleProps {
   message: MessageResponseDTO;
@@ -33,23 +34,23 @@ const MessageBubble = ({
   };
 
   return (
-    <div
-      className={`d-flex mb-3 ${isMine ? "justify-content-end" : "justify-content-start"}`}
-    >
-      <Card style={{ maxWidth: "70%" }}>
+    <div className={`message-row ${isMine ? "mine" : "other"}`}>
+      <Card className={`message-bubble ${isMine ? "mine" : "other"}`}>
         <Card.Body>
           {repliedMessage && (
-            <div className="border-start ps-2 mb-2 text-muted small">
-              <div>
-                <strong>Reply to:</strong>
+            <div className="message-reply-preview">
+              <div className="message-text">
+                <div>
+                  <strong>Reply to:</strong>
+                </div>
+                <div>{repliedMessage.text || "[Attachment]"}</div>
               </div>
-              <div>{repliedMessage.text || "[Attachment]"}</div>
             </div>
           )}
 
-          <div>{message.text}</div>
+          <div className="message-text">{message.text}</div>
 
-          <div className="mt-2 d-flex gap-2 justify-content-end">
+          <div className="message-actions">
             <Button
               size="sm"
               variant="outline-secondary"
@@ -68,7 +69,7 @@ const MessageBubble = ({
             </Button>
           </div>
 
-          <div className="small text-muted mt-2">
+          <div className="message-time">
             {new Date(message.createdAt).toLocaleString()}
           </div>
         </Card.Body>

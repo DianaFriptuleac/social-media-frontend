@@ -5,6 +5,7 @@ import {
   openNewConversationModal,
   setSelectedConversation,
 } from "../../store/messageSlice";
+import "../../css/Messages.css"
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
@@ -29,10 +30,14 @@ const ConversationList = () => {
   const conversations = data ?? [];
 
   return (
-    <div className="border-end h-100 d-flex flex-column">
-      <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
-        <h5 className="mb-0">Messages</h5>
-        <Button size="sm" onClick={() => dispatch(openNewConversationModal())}>
+    <div className="messages-sidebar h-100 d-flex flex-column">
+      <div className="messages-sidebar-header p-3 d-flex justify-content-between align-items-center">
+        <h5 className="messages-title mb-0">Messages</h5>
+        <Button
+          className="messages-new-btn"
+          size="sm"
+          onClick={() => dispatch(openNewConversationModal())}
+        >
           New
         </Button>
       </div>
@@ -53,6 +58,7 @@ const ConversationList = () => {
 
             return (
               <ListGroup.Item
+                className="messages-list-item"
                 key={c.id}
                 action
                 active={active}
@@ -60,9 +66,9 @@ const ConversationList = () => {
               >
                 <div className="d-flex justify-content-between align-items-start">
                   <div className="me-2">
-                    <div className="fw-bold">{fullName}</div>
+                    <div className="messages-user-name">{fullName}</div>
                     <div
-                      className="small text-truncate"
+                      className="messages-last-text small text-truncate"
                       style={{ maxWidth: 220 }}
                     >
                       {c.lastMessageText ?? "No messages yet"}
@@ -70,7 +76,7 @@ const ConversationList = () => {
                   </div>
 
                   {c.unreadCount > 0 && selectedConversationId !== c.id && (
-                    <Badge bg="danger">{c.unreadCount}</Badge>
+                    <Badge className="messages-badge">{c.unreadCount}</Badge>
                   )}
                 </div>
               </ListGroup.Item>

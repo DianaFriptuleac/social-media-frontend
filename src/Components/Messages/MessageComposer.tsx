@@ -3,6 +3,7 @@ import { Alert, Button, Form } from "react-bootstrap";
 import { useSendMessageMutation } from "../../api/messageApi";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setReplyToMessage } from "../../store/messageSlice";
+import "../../css/Messages.css"
 // scrivere e inviare un nuovo messaggio dentro una conversazione e gestisce la risposta a un msg specifico
 interface MessageComposerProps {
   conversationId: string;
@@ -41,11 +42,11 @@ const MessageComposer = ({ conversationId }: MessageComposerProps) => {
   };
 
   return (
-    <div className="border-top p-3">
+    <div className="message-composer">
       {replyToMessage && (
         <Alert
           variant="secondary"
-          className="py-2 d-flex justify-content-between align-items-center"
+          className="message-reply-alert py-2 d-flex justify-content-between align-items-center"
         >
           <div>
             <strong>Replying to:</strong>{" "}
@@ -66,11 +67,12 @@ const MessageComposer = ({ conversationId }: MessageComposerProps) => {
       <Form onSubmit={handleSend}>
         <div className="d-flex gap-2">
           <Form.Control
+           className="message-input"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Write a message..."
           />
-          <Button type="submit" disabled={isLoading}>
+          <Button className="message-send-btn" type="submit" disabled={isLoading}>
             {isLoading ? "Sending..." : "Send"}
           </Button>
         </div>

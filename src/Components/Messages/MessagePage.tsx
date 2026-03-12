@@ -7,8 +7,11 @@ const MessagesPage = () => {
   return (
     <>
       <Container fluid className="py-3">
-        <Row style={{ height: "calc(100vh - 90px)" }}>
-          <Col md={4} lg={3} className="h-100">
+        <Row
+          className="messages-layout"
+          style={{ height: "calc(100vh - 90px)" }}
+        >
+          <Col md={4} lg={3} className="h-100 messages-sidebar">
             <ConversationList />
           </Col>
           <Col md={8} lg={9} className="h-100">
