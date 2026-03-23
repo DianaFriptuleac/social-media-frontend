@@ -133,6 +133,9 @@ const unreadTotal = (conversations ?? []).reduce((sum, c) => sum + c.unreadCount
             <Nav.Link onClick={() => handleNavigate("/messages")}>
                Messages {unreadTotal > 0 && <Badge bg="danger">{unreadTotal}</Badge>}
             </Nav.Link>
+            <Nav.Link onClick={() => handleNavigate("/events")}>
+              Events
+            </Nav.Link>
           </Nav>
         </Offcanvas.Body>
         {/* SOLO MOBILE: user + logout nella tendina */}

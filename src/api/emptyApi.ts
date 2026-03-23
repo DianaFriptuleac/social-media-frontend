@@ -48,6 +48,7 @@ const emptyApi = createApi({
         'Conversations',
         'ConversationDetail',
         'ConversationMessages',
+        'Events',
     ],
 
     endpoints: () => ({}),   // nessun endpoint qui, li inietto dopo

@@ -12,6 +12,8 @@ import SingleUserDetail from "../Components/SingleUserDetail";
 import PostPageInbox from "../Components/Posts/PostInboxPage";
 import PostDetailPage from "../Components/Posts/PostDetailPage";
 import MessagesPage from "../Components/Messages/MessagePage";
+import EventsPage from "../Components/Events/EventsPage";
+import EventDetailPage from "../Components/Events/EventDetailPage";
 
 
 const ProtectedLayout: React.FC = () => (
@@ -77,6 +79,14 @@ export const router = createBrowserRouter([
         path: "/messages",
         element: <MessagesPage />,
       },
+      {
+        path: "/events",
+        element: <EventsPage/>
+      },
+      {
+        path: "/events/:id",
+        element: <EventDetailPage/>
+      }
     ],
   },
   // catch-all
