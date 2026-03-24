@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Badge, Form, ListGroup } from "react-bootstrap";
-import type { UserListItem } from "../../types/profile";
+import type { UserListItem } from "../types/profile";
+
 
 interface Props {
   users: UserListItem[];
