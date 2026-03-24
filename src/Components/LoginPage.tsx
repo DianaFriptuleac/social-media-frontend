@@ -15,6 +15,7 @@ const LoginPage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     //e: React.FormEvent) - tipo per TypeScript- evento di form React
@@ -31,30 +32,51 @@ const LoginPage = () => {
   return (
     <Container className="auth-page">
       <Row className="justify-content-center w-100">
-        <Col xs={12} md={6} lg={4}>
+        <Col xs={12} md={8} lg={5} xl={4}>
           <div className="auth-card">
-            <div className="auth-card__header text-center">
-              <h2 className="auth-title">Login</h2>
+            <div className="auth-card__header">
+              <div className="auth-brand">
+                <div className="auth-brand__logo">•</div>
+                <div className="auth-brand__name">ECOMOTORS</div>
+              </div>
+              <h2 className="auth-title">Welcome Back.</h2>
+              <p className="auth-subtitle">
+                Access your corporate portal and insights.
+              </p>
             </div>
 
             <div className="auth-card__body">
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>Email</Form.Label>
+              <div className="auth-switch">
+                <Link to="/login" className="auth-switch__item active">
+                  Sign In
+                </Link>
+                <Link to="/register" className="auth-switch__item">
+                  Create Account
+                </Link>
+              </div>
+
+              <Form onSubmit={handleSubmit} className="auth-form">
+                <Form.Group controlId="formEmail">
+                  <Form.Label>Work Email</Form.Label>
                   <Form.Control
                     type="email"
-                    placeholder="Insert your email"
+                    placeholder="name@ecomotors.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label>Password</Form.Label>
+                <Form.Group controlId="formPassword">
+                  <div className="auth-row-inline">
+                    <Form.Label>Password</Form.Label>
+                    <a href="#" className="auth-forgot">
+                      Forgot?
+                    </a>
+                  </div>
                   <Form.Control
                     type="password"
-                    placeholder="Insert your password"
+                    placeholder="********"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -66,21 +88,32 @@ const LoginPage = () => {
                     {error}
                   </Alert>
                 )}
+                <label className="auth-check">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <span>Keep me authenticated for 30 days</span>
+                </label>
 
                 <Button
                   type="submit"
-                  className="w-100 auth-btn-primary"
+                  className="auth-btn-primary"
                   disabled={loading}
                 >
-                  {loading ? "Logging in..." : "Login"}
+                  {loading ? "Signing in..." : "Sign In to EcoMotors →"}
                 </Button>
               </Form>
 
               <div className="auth-footer">
-                Don&apos;t have an account?{" "}
-                <Link to="/register" className="auth-link">
-                  Register
-                </Link>
+                Secure Enterprise Environment. Access is restricted to
+                authorized personnel only.
+                <div className="auth-footer-links">
+                  <a href="#">Legal</a>
+                  <a href="#">Privacy</a>
+                  <a href="#">Support</a>
+                </div>
               </div>
             </div>
           </div>

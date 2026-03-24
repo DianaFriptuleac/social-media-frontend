@@ -6,6 +6,7 @@ import {
   Spinner,
   Alert,
   Pagination,
+  Button,
 } from "react-bootstrap";
 import { useAppSelector } from "../store/hooks";
 import "../css/Home.css";
@@ -38,29 +39,40 @@ const HomePage = () => {
   const pageNumbers = getPaginationRange(currentPage, totalPages, 5);
 
   return (
-    <Container fluid className="px-0 home-wrap">
+    <Container fluid className="mt-4 home-wrap">
       {/* HERO */}
       <Row className="mb-3">
         <Col className="px-0">
           <div className="home-hero">
             <div className="home-hero-content">
-              <h1 className="home-hero-title">Let&apos;s build our future.</h1>
-              <div className="home-hero-sub">
-                Share updates, photos and news with your team.
+              <span className="home-hero-badge">Featured Update</span>
+              <h1 className="home-hero-title">Welcome to EcoMotors.</h1>
+              <p className="home-hero-sub">
+                Share updates, discover team activity and keep track of the
+                latest company news in one place.
+              </p>
+
+              <div className="home-hero-actions">
+                <Button className="home-hero-btn home-hero-btn--primary">
+                  Explore Feed
+                </Button>
+                <Button className="home-hero-btn home-hero-btn--secondary">
+                  View Events
+                </Button>
               </div>
             </div>
           </div>
         </Col>
       </Row>
       {/* LAYOUT */}
-      <Row className="justify-content-center g-3">
+      <Row className="justify-content-center home-main-row">
         {/* LEFT */}
         <Col lg={3} className="d-none d-lg-block">
           <Card className="home-side-card">
             <Card.Body>
-              <Card.Title className="home-side-title">Shortcuts</Card.Title>
-              <div className="text-muted small">
-                (Placeholder) In futuro: menu, gruppi, scorciatoie.
+              <Card.Title className="home-side-title">Quick Access</Card.Title>
+              <div className="home-side-muted">
+                Pin departments, teams and useful shortcuts here.
               </div>
             </Card.Body>
           </Card>
@@ -72,8 +84,8 @@ const HomePage = () => {
 
           <Card className="home-feed-card">
             <Card.Body>
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <h5 className="mb-0">Feed</h5>
+              <div className="home-section-head">
+                <h5 className="home-section-title">Team Feed</h5>
 
                 <div className="d-flex align-items-center gap-2">
                   {isFetching && !isLoading ? (
@@ -110,7 +122,7 @@ const HomePage = () => {
                 </Alert>
               )}
 
-              <div className="mt-3">
+              <div className="home-post-list">
                 {postsPage?.content.map((p) => (
                   <PostCard
                     key={p.id}
@@ -181,11 +193,11 @@ const HomePage = () => {
           <Card className="home-side-card">
             <Card.Body>
               <Card.Title className="home-side-title">Events</Card.Title>
-              <div className="text-muted small">
-                (Placeholder) In futuro: eventi futuri, meeting, deadlines.
+              <div className="home-side-muted">
+                Upcoming meetings, deadlines and team activity.
               </div>
 
-              <div className="home-event mt-3">
+              <div className="home-event">
                 <div className="home-event-title">No events yet</div>
                 <div className="home-event-sub">Stay tuned.</div>
               </div>

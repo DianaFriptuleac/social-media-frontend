@@ -4,7 +4,6 @@ import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useRegisterMutation } from "../api/authApi";
 import "../css/auth.css";
 
-
 const RegisterPage = () => {
   const navigate = useNavigate();
   // mutation RTK Query per la registrazione
@@ -35,74 +34,94 @@ const RegisterPage = () => {
   return (
     <Container className="auth-page">
       <Row className="justify-content-center w-100">
-        <Col xs={12} md={6} lg={4}>
-            <div className="auth-card">
-          <div className="auth-card__header text-center">
-            <h2 className="auth-title">Register</h2>
-          </div>
-          <div className="auth-card__body">
-          {errorMessage && <Alert variant="danger" className="auth-alert">{errorMessage}</Alert>}
-          <Form
-            onSubmit={handleSubmit}
-            className="p-4 border rounded shadow-sm"
-          >
-            <Form.Group className="mb-3" controlId="formName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Insert your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formSurname">
-              <Form.Label>Surname</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Insert your surname"
-                value={surname}
-                onChange={(e) => setSurname(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Insert your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="formPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Insert your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <Button type="submit" className="w-100 auth-btn-primary" disabled={isLoading}>
-              {isLoading ? "Registration..." : "Register"}
-            </Button>
-            </Form>
-
-           <div className="auth-divider" />
-             <div className="auth-footer">
-              Already have an account?{" "}
-              <Link to="/login" className="auth-link">
-                Login
-              </Link>
+        <Col xs={12} md={8} lg={5} xl={4}>
+          <div className="auth-card">
+            <div className="auth-card__header">
+              <div className="auth-brand">
+                <div className="auth-brand__logo">•</div>
+                <div className="auth-brand__name">ECOMOTORS</div>
+              </div>
+              <h2 className="auth-title">Create Account.</h2>
+              <p className="auth-subtitle">
+                Join the platform and access your workspace.
+              </p>
             </div>
-          </div>
+            <div className="auth-card__body">
+              <div className="auth-switch">
+                <Link to="/login" className="auth-switch__item">
+                  Sign In
+                </Link>
+                <Link to="/register" className="auth-switch__item active">
+                  Create Account
+                </Link>
+              </div>
+              {errorMessage && (
+                <Alert variant="danger" className="auth-alert">
+                  {errorMessage}
+                </Alert>
+              )}
+
+              <Form onSubmit={handleSubmit} className="auth-form">
+                <Form.Group controlId="formName">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Insert your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="formSurname">
+                  <Form.Label>Surname</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Insert your surname"
+                    value={surname}
+                    onChange={(e) => setSurname(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="formEmail">
+                  <Form.Label>Work Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="name@ecomotors.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formPassword">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Create a password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+
+                <Button
+                  type="submit"
+                  className="auth-btn-primary"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Creating account..." : "Create Account"}
+                </Button>
+              </Form>
+
+              <div className="auth-bottom-text">
+                Already have an account?{" "}
+                <Link to="/login" className="auth-link">
+                  Sign In
+                </Link>
+              </div>
+            </div>
           </div>
         </Col>
       </Row>

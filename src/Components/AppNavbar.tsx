@@ -1,9 +1,26 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { useState } from "react";
 import { logout } from "../store/authSlice";
-import { Navbar, Container, Nav, Offcanvas, Button, Badge } from "react-bootstrap";
-import { BsBoxArrowRight } from "react-icons/bs";
+import {
+  Navbar,
+  Container,
+  Nav,
+  Offcanvas,
+  Button,
+  Badge,
+} from "react-bootstrap";
+import {
+  BsBell,
+  BsBoxArrowRight,
+  BsBuilding,
+  BsCalendar,
+  BsHouseDoor,
+  BsInbox,
+  BsList,
+  BsPeople,
+  BsSearch,
+} from "react-icons/bs";
 import "../css/Nav.css";
 import { useEffect } from "react";
 import { useGetMyConversationsQuery } from "../api/messageApi";
@@ -13,15 +30,20 @@ import emptyApi from "../api/emptyApi";
 const AppNavbar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useAppSelector((state) => state.auth.user);
 
   //Stato per aprire e chiudere il menu laterale
-  const [show, setShow] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const { data: conversations } = useGetMyConversationsQuery(undefined,{
+
+  const { data: conversations } = useGetMyConversationsQuery(undefined, {
     skip: !user,
   });
-const unreadTotal = (conversations ?? []).reduce((sum, c) => sum + c.unreadCount, 0);
+  const unreadTotal = (conversations ?? []).reduce(
+    (sum, c) => sum + c.unreadCount,
+    0,
+  );
 
   const handleLogout = () => {
     dispatch(resetMessageState());
@@ -32,22 +54,15 @@ const unreadTotal = (conversations ?? []).reduce((sum, c) => sum + c.unreadCount
 
   const handleNavigate = (path: string) => {
     navigate(path);
-    setShow(false); // chiudo il menu dopo il click
+    setShowMobileMenu(false); // chiudo il menu dopo il click
   };
-  useEffect(() => {
-    const wrapper = document.getElementById("page-wrapper");
-    if (!wrapper) return;
-
-    if (!isMobile && show) {
-      document.body.classList.add("offcanvas-open");
-    } else {
-      document.body.classList.remove("offcanvas-open");
-    }
-  }, [show, isMobile]);
-
+  const isActive = (path: string) => location.pathname === path;
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      if (window.innerWidth >= 768) {
+        setShowMobileMenu(false);
+      }
     };
 
     window.addEventListener("resize", handleResize);
@@ -57,48 +72,96 @@ const unreadTotal = (conversations ?? []).reduce((sum, c) => sum + c.unreadCount
   return (
     <>
       <Navbar
-        key="md"
-        variant="dark"
-        expand="md"
         fixed="top" // sempre in alto
-        className="navbar"
+        className="app-navbar"
       >
-        <Container fluid>
-          {/* Brand / Home */}
-          <Navbar.Brand
-            style={{ cursor: "pointer" }}
-            onClick={() => handleNavigate("/")}
-          >
-            MyApp
-          </Navbar.Brand>
+        <Container fluid className="app-navbar__inner">
+          <div className="app-navbar__left">
+            <button
+              className="app-navbar__menu-btn d-md-none"
+              onClick={() => setShowMobileMenu(true)}
+              aria-label="Open menu"
+            >
+              <BsList size={22} />
+            </button>
 
-          {/* Hamburger per offcanvas su mobile */}
-          <Navbar.Toggle
-            aria-controls="offcanvasNavbar"
-            onClick={() => setShow(true)}
-            className="d-md-block" // forza la visibilità anche sopra md
-          />
+            <Navbar.Brand
+              className="app-navbar__brand"
+              onClick={() => handleNavigate("/")}
+            >
+              ECOMOTORS
+            </Navbar.Brand>
 
-          {/* Parte destra: icona utente + logout (sempre visibile) */}
-          <div className="d-none d-md-flex align-items-center ms-auto">
+            <Nav className="app-navbar__links d-none d-md-flex">
+              <Nav.Link
+                className={isActive("/") ? "active" : ""}
+                onClick={() => handleNavigate("/")}
+              >
+                Home
+              </Nav.Link>
+              <Nav.Link
+                className={isActive("/departments") ? "active" : ""}
+                onClick={() => handleNavigate("/departments")}
+              >
+                Depts
+              </Nav.Link>
+              <Nav.Link
+                className={isActive("/users") ? "active" : ""}
+                onClick={() => handleNavigate("/users")}
+              >
+                Users
+              </Nav.Link>
+              <Nav.Link
+                className={isActive("/events") ? "active" : ""}
+                onClick={() => handleNavigate("/events")}
+              >
+                Events
+              </Nav.Link>
+            </Nav>
+          </div>
+
+          <div className="app-navbar__right">
+            <button
+              className="app-navbar__icon-btn d-none d-md-inline-flex"
+              onClick={() => handleNavigate("/search")}
+              aria-label="Search"
+            >
+              <BsSearch size={19} />
+            </button>
+
+            <button
+              className="app-navbar__icon-btn"
+              onClick={() => handleNavigate("/inbox")}
+              aria-label="Notifications"
+            >
+              <BsBell size={19} />
+              {unreadTotal > 0 && (
+                <span className="app-navbar__dot">{unreadTotal}</span>
+              )}
+            </button>
+
             {user && (
               <div
-                className="nav-user me-3"
-                style={{ cursor: "pointer" }}
+                className="app-navbar__avatar-wrap"
                 onClick={() => handleNavigate("/me")}
               >
                 <img
-                  className="nav-avatar"
+                  className="app-navbar__avatar"
                   src={user.avatar ?? "/public/images/default-avatar.jpg"}
                   alt="avatar"
                 />
-                <span className="nav-user-name">
+
+                {/* <span className="nav-user-name">
                   {user.name} {user.surname}
-                </span>
+                </span>*/}
               </div>
             )}
-            <Button variant="outline-danger" size="sm" onClick={handleLogout}>
-              <BsBoxArrowRight size={20} />
+            <Button
+              variant="link"
+              className="app-navbar__logout d-none d-lg-inline-flex"
+              onClick={handleLogout}
+            >
+              <BsBoxArrowRight size={18} />
             </Button>
           </div>
         </Container>
@@ -106,67 +169,100 @@ const unreadTotal = (conversations ?? []).reduce((sum, c) => sum + c.unreadCount
 
       {/* Offcanvas = menu laterale (tendina da sinistra) */}
       <Offcanvas
-        id="offcanvasNavbar"
-        aria-labelledby="offcanvasNavbarLabel"
-        placement={isMobile ? "top" : "start"} // TOP su mobile, START su desktop
-        show={show}
-        onHide={() => setShow(false)}
-        backdrop={false}
-        scroll={true}
+        show={showMobileMenu}
+        onHide={() => setShowMobileMenu(false)}
+        placement="start"
+        className="app-mobile-drawer"
       >
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title id="offcanvasNavbarLabel">Menu</Offcanvas.Title>
+          <Offcanvas.Title>Menu</Offcanvas.Title>
         </Offcanvas.Header>
+
         <Offcanvas.Body>
-          <Nav className="flex-column">
+          <div className="app-mobile-drawer__user">
+            {user && (
+              <>
+                <img
+                  className="app-navbar__avatar"
+                  src={user.avatar ?? "/images/default-avatar.jpg"}
+                  alt="avatar"
+                />
+                <div>
+                  <div className="app-mobile-drawer__name">
+                    {user.name} {user.surname}
+                  </div>
+                  <div className="app-mobile-drawer__role">My profile</div>
+                </div>
+              </>
+            )}
+          </div>
+          <Nav className="flex-column app-mobile-drawer__nav">
             <Nav.Link onClick={() => handleNavigate("/")}>Home</Nav.Link>
             <Nav.Link onClick={() => handleNavigate("/departments")}>
               Departments
             </Nav.Link>
-            <Nav.Link onClick={() => handleNavigate("/me")}>
-              My Profile
-            </Nav.Link>
-            <Nav.Link onClick={() => handleNavigate("/users")}>
-              Users List
-            </Nav.Link>
+            <Nav.Link onClick={() => handleNavigate("/users")}>Users</Nav.Link>
             <Nav.Link onClick={() => handleNavigate("/inbox")}>Inbox</Nav.Link>
             <Nav.Link onClick={() => handleNavigate("/messages")}>
-               Messages {unreadTotal > 0 && <Badge bg="danger">{unreadTotal}</Badge>}
+              Messages{" "}
+              {unreadTotal > 0 && <Badge bg="danger">{unreadTotal}</Badge>}
             </Nav.Link>
             <Nav.Link onClick={() => handleNavigate("/events")}>
               Events
             </Nav.Link>
+            <Nav.Link onClick={() => handleNavigate("/me")}>
+              My Profile
+            </Nav.Link>
           </Nav>
-        </Offcanvas.Body>
-        {/* SOLO MOBILE: user + logout nella tendina */}
-        <div className="d-md-none mt-4">
-          {user && (
-            <div
-              className="nav-user-mobile mb-3"
-              style={{ cursor: "pointer" }}
-              onClick={() => handleNavigate("/me")}
-            >
-              <img
-                className="nav-avatar"
-                src={user.avatar ?? "/public/images/default-avatar.jpg"}
-                alt="avatar"
-              />
-              <div className="nav-user-name">
-                {user.name} {user.surname}
-              </div>
-            </div>
-          )}
-
-          <Button
-            variant="outline-danger"
-            className="w-100 d-flex align-items-center justify-content-center"
-            onClick={handleLogout}
-          >
-            <BsBoxArrowRight size={20} className="me-2" />
+          <Button className="app-mobile-drawer__logout" onClick={handleLogout}>
+            <BsBoxArrowRight size={18} className="me-2" />
             Logout
           </Button>
-        </div>
+        </Offcanvas.Body>
       </Offcanvas>
+      <nav className="app-bottom-nav d-md-none">
+        <button
+          className={`app-bottom-nav__item ${isActive("/") ? "active" : ""}`}
+          onClick={() => handleNavigate("/")}
+        >
+          <BsHouseDoor size={18} />
+          <span>Home</span>
+        </button>
+
+        <button
+          className={`app-bottom-nav__item ${
+            isActive("/departments") ? "active" : ""
+          }`}
+          onClick={() => handleNavigate("/departments")}
+        >
+          <BsBuilding size={18} />
+          <span>Depts</span>
+        </button>
+
+        <button
+          className={`app-bottom-nav__item ${isActive("/users") ? "active" : ""}`}
+          onClick={() => handleNavigate("/users")}
+        >
+          <BsPeople size={18} />
+          <span>Users</span>
+        </button>
+
+        <button
+          className={`app-bottom-nav__item ${isActive("/inbox") ? "active" : ""}`}
+          onClick={() => handleNavigate("/inbox")}
+        >
+          <BsInbox size={18} />
+          <span>Inbox</span>
+        </button>
+
+        <button
+          className={`app-bottom-nav__item ${isActive("/events") ? "active" : ""}`}
+          onClick={() => handleNavigate("/events")}
+        >
+          <BsCalendar size={18} />
+          <span>Events</span>
+        </button>
+      </nav>
     </>
   );
 };

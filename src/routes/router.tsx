@@ -15,16 +15,13 @@ import MessagesPage from "../Components/Messages/MessagePage";
 import EventsPage from "../Components/Events/EventsPage";
 import EventDetailPage from "../Components/Events/EventDetailPage";
 
-
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
     <>
       <div id="page-wrapper">
         <AppNavbar />
         {/* Navbar fixed="top" - serve un padding */}
-        <div className="pt-5">
-          <Outlet /> {/* Qui si renderizza la pagina corrente */}
-        </div>
+        <Outlet /> {/* Qui si renderizza la pagina corrente */}
       </div>
     </>
   </ProtectedRoute>
@@ -81,12 +78,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/events",
-        element: <EventsPage/>
+        element: <EventsPage />,
       },
       {
         path: "/events/:id",
-        element: <EventDetailPage/>
-      }
+        element: <EventDetailPage />,
+      },
     ],
   },
   // catch-all
