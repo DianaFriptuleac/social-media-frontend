@@ -7,7 +7,6 @@ import {
   Table,
   Button,
   Pagination,
-  Badge,
 } from "react-bootstrap";
 
 import {
@@ -27,6 +26,7 @@ import { isFetchBaseQueryError } from "../utils/rtkQuery";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import CreateDepartmentModal from "./CreateDepartmentModal";
 import EditDepartmentModal from "./EditDepartmentModal";
+import { FiEdit2, FiTrash2, FiUserPlus, FiSettings } from "react-icons/fi";
 import "../css/Departments.css";
 
 const DepartmentsPage: React.FC = () => {
@@ -107,12 +107,12 @@ const DepartmentsPage: React.FC = () => {
   }, [updateDepartmentError, deleteDepartmentError]);
 
   return (
-    <Container className="py-4 dept-page">
-      <Row>
+    <Container className="dept-page">
+      <Row className="dept-shell">
         {/* COLSINISTRA – LISTA DEPARTMENTS */}
         <Col md={4}>
           <Card className="dept-card">
-            <Card.Header className="dept-card-header fw-bold d-flex justify-content-between align-items-center">
+            <Card.Header className="dept-card-header">
               <span>Departments</span>
 
               {isAdmin && (
@@ -144,10 +144,8 @@ const DepartmentsPage: React.FC = () => {
                   onClick={() => dispatch(setSelectedDepartment(dept.id))}
                 >
                   <Card.Body>
-                    <h6 className="fw-bold mb-1 dept-item-name">{dept.name}</h6>
-                    <p className="small mb-0 dept-item-desc">
-                      {dept.description}
-                    </p>
+                    <h6 className="dept-item-name">{dept.name}</h6>
+                    <p className="dept-item-desc">{dept.description}</p>
                   </Card.Body>
                 </Card>
               ))}
@@ -172,11 +170,13 @@ const DepartmentsPage: React.FC = () => {
         {/* COL DESTRA – DETTAGLIO */}
         <Col md={8}>
           <Card className="dept-card">
-            <Card.Header className="dept-card-header fw-bold">
+            <Card.Header className="dept-card-header">
               Department Detail
             </Card.Header>
             <Card.Body>
-              {!selectedDepartmentId && <p>Select a department...</p>}
+              {!selectedDepartmentId && (
+                <p className="dept-empty">Select a department...</p>
+              )}
 
               {selectedDepartmentId && loadingDepartment && (
                 <p>Loading data...</p>
@@ -184,31 +184,54 @@ const DepartmentsPage: React.FC = () => {
 
               {selectedDepartment && (
                 <>
-                  <h4>{selectedDepartment.name}</h4>
-                  <p>{selectedDepartment.description}</p>
+                  <div className="dept-detail-hero">
+                    <div className="dept-hero-left">
+                      <h2 className="dept-detail-name">
+                        {selectedDepartment.name}
+                      </h2>
 
-                  <p>
-                    <strong>Users number:</strong>{" "}
-                    <Badge bg="secondary">{selectedDepartment.userCount}</Badge>
-                  </p>
+                      <p className="dept-detail-desc">
+                        {selectedDepartment.description ||
+                          "No description available."}
+                      </p>
+                    </div>
+
+                    <div className="dept-metrics">
+                      <div className="dept-metric">
+                        <span className="dept-metric__value">
+                          {selectedDepartment.userCount}
+                        </span>
+                        <span className="dept-metric__label">Active Depts</span>
+                      </div>
+
+                      <div className="dept-metric dept-metric--primary">
+                        <span className="dept-metric__value">
+                          {selectedDepartment.users.length}
+                        </span>
+                        <span className="dept-metric__label">
+                          Total Members
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
                   {isAdmin && (
-                    <div className="mb-3 dept-actions">
+                    <div className="dept-actions">
                       <Button
                         variant="secondary"
-                        className="dept-btn-secondary"
+                        className="dept-btn-icon dept-btn-icon--secondary"
                         disabled={!selectedDepartment}
                         onClick={() => setShowEditDepartment(true)}
                       >
-                        Edit department
+                        <FiSettings />
                       </Button>
                       <Button
                         variant="primary"
-                        className="dept-btn-primary"
+                        className="dept-btn-icon dept-btn-icon--primary"
                         disabled={!selectedDepartmentId}
                         onClick={() => setShowAddUserModal(true)}
                       >
-                        Add user
+                        <FiUserPlus />
                       </Button>
                     </div>
                   )}
@@ -243,78 +266,93 @@ const DepartmentsPage: React.FC = () => {
                   )}
 
                   {/* TAB. UTENTI */}
-                  <Table
-                    striped
-                    bordered
-                    hover
-                    size="sm"
-                    className="dept-table"
-                  >
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        {isAdmin && <th>Actions</th>}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pagedUsers.length === 0 && (
+                  <div className="dept-table-panel">
+                    <Table className="dept-table">
+                      <thead>
                         <tr>
-                          <td colSpan={isAdmin ? 4 : 3} className="text-center">
-                            No users found
-                          </td>
-                        </tr>
-                      )}
-
-                      {pagedUsers.map((u) => (
-                        <tr key={u.id}>
-                          <td>
-                            {u.name} {u.surname}
-                          </td>
-                          <td>{u.email}</td>
-                          <td>
-                            {u.roles.map((role) => (
-                              <Badge
-                                bg="info"
-                                text="dark"
-                                className="me-1 dept-role-badge"
-                                key={role}
-                              >
-                                {role}
-                              </Badge>
-                            ))}
-                          </td>
-
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Role</th>
                           {isAdmin && (
-                            <td>
-                              <span className="me-2">
-                                <DepartmentRolesModal
-                                  userId={u.id}
-                                  departmentId={selectedDepartmentId!}
-                                  currentRoles={u.roles}
-                                  canEdit={isAdmin}
-                                />
-                              </span>
-                              <Button
-                                variant="danger"
-                                size="sm"
-                                onClick={() => {
-                                  if (!selectedDepartmentId) return;
-                                  removeUserFromDepartment({
-                                    departmentId: selectedDepartmentId,
-                                    userId: u.id,
-                                  });
-                                }}
-                              >
-                                Remove
-                              </Button>
-                            </td>
+                            <th className="dept-col-actions">Actions</th>
                           )}
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      </thead>
+                      <tbody>
+                        {pagedUsers.length === 0 && (
+                          <tr>
+                            <td
+                              colSpan={isAdmin ? 4 : 3}
+                              className="dept-table-empty-cell"
+                            >
+                              No users found
+                            </td>
+                          </tr>
+                        )}
+
+                        {pagedUsers.map((u) => (
+                          <tr key={u.id}>
+                            <td className="dept-cell-name">
+                              <div className="dept-user-cell">
+                                <div className="dept-user-avatar">
+                                  {u.name?.[0] || ""} {u.surname?.[0] || ""}
+                                </div>
+                                <div className="dept-user-meta">
+                                  <div className="dept-user-name">
+                                    {u.name} {u.surname}
+                                  </div>
+                                  <div className="dept-user-sub">
+                                    Team member
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="dept-cell-email">
+                              <span className="dept-user-email">{u.email}</span>
+                            </td>
+
+                            <td className="dept-cell-role">
+                              <div className="dept-role-list">
+                                {u.roles.map((role) => (
+                                  <span className="dept-role-pill" key={role}>
+                                    {role}
+                                  </span>
+                                ))}
+                              </div>
+                            </td>
+
+                            {isAdmin && (
+                              <td className="dept-cell-actions">
+                               
+                                  <div className="dept-icon-actions d-flex justify-content-between">
+                                    <DepartmentRolesModal
+                                      userId={u.id}
+                                      departmentId={selectedDepartmentId!}
+                                      currentRoles={u.roles}
+                                      canEdit={isAdmin}
+                                    />
+
+                                    <Button
+                                      className="dept-btn-icon dept-btn-icon--danger"
+                                      onClick={() => {
+                                        if (!selectedDepartmentId) return;
+                                        removeUserFromDepartment({
+                                          departmentId: selectedDepartmentId,
+                                          userId: u.id,
+                                        });
+                                      }}
+                                    >
+                                      <FiTrash2 />
+                                    </Button>
+                                  </div>
+                              
+                              </td>
+                            )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
 
                   {/* PAGINATION */}
                   {selectedDepartment.users.length > pageSize && (

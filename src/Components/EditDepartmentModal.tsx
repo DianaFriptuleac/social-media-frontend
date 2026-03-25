@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { EditDepartmentModalProps } from "../types/departments";
 import { Alert, Modal, Form, Button, Spinner } from "react-bootstrap";
-import "../css/Departments.css"
+import { FiSave, FiX, FiTrash2 } from "react-icons/fi";
+import "../css/Departments.css";
 
 const EditDepartmentModal = ({
   show,
@@ -46,14 +47,14 @@ const EditDepartmentModal = ({
 
   const handleDelete = () => {
     const ok = window.confirm(
-      `Delete department "${department.name}" ? This will remove all memberships.`
+      `Delete department "${department.name}" ? This will remove all memberships.`,
     );
     if (!ok) return;
     onDelete(department.id);
   };
 
   return (
-    <Modal show={show} onHide={onHide} centered className="dept-modal">
+    <Modal show={show} onHide={onHide} centered className="app-modal">
       <Modal.Header closeButton>
         <Modal.Title>Edit department</Modal.Title>
       </Modal.Header>
@@ -88,40 +89,32 @@ const EditDepartmentModal = ({
             Users in department: {department.userCount}
           </div>
           <Button
-            variant="outline-danger"
+            className="dept-btn-icon dept-btn-icon--danger"
             onClick={handleDelete}
             disabled={isSaving || isDeleting}
           >
-            {isDeleting ? (
-              <>
-                {" "}
-                <Spinner size="sm" className="me-2" /> Deleting...
-              </>
-            ) : (
-              "Delete"
-            )}
+            {isDeleting ? <Spinner size="sm" /> : <FiTrash2 />}
           </Button>
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="secondary"
-          className="dept-btn-secondary"
-          onClick={onHide}
-          disabled={isSaving || isDeleting}
-        >
-          Cancel
-        </Button>
-        <Button variant="primary" className="dept-btn-primary" onClick={handleSave} disabled={!canSave}>
-          {isSaving ? (
-            <>
-              <Spinner size="sm" className="me-2" />
-              Saving...
-            </>
-          ) : (
-            "Save changes"
-          )}
-        </Button>
+        <div className="dept-icon-actions">
+          <Button
+            className="dept-btn-icon dept-btn-icon--secondary"
+            onClick={onHide}
+            disabled={isSaving || isDeleting}
+          >
+            <FiX />
+          </Button>
+          <Button
+            variant="primary"
+            className="dept-btn-icon dept-btn-icon--primary"
+            onClick={handleSave}
+            disabled={!canSave}
+          >
+            {isSaving ? <Spinner size="sm" /> : <FiSave />}
+          </Button>
+        </div>
       </Modal.Footer>
     </Modal>
   );

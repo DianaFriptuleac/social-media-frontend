@@ -146,7 +146,7 @@ const AddUserToDepartmentModal = ({
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered size="lg" className="dept-modal">
+    <Modal show={show} onHide={handleClose} centered size="lg" className="">
       <Modal.Header closeButton>
         <Modal.Title>Add user to department</Modal.Title>
       </Modal.Header>

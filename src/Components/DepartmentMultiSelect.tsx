@@ -37,19 +37,17 @@ const DepartmentMultiSelect = ({
   };
 
   const selectedDepartments = departments.filter((d) =>
-    selectedIds.includes(d.id)
+    selectedIds.includes(d.id),
   );
 
   return (
-    <div>
-      <Form.Group className="mb-2">
-        <Form.Label>Departments</Form.Label>
-        <Form.Control
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search department..."
-        />
-      </Form.Group>
+    <div className="app-modal__section">
+      <div className="app-modal__section-title">Departments</div>
+      <Form.Control
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search department..."
+      />
 
       <div className="mb-2 d-flex flex-wrap gap-2">
         {selectedDepartments.map((d) => (
@@ -64,7 +62,7 @@ const DepartmentMultiSelect = ({
         ))}
       </div>
 
-      <ListGroup style={{ maxHeight: 220, overflowY: "auto" }}>
+      <ListGroup className="mt-3" style={{ maxHeight: 220, overflowY: "auto" }}>
         {filteredDepartments.map((d) => {
           const active = selectedIds.includes(d.id);
           return (
@@ -76,7 +74,11 @@ const DepartmentMultiSelect = ({
               className="d-flex justify-content-between align-items-center"
             >
               <span>{d.name}</span>
-              {active && <Badge bg="light" text="dark">Selected</Badge>}
+              {active && (
+                <Badge bg="light" text="dark">
+                  Selected
+                </Badge>
+              )}
             </ListGroup.Item>
           );
         })}

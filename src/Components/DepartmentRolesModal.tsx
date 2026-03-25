@@ -5,7 +5,8 @@ import {
 } from "../api/departmentApi";
 import { Button, Modal, Alert, Badge } from "react-bootstrap";
 import RolePicker from "./RolePicker";
-import "../css/RolePicker.css"
+import { FiEdit2} from "react-icons/fi";
+import "../css/Departments.css"
 
 interface DepartmentRolesModalProps {
   userId: string;
@@ -144,16 +145,16 @@ const DepartmentRolesModal = ({
   return (
     <>
       <Button
-        variant="warning"
+     className="dept-btn-icon dept-btn-icon--primary"
         size="sm"
         disabled={!canClick}
         onClick={canClick ? handleOpen : undefined}
         title={canClick ? "Edit roles in department" : "Admin only"}
       >
-        Edit Roles
+        <FiEdit2/>
       </Button>
 
-      <Modal show={showModal} onHide={handleClose} centered className="dept-modal">
+      <Modal show={showModal} onHide={handleClose} centered className="app-modal">
         <Modal.Header closeButton>
           <Modal.Title>Roles in the Department</Modal.Title>
         </Modal.Header>

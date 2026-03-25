@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { CreateDepartmentModalProps } from "../types/departments";
 import { Alert, Modal, Form, Button, Spinner } from "react-bootstrap";
-import "../css/Departments.css"
+import "../css/Modals.css";
 
 const CreateDepartmentModal = ({
   show,
@@ -13,7 +13,7 @@ const CreateDepartmentModal = ({
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
- useEffect(() => {
+  useEffect(() => {
     if (!show) {
       setName("");
       setDescription("");
@@ -27,7 +27,7 @@ const CreateDepartmentModal = ({
   };
 
   return (
-    <Modal show={show} onHide={handleClose} centered className="dept-modal">
+    <Modal show={show} onHide={handleClose} centered className="app-modal">
       <Modal.Header closeButton>
         <Modal.Title>Create Department</Modal.Title>
       </Modal.Header>
@@ -46,13 +46,20 @@ const CreateDepartmentModal = ({
         <Form.Group>
           <Form.Label>Description</Form.Label>
           <Form.Control
+            as="textarea"
+            rows={3}
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder="Department description"
           />
         </Form.Group>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" className="dept-btn-secondary" onClick={handleClose}>
+        <Button
+          variant="secondary"
+          className="dept-btn-secondary"
+          onClick={handleClose}
+        >
           Cancel
         </Button>
 
