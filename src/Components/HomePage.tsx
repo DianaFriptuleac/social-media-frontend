@@ -12,6 +12,8 @@ import { useAppSelector } from "../store/hooks";
 import "../css/Home.css";
 import { useGetPostsQuery } from "../api/postApi";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGetAllEventsQuery } from "../api/EventApi";
 import { getPaginationRange } from "../utils/pagination";
 import CreatePostBox from "./Posts/CreatePostBox";
 import PostCard from "./Posts/PostCard";
@@ -37,9 +39,25 @@ const HomePage = () => {
   const canGoNext = totalPages > 0 && currentPage < totalPages - 1;
 
   const pageNumbers = getPaginationRange(currentPage, totalPages, 5);
+  const navigate = useNavigate();
+  const {
+    data: eventsPage,
+    isLoading: eventsLoading,
+    isError: eventsError,
+  } = useGetAllEventsQuery({
+    page: 0,
+    size: 5,
+  });
+
+  const upcomingEvents =
+    eventsPage?.content
+      ?.filter((event) => new Date(event.startAt) >= new Date())
+      .sort(
+        (a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
+      ) ?? [];
 
   return (
-    <Container fluid className="mt-4 home-wrap">
+    <Container fluid className="home-wrap">
       {/* HERO */}
       <Row className="mb-3">
         <Col className="px-0">
@@ -196,11 +214,41 @@ const HomePage = () => {
               <div className="home-side-muted">
                 Upcoming meetings, deadlines and team activity.
               </div>
+              {eventsLoading && (
+                <div className="text-center py-3">
+                  <Spinner size="sm" />
+                </div>
+              )}
 
-              <div className="home-event">
-                <div className="home-event-title">No events yet</div>
-                <div className="home-event-sub">Stay tuned.</div>
-              </div>
+              {eventsError && (
+                <div className="home-event">
+                  <div className="home-event-title">Error loading events</div>
+                </div>
+              )}
+
+              {!eventsLoading &&
+                !eventsError &&
+                upcomingEvents.length === 0 && (
+                  <div className="home-event">
+                    <div className="home-event-title">No upcoming events</div>
+                    <div className="home-event-sub">Stay tuned.</div>
+                  </div>
+                )}
+              {upcomingEvents.map((e) => (
+                <div
+                  key={e.id}
+                  className="home-event home-event-clickable"
+                  onClick={() => navigate(`/events/${e.id}`)}
+                >
+                  <div className="home-event-title fw-bold mt-2">{e.name}</div>
+                  <div className="home-event-sub">
+                    {new Date(e.startAt).toLocaleString()}
+                  </div>
+                  <div className="home-event-sub">
+                    {e.location || "No location"}
+                  </div>
+                </div>
+              ))}
             </Card.Body>
           </Card>
         </Col>

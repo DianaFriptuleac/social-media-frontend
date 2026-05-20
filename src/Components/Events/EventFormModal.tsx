@@ -14,7 +14,6 @@ import { useGetAllUsersQuery } from "../../api/userApi";
 import DepartmentMultiSelect from "../DepartmentMultiSelect";
 import UserMultiSelect from "../UserMultiSelect";
 
-
 interface Props {
   show: boolean;
   onHide: () => void;
@@ -56,7 +55,7 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
       setEndAt(eventData.endAt.slice(0, 16));
       setType(eventData.type);
       setAudienceType(eventData.audienceType);
-      setDepartmentIds([]);
+      setDepartmentIds(eventData.departments?.map((d) => d.id) ?? []);
       setUserIds(eventData.participants.map((p) => p.userId));
     } else {
       setName("");
@@ -137,6 +136,7 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
             <Form.Label>Start</Form.Label>
             <Form.Control
               type="datetime-local"
+              step="60"
               value={startAt}
               onChange={(e) => setStartAt(e.target.value)}
               required
@@ -147,6 +147,7 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
             <Form.Label>End</Form.Label>
             <Form.Control
               type="datetime-local"
+              step="60"
               value={endAt}
               onChange={(e) => setEndAt(e.target.value)}
               required

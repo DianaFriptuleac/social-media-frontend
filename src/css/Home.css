@@ -1,3 +1,6 @@
+.home-wrap{
+  margin-top: 32px;;
+}
 .home-hero {
   position: relative;
   overflow: hidden;
@@ -117,6 +120,16 @@
   border: 1px solid rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+}
+/*Events*/
+.home-event-clickable {
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.home-event-clickable:hover {
+  background: rgba(13, 110, 253, 0.06);
+  transform: translateY(-1px);
 }
 
 @media (max-width: 991.98px) {

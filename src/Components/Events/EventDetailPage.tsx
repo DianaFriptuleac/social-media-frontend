@@ -125,10 +125,24 @@ const EventDetailPage = () => {
               </p>
               <p>
                 <strong>Start:</strong>{" "}
-                {new Date(data.startAt).toLocaleString()}
+                {new Date(data.startAt).toLocaleString("it-IT", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </p>
+
               <p>
-                <strong>End:</strong> {new Date(data.endAt).toLocaleString()}
+                <strong>End:</strong>{" "}
+                {new Date(data.endAt).toLocaleString("it-IT", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </p>
               <p>
                 <strong>Created by:</strong> {data.createdByName}
@@ -137,7 +151,7 @@ const EventDetailPage = () => {
               <div className="mb-2">
                 <strong>Departments:</strong>{" "}
                 {data.departments.length > 0
-                  ? data.departments.join(", ")
+                  ? data.departments.map((d) => d.name).join(", ")
                   : "-"}
               </div>
 

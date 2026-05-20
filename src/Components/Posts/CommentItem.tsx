@@ -5,15 +5,9 @@ import {
 } from "../../api/postApi";
 import { useAppSelector } from "../../store/hooks";
 import type { CommentResponseDTO } from "../../types/postShare";
-import {
-  Card,
-  Spinner,
-  Stack,
-  Form,
-  Button,
-  Badge,
-  Collapse,
-} from "react-bootstrap";
+import { Spinner, Form, Button, Collapse } from "react-bootstrap";
+import { FiTrash2, FiMoreHorizontal } from "react-icons/fi";
+import { Dropdown } from "react-bootstrap";
 import "../../css/Posts.css";
 
 type Props = {
@@ -22,7 +16,7 @@ type Props = {
   comment: CommentResponseDTO;
 };
 
-const CommentItem = ({ postId, postAuthorId, comment }: Props) => {
+const CommentItem = ({ postId, postAuthorId, comment}: Props) => {
   const me = useAppSelector((s) => s.auth.user);
 
   const [createComment, { isLoading: replying }] = useCreateCommentMutation();
@@ -63,125 +57,109 @@ const CommentItem = ({ postId, postAuthorId, comment }: Props) => {
       alert("Failed to reply.");
     }
   };
+  const [showReplies, setShowReplies] = useState(false);
+  const repliesCount = comment.replies?.length ?? 0;
 
   return (
-    <Card className="post-card mt-2">
-      <Card.Body className="p-2">
-        <Stack
-          direction="horizontal"
-          className="justify-content-between"
-          gap={2}
-        >
-          {/* Stack equivalente a -> <div className="d-flex justify-content-between align-items-center gap-2" */}
-          <div className="w-100">
-            <Stack
-              direction="horizontal"
-              gap={2}
-              className="align-items-center"
-            >
-              <div className="fw-semibold">
-                {comment.author.name} {comment.author.surname}
+    <div className="comment-item">
+      <div className="comment-main">
+        <div className="comment-avatar">{comment.author.name?.[0]}</div>
+        <div className="comment-content">
+          <div className="comment-bubble">
+            <div className="comment-header">
+              <div>
+                <span className="comment-author">
+                  {comment.author.name} {comment.author.surname}{" "}
+                </span>
+                {me?.id === comment.author.id && (
+                  <span className="comment-badge">You</span>
+                )}
               </div>
 
-              {me?.id === comment.author.id && (
-                <Badge bg="secondary" pill>
-                  You
-                </Badge>
-              )}
-            </Stack>
+              <Dropdown align="end" className="comment-menu">
+                <Dropdown.Toggle className="comment-dots">
+                  <FiMoreHorizontal />
+                </Dropdown.Toggle>
 
-            <Card.Text className="post-text mb-0">{comment.text}</Card.Text>
+                <Dropdown.Menu>
+                  {canDelete && (
+                    <Dropdown.Item
+                      onClick={onDelete}
+                      disabled={deleting}
+                      className="comment-delete-item"
+                    >
+                      <FiTrash2 className="me-2" />
+                      {deleting ? "Deleting..." : "Delete"}
+                    </Dropdown.Item>
+                  )}
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+            <div className="comment-text">{comment.text}</div>
+          </div>
+          <div className="comment-actions">
+            <span>{new Date(comment.createdAt).toLocaleString()}</span>
 
-            <Stack direction="horizontal" gap={2} className="mt-2 flex-wrap">
-              {me && (
-                <Button
-                  size="sm"
-                  variant="outline-secondary"
-                  onClick={() => setShowReply((v) => !v)}
-                >
-                  Reply
-                </Button>
-              )}
+            {me && (
+              <Button onClick={() => setShowReply((v) => !v)}>Reply</Button>
+            )}
+            {repliesCount > 0 && (
+              <Button onClick={() => setShowReplies((v) => !v)}>
+                {showReplies ? "Hide replies" : `View ${repliesCount} replies`}
+              </Button>
+            )}
+          </div>
 
-              {canDelete && (
-                <Button
-                  size="sm"
-                  variant="outline-danger"
-                  onClick={onDelete}
-                  disabled={deleting}
-                >
-                  {deleting ? (
+          <Collapse in={showReply}>
+            <div className="comment-replybox">
+              <Form.Control
+                as="textarea"
+                rows={2}
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                placeholder="Write a reply..."
+                className="comment-replybox-textarea"
+              />
+
+              <div className="comment-replybox-actions">
+                <Button size="sm" onClick={onReply} disabled={replying}>
+                  {replying ? (
                     <>
                       <Spinner size="sm" className="me-2" />
-                      Deleting...
+                      Sending...
                     </>
                   ) : (
-                    "Delete"
+                    "Send"
                   )}
                 </Button>
-              )}
-            </Stack>
 
-            <Collapse in={showReply}>
-              <div className="comment-replybox mt-2">
-                <Form.Group className="mb-2">
-                  <Form.Control
-                    as="textarea"
-                    rows={2}
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    placeholder="Write a reply..."
-                    className="comment-replybox-textarea"
-                  />
-                </Form.Group>
-
-                <Stack
-                  direction="horizontal"
-                  gap={2}
-                  className="comment-replybox-actions"
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => setShowReply(false)}
                 >
-                  <Button size="sm" onClick={onReply} disabled={replying}>
-                    {replying ? (
-                      <>
-                        <Spinner size="sm" className="me-2" />
-                        Sending...
-                      </>
-                    ) : (
-                      "Send"
-                    )}
-                  </Button>
-
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => setShowReply(false)}
-                  >
-                    Cancel
-                  </Button>
-                </Stack>
+                  Cancel
+                </Button>
               </div>
-            </Collapse>
-          </div>
-
-          <div className="post-meta text-nowrap">
-            {new Date(comment.createdAt).toLocaleString()}
-          </div>
-        </Stack>
-
-        {comment.replies?.length ? (
-          <div className="mt-2">
-            {comment.replies.map((r) => (
-              <CommentItem
-                key={r.id}
-                postId={postId}
-                postAuthorId={postAuthorId}
-                comment={r}
-              />
-            ))}
-          </div>
-        ) : null}
-      </Card.Body>
-    </Card>
+            </div>
+          </Collapse>
+          {repliesCount > 0 && showReplies && (
+            <div
+              className="comment-replies"
+            >
+              {comment.replies.map((r) => (
+                <CommentItem
+                  key={r.id}
+                  postId={postId}
+                  postAuthorId={postAuthorId}
+                  comment={r}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 export default CommentItem;

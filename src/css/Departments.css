@@ -245,21 +245,6 @@
     0 0 0 4px rgba(98, 116, 168, 0.16);
 }
 
-/* success: verde scuro coerente con accent */
-.dept-btn-icon--success{
-  background: #355900 !important;
-  color: var(--white) !important;
-}
-
-.dept-btn-icon--success:hover{
-  background: #2b4900 !important;
-}
-
-.dept-btn-icon--success:focus{
-  box-shadow:
-    var(--shadow-soft),
-    0 0 0 4px rgba(53, 89, 0, 0.16);
-}
 
 /* danger: rosso pieno come nello screen */
 .dept-btn-icon--danger{

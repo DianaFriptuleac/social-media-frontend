@@ -38,7 +38,10 @@ export interface EventParticipantView {
   avatar: string | null;
   status: ParticipationStatus;
 }
-
+export interface EventDepartmentView {
+  id: string;
+  name: string;
+}
 export interface EventDetail {
   id: string;
   name: string;
@@ -54,7 +57,7 @@ export interface EventDetail {
   acceptedCount: number;
   declinedCount: number;
   pendingCount: number;
-  departments: string[];
+  departments: EventDepartmentView[];
   participants: EventParticipantView[];
 }
 

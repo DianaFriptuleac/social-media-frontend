@@ -14,6 +14,7 @@ import EventFormModal from "./EventFormModal";
 import { useGetAllEventsQuery } from "../../api/EventApi";
 import { getPaginationRange } from "../../utils/pagination";
 
+
 const EventsPage = () => {
   const navigate = useNavigate();
 
