@@ -136,6 +136,7 @@ const UsersListPage = () => {
                         <th>Name</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -173,7 +174,7 @@ const UsersListPage = () => {
                                 className="text-end"
                               >
                                 <Button
-                                  variant="outline-danger"
+                                  className="delete-user-btn"
                                   size="sm"
                                   disabled={isDeleting}
                                   title={"Delete user"}

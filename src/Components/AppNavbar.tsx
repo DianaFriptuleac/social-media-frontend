@@ -112,6 +112,13 @@ const AppNavbar = () => {
                 Users
               </Nav.Link>
               <Nav.Link
+                className={isActive("/messages") ? "active" : ""}
+                onClick={() => handleNavigate("/messages")}
+              >
+                Messages{" "}
+                {unreadTotal > 0 && <Badge bg="danger">{unreadTotal}</Badge>}
+              </Nav.Link>
+              <Nav.Link
                 className={isActive("/events") ? "active" : ""}
                 onClick={() => handleNavigate("/events")}
               >
@@ -226,7 +233,6 @@ const AppNavbar = () => {
           onClick={() => handleNavigate("/")}
         >
           <BsHouseDoor size={18} />
-          <span>Home</span>
         </button>
 
         <button
@@ -236,7 +242,6 @@ const AppNavbar = () => {
           onClick={() => handleNavigate("/departments")}
         >
           <BsBuilding size={18} />
-          <span>Depts</span>
         </button>
 
         <button
@@ -244,7 +249,6 @@ const AppNavbar = () => {
           onClick={() => handleNavigate("/users")}
         >
           <BsPeople size={18} />
-          <span>Users</span>
         </button>
 
         <button
@@ -252,7 +256,6 @@ const AppNavbar = () => {
           onClick={() => handleNavigate("/inbox")}
         >
           <BsInbox size={18} />
-          <span>Inbox</span>
         </button>
 
         <button
@@ -260,7 +263,6 @@ const AppNavbar = () => {
           onClick={() => handleNavigate("/events")}
         >
           <BsCalendar size={18} />
-          <span>Events</span>
         </button>
       </nav>
     </>

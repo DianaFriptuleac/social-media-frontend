@@ -15,13 +15,13 @@
 .dept-rolepicker__list {
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 20px var(--border);
 }
 
 /* item */
 .dept-rolepicker__item {
-  border-color: rgba(0, 0, 0, 0.06);
+  border-color: var(--border);
   transition:
     background 0.12s ease,
     transform 0.12s ease,

@@ -49,10 +49,13 @@ const SingleUserDetail = () => {
   const canEditPosts = currentUser?.id === id;
 
   return (
-    <Container className="mt-4 user-detail-page">
-      <Row className="mb-3">
+    <Container className="user-detail-page">
+      <Row className="user-detail-header mb-4">
         <Col className="d-flex justify-content-between align-items-center">
-          <h2 className="user-detail-title">User details</h2>
+          <div>
+            <span className="u-kicker">Talent Profile</span>
+            <h2 className="user-detail-title">User details</h2>
+          </div>
           <Button
             className="u-btn-outline"
             variant="outline-secondary"
@@ -78,22 +81,30 @@ const SingleUserDetail = () => {
       )}
 
       {user && (
-        <Row>
-          <Col xs={12} md={4} className="mb-4">
-            <Card className="text-center u-card">
+        <Row className="g-4">
+          <Col xs={12} md={4}>
+            <Card className="text-center u-card user-detail-profile-card">
               <Card.Body>
-                {user.avatar && (
-                  <div className="mb-3">
+                <div className="user-detail-cover" />
+                <div className="user-detail-avatar-wrap">
+                  {user.avatar ? (
                     <img src={user.avatar} alt="avatar" className="u-avatar" />
-                  </div>
-                )}
+                  ) : (
+                    <div className="u-avatar user-detail-avatar-placeholder">
+                      {user.name?.[0]}
+                      {user.surname?.[0]}
+                    </div>
+                  )}
+                </div>
 
-                <Card.Title>
+                <Card.Title className="user-detail-name">
                   {user.name} {user.surname}
                 </Card.Title>
-                <Card.Text>{user.email}</Card.Text>
+                <Card.Text className="user-detail-email">
+                  {user.email}
+                </Card.Text>
 
-                <div className="mt-2">
+                <div className="mt-3">
                   <UserRoleBadgeModal
                     currentRole={user.role}
                     userId={user.id}
@@ -105,27 +116,40 @@ const SingleUserDetail = () => {
           </Col>
 
           <Col xs={12} md={8}>
-            <Card className="u-card">
+            <Card className="u-card user-detail-info-card">
               <Card.Body>
-                <h4>Info</h4>
-                <div>
-                  <strong>Username:</strong> {user.username}
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <div>
+                    <span className="u-kicker">About me</span>
+                    <h4 className="user-detail-section-title">Info</h4>
+                  </div>
                 </div>
-                <div>
-                  <strong>Role:</strong> {user.role}
-                </div>
-                <div>
-                  <strong>Email:</strong> {user.email}
+
+                <div className="user-info-list">
+                  <div className="user-info-row">
+                    <span>Username</span> <strong>{user.username}</strong>
+                  </div>
+                  <div className="user-info-row">
+                    <span>Role</span>
+                    <strong>{user.role}</strong>
+                  </div>
+                  <div className="user-info-row">
+                    <span>Email</span> <strong>{user.email}</strong>
+                  </div>
                 </div>
               </Card.Body>
             </Card>
-            <Card className="u-card mt-4">
+            <Card className="u-card user-detail-posts-card mt-4">
               <Card.Body>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                  <h4 className="mb-0">Posts</h4>
+                  <div>
+                    <span className="u-kicker">Network activity</span>
+                    <h4 className="user-detail-section-title">Posts</h4>
+                  </div>
 
                   {postsError && (
                     <Button
+                      className="u-btn-outline"
                       variant="outline-secondary"
                       size="sm"
                       onClick={() => refetchPosts()}
@@ -155,9 +179,11 @@ const SingleUserDetail = () => {
                     </Alert>
                   )}
 
-                {postsPage?.content.map((p) => (
-                  <PostCard key={p.id} post={p} canEdit={!!canEditPosts} />
-                ))}
+                <div className="user-detail-posts-list">
+                  {postsPage?.content.map((p) => (
+                    <PostCard key={p.id} post={p} canEdit={!!canEditPosts} />
+                  ))}
+                </div>
               </Card.Body>
             </Card>
           </Col>

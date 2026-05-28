@@ -1,15 +1,17 @@
-.home-wrap{
-  margin-top: 32px;;
+.home-wrap {
+  /* margin-top: 32px;*/
+  max-width: var(--content-max);
+  margin: 32px auto 0;
+  padding: 0 20px 100px;
 }
 .home-hero {
   position: relative;
   overflow: hidden;
-  min-height: 220px;
-  border-radius: 28px;
-  border: 1px solid rgba(31, 34, 48, 0.06);
-  box-shadow: 0 14px 34px rgba(24, 30, 56, 0.08);
-  background: url("/public/images/car1.jpg") center/cover no-repeat;
-  
+  min-height: 260px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  background: url("/images/car1.jpg") center/cover no-repeat;
 }
 
 .home-hero::before {
@@ -56,15 +58,15 @@
   align-items: center;
   align-self: flex-start;
   margin-bottom: 14px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(155, 229, 44, 0.92);
-  color: #1f2230;
+  padding: 8px 13px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--brand-900);
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  box-shadow: 0 6px 18px rgba(155, 229, 44, 0.22);
+  box-shadow: 0 8px 20px rgba(155, 229, 44, 0.25);
 }
 
 .home-hero-title {
@@ -109,22 +111,48 @@
 }
 
 .home-hero-btn--primary {
-  background: #ffffff;
-  color: var(--brand-500);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  background: var(--white);
+  color: var(--brand-700);
+  box-shadow: var(--shadow-primary);
 }
 
 .home-hero-btn--secondary {
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
+.home-hero-btn--primary:hover,
+.home-hero-btn--secondary:hover {
+  background: var(--accent);
+}
+.home-feed-card{
+  background-color: var(--card-soft);
+  border-color: var(--accent);
+  border-radius: 10px;
+}
+.home-side-card{
+  border-color: var(--accent);
+  border-radius: 10px;
+}
 /*Events*/
+.home-side-title{
+  text-align: center;
+  font-size: 1.3rem;
+
+}
+
+.home-side-title,
+.home-event{
+  background-color: var(--card-soft);
+  padding: 0 10px;
+}
 .home-event-clickable {
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
 }
 
 .home-event-clickable:hover {

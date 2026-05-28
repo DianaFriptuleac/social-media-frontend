@@ -2,7 +2,7 @@
 .createpost-card {
   border-radius: 14px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
 }
 
 .createpost-trigger {
@@ -13,10 +13,10 @@
 
 .createpost-trigger-input {
   flex: 1;
-  border-radius: 999px !important;
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
-  padding: 10px 14px !important;
+  border-radius: var(--radius-pill) !important;
+  background: var(--input) !important;
+  border: 1px solid transparent !important;
+  padding: 12px 16px !important;
   cursor: pointer;
 }
 
@@ -35,6 +35,13 @@
 .createpost-action-btn {
   flex: 1;
   border-radius: 10px;
+  color: var(--brand-800);
+  border-color: var(--brand-800);
+  font-weight: 700;
+}
+.createpost-action-btn:hover {
+  background-color: var(--accent);
+  border: transparent;
 }
 
 /* Modal */
@@ -53,7 +60,7 @@
 .post-card {
   border-radius: 14px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border);
 }
 
 .post-media {
@@ -128,9 +135,9 @@
 .post-media-wrap {
   margin-top: 10px;
   margin-bottom: 10px;
-  border-radius: 12px;
+  border-radius: 24px;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 0;
 }
 
 .post-media {
@@ -138,6 +145,7 @@
   max-height: 420px;
   object-fit: cover;
   display: block;
+  border-radius: 24px;
 }
 
 /* frecce carousel */
@@ -149,7 +157,7 @@
 /*btn di post -> Edit, Delete, Share*/
 .post-actions {
   padding-top: 10px;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: 1px solid var(--border);
 }
 
 .post-actions button {
@@ -189,8 +197,8 @@
 /* Card styling */
 .inbox-card {
   background: var(--card);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 14px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
   box-shadow: var(--shadow);
 }
 
@@ -236,8 +244,8 @@
   line-height: 1.35;
   font-size: 14px;
   color: var(--text);
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--card-soft);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 10px 12px;
 }
@@ -277,6 +285,20 @@
   background: rgba(13, 110, 253, 0.08);
   border: 1px solid rgba(13, 110, 253, 0.2);
 }
+
+.createpost-card,
+.post-card,
+.inbox-card {
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+.createpost-action-btn,
+.post-actions button,
+.inbox-actions .btn {
+  border-radius: var(--radius-pill);
+}
 /* -------- Comments: Reply box (compact) -------- */
 .comments-list {
   display: flex;
@@ -287,7 +309,6 @@
 .comment-item {
   width: 100%;
 }
-
 
 .comment-avatar {
   width: 34px;
@@ -308,10 +329,10 @@
 }
 
 .comment-bubble {
-  background: #f8f9fa;
+  background: var(--card-soft);
   border-radius: 16px;
   padding: 10px 14px;
-  border: 1px solid #edf0f2;
+  border: 1px solid var(--border);
 }
 
 .comment-header {
@@ -328,7 +349,7 @@
 .comment-badge {
   margin-left: 8px;
   background: #6c757d;
-  color: white;
+  color: var(--white);
   border-radius: 999px;
   padding: 2px 8px;
   font-size: 12px;
@@ -451,14 +472,15 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  border: 1px solid #dee2e6;
-  background: #f8f9fa; 
+  border: 1px solid var(--border);
+  background: var(--card-soft);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 0.9rem;
+  font-weight: 800;
   transition: all 0.2s ease;
   cursor: pointer;
-  color: #495057; /* colore testo + icona */
+  color: var(--muted); /* colore testo + icona */
 }
 
 .post-action-btn svg {
@@ -466,24 +488,26 @@
 }
 
 .post-action-btn:hover {
-  background: #e9ecef;
+  background: var(--info-soft);
+  color: var(--brand-700);
+  color: var(--brand-700);
 }
 
 .post-action-btn.active {
-  background: #dc3545;
-  color: white;
-  border-color: #dc3545;
+  background: var(--brand-700);
+  color: var(--white);
+  border-color: var(--brand-700);
 }
 
 .post-action-btn.danger {
-  color: #dc3545;
-  background: #fff;
-  border-color: #dc3545;
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: rgba(217, 45, 32, 0.2);
 }
 
 .post-action-btn.danger:hover {
-  background: #dc3545;
-  color: white;
+  background: var(--danger);
+  color: var(--white);
 }
 
 .post-owner-actions {
@@ -498,4 +522,100 @@
 
 .like-count:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 767.98px) {
+  .createpost-card,
+  .post-card,
+  .inbox-card {
+    border-radius: 24px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .createpost-card .card-body,
+  .post-card .card-body {
+    padding: 16px;
+  }
+
+  .createpost-trigger {
+    gap: 10px;
+  }
+
+  .createpost-avatar,
+  .createpost-avatar-placeholder {
+    width: 38px;
+    height: 38px;
+  }
+
+  .createpost-trigger-input {
+    min-height: 44px;
+    padding: 10px 14px !important;
+    font-size: 0.9rem;
+  }
+
+  .createpost-actions {
+    gap: 8px;
+  }
+
+  .createpost-action-btn {
+    min-height: 40px;
+    font-size: 0.82rem !important;
+  }
+
+  .post-media-wrap {
+    margin-left: -6px;
+    margin-right: -6px;
+    border-radius: 22px;
+  }
+
+  .post-media {
+    max-height: 350px;
+    border-radius: 22px;
+  }
+
+  .post-text {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .post-actions-bar {
+    gap: 8px;
+  }
+
+  .post-action-btn {
+    padding: 7px 10px;
+    font-size: 0.78rem;
+  }
+
+  .post-owner-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-end;
+  }
+
+  .comment-replies {
+    padding-left: 24px;
+  }
+
+  .comment-replies::before {
+    left: 10px;
+  }
+
+  .comment-bubble {
+    border-radius: 18px;
+    padding: 9px 12px;
+  }
+
+  .comment-header {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .createpost-modal .modal-dialog {
+    margin: 12px;
+  }
+
+  .createpost-modal .modal-content {
+    border-radius: 24px;
+  }
 }

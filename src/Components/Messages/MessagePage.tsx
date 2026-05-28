@@ -2,26 +2,30 @@ import { Container, Row, Col } from "react-bootstrap";
 import ConversationList from "./ConversationList";
 import ConversationPanel from "./ConversationPanel";
 import NewConversationModal from "./NewConversationModal";
+import { useAppSelector } from "../../store/hooks";
+import "../../css/Messages.css"
 
 const MessagesPage = () => {
+  const selectedConversationId = useAppSelector(
+    (s) => s.message.selectedConversationId,
+  );
   return (
-    <>
-      <Container fluid className="py-3">
-        <Row
-          className="messages-layout"
-          style={{ height: "calc(100vh - 90px)" }}
-        >
-          <Col md={4} lg={3} className="h-100 messages-sidebar">
-            <ConversationList />
-          </Col>
-          <Col md={8} lg={9} className="h-100">
-            <ConversationPanel />
-          </Col>
-        </Row>
-      </Container>
-
+    <Container fluid className="message-page">
+      <Row
+        className={`messages-layout ${
+          selectedConversationId ? "messages-layout--chat-open" : ""
+        }`}
+        //style={{ height: "calc(100vh - 90px)" }}
+      >
+        <Col md={3} className="messages-sidebar">
+          <ConversationList />
+        </Col>
+        <Col md={9} className="messages-panel">
+          <ConversationPanel />
+        </Col>
+      </Row>
       <NewConversationModal />
-    </>
+    </Container>
   );
 };
 

@@ -89,9 +89,6 @@ const HomePage = () => {
           <Card className="home-side-card">
             <Card.Body>
               <Card.Title className="home-side-title">Quick Access</Card.Title>
-              <div className="home-side-muted">
-                Pin departments, teams and useful shortcuts here.
-              </div>
             </Card.Body>
           </Card>
         </Col>
@@ -211,9 +208,6 @@ const HomePage = () => {
           <Card className="home-side-card">
             <Card.Body>
               <Card.Title className="home-side-title">Events</Card.Title>
-              <div className="home-side-muted">
-                Upcoming meetings, deadlines and team activity.
-              </div>
               {eventsLoading && (
                 <div className="text-center py-3">
                   <Spinner size="sm" />

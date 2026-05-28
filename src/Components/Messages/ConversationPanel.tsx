@@ -10,9 +10,13 @@ import MessageBubble from "./MessageBubble";
 import MessageComposer from "./MessageComposer";
 import { useEffect, useMemo } from "react";
 import type { MessageResponseDTO } from "../../types/message";
-import "../../css/Messages.css"
+import "../../css/Messages.css";
+import { useDispatch } from "react-redux";
+import { setSelectedConversation } from "../../store/messageSlice";
 
 const ConversationPanel = () => {
+  const dispatch = useDispatch();
+
   //conversazione selezionata dallo store Redux
   const selectedConversationId = useAppSelector(
     (s) => s.message.selectedConversationId,
@@ -104,6 +108,13 @@ const ConversationPanel = () => {
 
   return (
     <div className="messages-panel h-100 d-flex flex-column">
+      <Button
+        variant="link"
+        className="messages-back-btn d-md-none"
+        onClick={() => dispatch(setSelectedConversation(null))}
+      >
+        ← Back
+      </Button>
       <div className="messages-chat-header p-3 d-flex justify-content-between align-items-center">
         <div>
           <h5 className="mb-0 messages-chat-name">

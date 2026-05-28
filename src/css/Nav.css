@@ -1,4 +1,4 @@
-:root {
+/*:root {
   --nav-h: 40px;
   --bottom-nav-h: 78px;
 
@@ -10,14 +10,29 @@
   --nav-icon-bg: #f3f1f8;
   --nav-pill: #9be52c;
   --nav-shadow: 0 10px 30px rgba(24, 30, 56, 0.08);
+}*/
+:root {
+  --nav-h: 72px;
+  --bottom-nav-h: 86px;
+
+  --nav-bg: rgba(255, 255, 255, 0.88);
+  --nav-border: var(--border);
+  --nav-text: var(--muted);
+  --nav-text-active: var(--brand-700);
+  --nav-brand: var(--brand-700);
+  --nav-icon-bg: var(--card-soft);
+  --nav-pill: var(--accent);
+  --nav-shadow: var(--shadow-soft);
 }
 
 /* top navbar */
 .app-navbar {
   background: var(--nav-bg) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   min-height: var(--nav-h);
+   border-bottom: 1px solid var(--nav-border);
+  box-shadow: var(--nav-shadow);
  
 }
 
@@ -27,7 +42,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding-inline: 20px;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding-inline: 24px;
 }
 
 .app-navbar__left,
@@ -38,11 +55,11 @@
 }
 
 .app-navbar__brand {
-  margin: 0 !important;
-  color: var(--nav-brand) !important;
-  font-weight: 900;
-  font-size: 1.8rem;
-  letter-spacing: -0.05em;
+ margin: 0 !important;
+  color: var(--brand-700) !important;
+  font-weight: 950;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  letter-spacing: -0.06em;
   cursor: pointer;
 }
 
@@ -52,26 +69,27 @@
 }
 
 .app-navbar__links .nav-link {
-  color: var(--nav-text);
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: 10px 14px !important;
-  border-radius: 999px;
-  transition: 0.18s ease;
+  color: var(--muted);
+  font-weight: 800;
+ font-size: 1.05rem;
+  padding: 10px 16px !important;
+  border-radius: var(--radius-pill);
+ transition: 0.18s ease;
 }
 
 .app-navbar__links .nav-link:hover {
-  color: #414657;
-  background: #f3f1f8;
+  color: var(--brand-900);
+  background: var(--card-soft);
 }
 
 .app-navbar__links .nav-link.active {
-  color: var(--nav-text-active);
-  background: #eef2ff;
+ color: var(--brand-700);
+ background: var(--info-soft);
 }
 
 .app-navbar__icon-btn,
-.app-navbar__menu-btn {
+.app-navbar__menu-btn,
+.app-navbar__logout  {
   width: 42px;
   height: 42px;
   border: 0;
@@ -79,16 +97,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  color: #7c8598;
   position: relative;
   transition: 0.18s ease;
+   background: transparent;
+  color: var(--muted);
 }
 
 .app-navbar__icon-btn:hover,
-.app-navbar__menu-btn:hover {
-  background: #f3f1f8;
-  color: #334155;
+.app-navbar__menu-btn:hover,
+.app-navbar__logout:hover {
+  background: var(--card-soft) !important;
+  color: var(--brand-700) !important;
 }
 
 .app-navbar__dot {
@@ -115,7 +134,7 @@
   border-radius: 999px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(31, 34, 48, 0.12);
+  box-shadow: var(--shadow);
 }
 
 .app-navbar__avatar {
@@ -207,43 +226,42 @@
 
 /* bottom nav mobile */
 .app-bottom-nav {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--bottom-nav-h);
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
   background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(14px);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-evenly;
+  padding: 10px;
+ /* backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-top: 1px solid rgba(31, 34, 48, 0.08);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   align-items: center;
   padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-  z-index: 1040;
+  z-index: 1040;*/
 }
 
 .app-bottom-nav__item {
   border: 0;
   background: transparent;
-  color: #7c8598;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: 56px;
-  border-radius: 18px;
-  font-size: 0.72rem;
+  height: 32px;
+  font-size: 1rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   transition: 0.18s ease;
+  color: var(--muted);
+  border-radius: 22px;
 }
 
 .app-bottom-nav__item.active {
-  background: var(--nav-pill);
-  color: #2144b7;
+  color: var(--brand-700);
+  border: 1px solid var(--accent);
 }
 
 .app-bottom-nav__item span {
@@ -258,6 +276,9 @@ body {
 @media (max-width: 767.98px) {
   body {
     padding-bottom: calc(var(--bottom-nav-h) + env(safe-area-inset-bottom));
+  }
+  .app-navbar__inner {
+    padding-inline: 0px;
   }
 
   .app-navbar__brand {

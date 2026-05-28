@@ -7,8 +7,8 @@ import { loadFromStorage } from "./store/authSlice";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./index.css"
 import "./css/theme.css"
+import "./index.css"
 import { router } from "./routes/router";
 
 // carico token/utente da localStorage all'avvio (per mantenere l'utente loggato anche dopo refresh della pagina)
