@@ -82,13 +82,14 @@ const EditDepartmentModal = ({
             />
           </Form.Group>
         </Form>
-        <hr />
+        <hr className="hr-edit"/>
 
         <div className="d-flex justify-content-between align-items-center">
           <div className="text-muted small">
             Users in department: {department.userCount}
           </div>
           <Button
+           variant="link"
             className="dept-btn-icon dept-btn-icon--danger"
             onClick={handleDelete}
             disabled={isSaving || isDeleting}

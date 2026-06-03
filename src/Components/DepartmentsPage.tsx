@@ -26,7 +26,7 @@ import { isFetchBaseQueryError } from "../utils/rtkQuery";
 import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import CreateDepartmentModal from "./CreateDepartmentModal";
 import EditDepartmentModal from "./EditDepartmentModal";
-import { FiEdit2, FiTrash2, FiUserPlus, FiSettings } from "react-icons/fi";
+import { FiTrash2, FiUserPlus, FiSettings } from "react-icons/fi";
 import "../css/Departments.css";
 
 const DepartmentsPage: React.FC = () => {
@@ -117,7 +117,6 @@ const DepartmentsPage: React.FC = () => {
 
               {isAdmin && (
                 <Button
-                  size="sm"
                   className="dept-btn-primary"
                   onClick={() => setShowCreateDept(true)}
                 >

@@ -62,7 +62,7 @@ const DepartmentMultiSelect = ({
         ))}
       </div>
 
-      <ListGroup className="mt-3" style={{ maxHeight: 220, overflowY: "auto" }}>
+      <ListGroup className="mt-3 app-modal__list">
         {filteredDepartments.map((d) => {
           const active = selectedIds.includes(d.id);
           return (
