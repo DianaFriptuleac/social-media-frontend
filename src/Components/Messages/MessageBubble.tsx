@@ -1,8 +1,9 @@
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Spinner } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setReplyToMessage } from "../../store/messageSlice";
 import { useDeleteMessageForMeMutation } from "../../api/messageApi";
 import type { MessageResponseDTO } from "../../types/message";
+import { FiCornerUpLeft, FiTrash2 } from "react-icons/fi";
 import "../../css/Messages.css";
 
 interface MessageBubbleProps {
@@ -25,6 +26,10 @@ const MessageBubble = ({
     useDeleteMessageForMeMutation();
 
   const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this message?"
+    )
+    if (!confirmed) return;
     try {
       await deleteMessageForMe({
         messageId: message.id,
@@ -52,20 +57,18 @@ const MessageBubble = ({
 
           <div className="message-actions">
             <Button
-              size="sm"
-              variant="outline-secondary"
+              className="message-action-icon message-action-icon--reply"
               onClick={() => dispatch(setReplyToMessage(message))}
             >
-              Reply
+              <FiCornerUpLeft />
             </Button>
 
             <Button
-              size="sm"
-              variant="outline-danger"
+              className="message-action-icon message-action-icon--delete"
               onClick={handleDelete}
               disabled={isDeleting}
             >
-              Delete
+              {isDeleting ? <Spinner size="sm" /> : <FiTrash2 />}
             </Button>
           </div>
 

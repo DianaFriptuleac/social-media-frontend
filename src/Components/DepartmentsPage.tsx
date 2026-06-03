@@ -322,29 +322,32 @@ const DepartmentsPage: React.FC = () => {
 
                             {isAdmin && (
                               <td className="dept-cell-actions">
-                               
-                                  <div className="dept-icon-actions d-flex justify-content-between">
-                                    <DepartmentRolesModal
-                                      userId={u.id}
-                                      departmentId={selectedDepartmentId!}
-                                      currentRoles={u.roles}
-                                      canEdit={isAdmin}
-                                    />
+                                <div className="dept-icon-actions d-flex justify-content-between">
+                                  <DepartmentRolesModal
+                                    userId={u.id}
+                                    departmentId={selectedDepartmentId!}
+                                    currentRoles={u.roles}
+                                    canEdit={isAdmin}
+                                  />
 
-                                    <Button
-                                      className="dept-btn-icon dept-btn-icon--danger"
-                                      onClick={() => {
-                                        if (!selectedDepartmentId) return;
-                                        removeUserFromDepartment({
-                                          departmentId: selectedDepartmentId,
-                                          userId: u.id,
-                                        });
-                                      }}
-                                    >
-                                      <FiTrash2 />
-                                    </Button>
-                                  </div>
-                              
+                                  <Button
+                                    className="dept-btn-icon dept-btn-icon--danger"
+                                    onClick={() => {
+                                      const confirmed = window.confirm(
+                                        `Remove ${u.name} ${u.surname} from this department?`,
+                                      );
+
+                                      if (!confirmed) return;
+                                      if (!selectedDepartmentId) return;
+                                      removeUserFromDepartment({
+                                        departmentId: selectedDepartmentId,
+                                        userId: u.id,
+                                      });
+                                    }}
+                                  >
+                                    <FiTrash2 />
+                                  </Button>
+                                </div>
                               </td>
                             )}
                           </tr>

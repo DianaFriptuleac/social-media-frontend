@@ -125,9 +125,15 @@ const ConversationPanel = () => {
         <Button
           size="sm"
           variant="outline-danger"
-          onClick={() =>
-            clearConversation({ conversationId: selectedConversationId })
-          }
+          onClick={() => {
+            const confirmed = window.confirm(
+              "Are you sure you want to delete this chat?",
+            );
+
+            if (!confirmed || !selectedConversationId) return;
+
+            clearConversation({ conversationId: selectedConversationId });
+          }}
           disabled={isClearing}
         >
           {isClearing ? "Deleting..." : "Delete chat"}

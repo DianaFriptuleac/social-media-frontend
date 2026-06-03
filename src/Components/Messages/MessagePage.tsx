@@ -10,8 +10,8 @@ const MessagesPage = () => {
     (s) => s.message.selectedConversationId,
   );
   return (
-    <Container fluid className="message-page">
-      <Row
+    <Container className="message-page">
+      <Row 
         className={`messages-layout ${
           selectedConversationId ? "messages-layout--chat-open" : ""
         }`}
