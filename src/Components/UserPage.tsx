@@ -109,7 +109,7 @@ const UserPage = () => {
   );
 
   return (
-    <Container className="mt-4 user-profile-page">
+    <Container className="user-profile-page">
       <Row className="mb-3">
         <Col>
           <h2 className="user-profile-title">My Profile</h2>
@@ -137,7 +137,7 @@ const UserPage = () => {
       <Row>
         {/* Colonna sinistra: info base + avatar */}
         <Col xs={12} md={4} className="mb-4">
-          <Card className="text-center u-card">
+          <Card className="text-center u-card user-profile-card">
             <Card.Body>
               {profile && profile.avatar && (
                 <div className="mb-3">
@@ -191,7 +191,7 @@ const UserPage = () => {
 
         {/* Colonna destra: form di modifica dati */}
         <Col xs={12} md={8}>
-          <Card>
+          <Card className="u-card user-profile-edit-card">
             <Card.Body>
               <h4>Edit Profile</h4>
               <Form onSubmit={handleSubmit} className="mt-3 u-form">
@@ -227,7 +227,7 @@ const UserPage = () => {
 
                 <Form.Group className="mb-3" controlId="formPassword">
                   <Form.Label>New Password (optional)</Form.Label>
-                  <InputGroup>
+                 <div className="password-field">
                     <Form.Control
                       type={showPassword ? "text" : "password"}
                       value={password}
@@ -235,13 +235,14 @@ const UserPage = () => {
                       placeholder="Leave empty to keep current password"
                     />
                     <Button
-                      variant="outline-secondary"
+                      className="eye-btn"
+                      variant="link"
                       onClick={() => setShowPassword((prev) => !prev)}
                       type="button"
                     >
                       {showPassword ? <BsEyeSlash /> : <BsEye />}
                     </Button>
-                  </InputGroup>
+                  </div>
                 </Form.Group>
 
                 <Button
@@ -256,58 +257,57 @@ const UserPage = () => {
             </Card.Body>
           </Card>
         </Col>
-
+       </Row>
         {/*Posts */}
         <Row className="d-flex justify-content-center">
-        <Col xs={12} md={8} lg={8}>
-          {/* CREATE POST */}
-          <CreatePostBox />
+          <Col xs={12} md={8} lg={8}>
+            {/* CREATE POST */}
+            <CreatePostBox />
 
-          {/* MY POSTS */}
-          <Card className="u-card mb-4">
-            <Card.Body>
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <h4 className="mb-0">My posts</h4>
+            {/* MY POSTS */}
+            <Card className="u-card mb-4">
+              <Card.Body>
+                <div className="d-flex justify-content-between align-items-center mb-3">
+                  <h4 className="mb-0">My posts</h4>
+
+                  {myPostsError && (
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() => refetchMyPosts()}
+                    >
+                      Retry
+                    </Button>
+                  )}
+                </div>
+
+                {myPostsLoading && (
+                  <div className="text-center py-3">
+                    <Spinner animation="border" />
+                  </div>
+                )}
 
                 {myPostsError && (
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() => refetchMyPosts()}
-                  >
-                    Retry
-                  </Button>
-                )}
-              </div>
-
-              {myPostsLoading && (
-                <div className="text-center py-3">
-                  <Spinner animation="border" />
-                </div>
-              )}
-
-              {myPostsError && (
-                <Alert variant="danger" className="mb-3">
-                  Error loading posts.
-                </Alert>
-              )}
-
-              {!myPostsLoading &&
-                myPostsPage &&
-                myPostsPage.content.length === 0 && (
-                  <Alert variant="light" className="mb-0">
-                    No posts yet.
+                  <Alert variant="danger" className="mb-3">
+                    Error loading posts.
                   </Alert>
                 )}
 
-              {myPostsPage?.content.map((p) => (
-                <PostCard key={p.id} post={p} canEdit={true} />
-              ))}
-            </Card.Body>
-          </Card>
-        </Col>
+                {!myPostsLoading &&
+                  myPostsPage &&
+                  myPostsPage.content.length === 0 && (
+                    <Alert variant="light" className="mb-0">
+                      No posts yet.
+                    </Alert>
+                  )}
+
+                {myPostsPage?.content.map((p) => (
+                  <PostCard key={p.id} post={p} canEdit={true} />
+                ))}
+              </Card.Body>
+            </Card>
+          </Col>
         </Row>
-      </Row>
     </Container>
   );
 };

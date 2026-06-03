@@ -28,11 +28,7 @@
   height: 150px;
   margin: 0 -24px 0;
   background:
-    linear-gradient(
-      135deg,
-      rgba(33, 68, 183, 0.25),
-      rgba(155, 229, 44, 0.22)
-    ),
+    linear-gradient(135deg, rgba(33, 68, 183, 0.25), rgba(155, 229, 44, 0.22)),
     url("/images/car1.jpg") center/cover no-repeat;
 }
 
@@ -109,7 +105,6 @@
   border-color: var(--border);
 }
 
-
 .users-page,
 .user-detail-page,
 .user-profile-page {
@@ -130,7 +125,7 @@
 
 /* Card “theme” */
 .u-card {
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);
   border-radius: var(--radius);
   box-shadow: var(--shadow-soft);
   background: var(--card);
@@ -207,14 +202,14 @@
   background: var(--info-soft);
 }
 
-.delete-user-btn{
-    color: var(--danger);
-    background: var(--danger-soft);
-    border-color: rgba(217, 45, 32, 0.2);
-    border-radius: var(--radius);
+.delete-user-btn {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: rgba(217, 45, 32, 0.2);
+  border-radius: var(--radius);
 }
-.delete-user-btn:hover{
- background: var(--danger);
+.delete-user-btn:hover {
+  background: var(--danger);
   color: var(--white);
   border-color: rgba(217, 45, 32, 0.2);
 }
@@ -243,7 +238,7 @@
   min-height: 46px;
   border-radius: var(--radius-pill) !important;
   background: var(--input) !important;
-  border: 1px solid transparent !important;
+  border: 1px solid var(--accent) !important;
 }
 .u-form textarea.form-control {
   border-radius: var(--radius-sm) !important;
@@ -251,8 +246,8 @@
 
 .u-form .form-control:focus,
 .u-form .form-select:focus {
-  border-color: rgba(33, 68, 183, 0.35) !important;
-  box-shadow: 0 0 0 0.2rem rgba(33, 68, 183, 0.12) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 0.2rem rgba(40, 210, 28, 0.12) !important;
 }
 
 /* Buttons theme */
@@ -280,7 +275,35 @@
   background: var(--info-soft) !important;
   border-color: var(--brand-700) !important;
 }
+.password-field {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
+.password-field .form-control {
+  flex: 1;
+}
+.eye-btn {
+  width: 56px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+}
+.eye-btn:hover {
+  background-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem rgba(40, 210, 28, 0.12) !important;
+  border-color: var(--accent) !important;
+}
+.eye-btn svg {
+  color: var(--brand-700);
+  width: 30px;
+}
 /* Role badge (clickable) */
 .u-role-badge {
   border-radius: var(--radius-pill) !important;
@@ -357,7 +380,7 @@
     font-size: 0.86rem;
   }
   /*Single user*/
-    .user-detail-profile-card .card-body {
+  .user-detail-profile-card .card-body {
     padding-inline: 18px;
   }
 
