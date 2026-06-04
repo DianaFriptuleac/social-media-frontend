@@ -1,9 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import {
+  useDeleteInboxItemMutation,
   useGetMyInboxQuery,
   useMarkInboxItemAsReadMutation,
 } from "../../api/postApi";
 import { Alert, Button, Container, Spinner, Card } from "react-bootstrap";
+import {
+  useDeleteNotificationMutation,
+  useGetMyNotificationsQuery,
+  useMarkNotificationAsReadMutation,
+} from "../../api/notificationsApi";
+import { BsTrash } from "react-icons/bs";
+import "../../css/Posts.css"
 
 const PostPageInbox = () => {
   const nav = useNavigate();
@@ -11,22 +19,64 @@ const PostPageInbox = () => {
     page: 0,
     size: 20,
   });
-   const [markAsRead] = useMarkInboxItemAsReadMutation();
+  const {
+    data: notifications = [],
+    isLoading: notificationsLoading,
+    isError: notificationsError,
+    refetch: refetchNotifications,
+    isFetching: notificationsFetching,
+  } = useGetMyNotificationsQuery();
 
-  if (isLoading) return <Spinner />;
+  const [markNotificationAsRead] = useMarkNotificationAsReadMutation();
+  const [markAsRead] = useMarkInboxItemAsReadMutation();
+  const [deleteNotifications] = useDeleteNotificationMutation();
+  const [deleteInboxItem] = useDeleteInboxItemMutation();
 
-  if (error || !data) {
+  if (isLoading || notificationsLoading) return <Spinner />;
+
+  if (error || !data || notificationsError) {
     return (
       <Container className="mt-3 inbox-page">
         <Alert variant="danger">
           Error loading inbox
-          <Button variant="link" onClick={() => refetch()}>
+          <Button
+            variant="link"
+            onClick={() => {
+              refetch();
+              refetchNotifications();
+            }}
+          >
             Retry
           </Button>
         </Alert>
       </Container>
     );
   }
+  const postItems = data?.content.map((x) => ({
+    id: x.id,
+    kind: "POST" as const,
+    createdAt: x.createdAt,
+    read: x.read,
+    title: `${x.sender.name} ${x.sender.surname}`,
+    message: x.message || "Shared a post with you",
+    postId: x.postId,
+  }));
+  const notificationItems = notifications
+    .filter((n) => n.type !== "EVENT_CANCELLED")
+    .map((n) => ({
+      id: n.id,
+      kind: "NOTIFICATION" as const,
+      createdAt: n.createdAt,
+      read: n.read,
+      title: n.title,
+      message: n.message,
+      type: n.type,
+      eventId: n.eventId,
+    }));
+
+  const inboxItems = [...postItems, ...notificationItems].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 
   return (
     <Container className="mt-3 inbox-page">
@@ -36,25 +86,28 @@ const PostPageInbox = () => {
           className="inbox-refresh"
           variant="outline-secondary"
           size="sm"
-          onClick={() => refetch()}
+          onClick={() => {
+            refetch();
+            refetchNotifications();
+          }}
         >
-          {isFetching ? "Refreshing..." : "Refresh"}
+          {isFetching || notificationsFetching ? "Refreshing..." : "Refresh"}
         </Button>
       </div>
-      {data.content.length === 0 && (
+      {inboxItems.length === 0 && (
         <div className="inbox-empty">No shared posts.</div>
       )}
       <div className="inbox-list">
-        {data.content.map((x) => (
+        {inboxItems.map((x) => (
           <Card
-            key={x.id}
+            key={`${x.kind}-${x.id}`}
             className={`inbox-card ${x.read ? "" : "inbox-card--unread"}`}
           >
             <Card.Body>
               <div className="inbox-card-top">
                 <div>
                   <div className="inbox-sender">
-                    {x.sender.name} {x.sender.surname}
+                    {x.kind === "POST" ? x.title : x.title}
                   </div>
                   <div className="inbox-date">
                     {new Date(x.createdAt).toLocaleString()}
@@ -67,18 +120,59 @@ const PostPageInbox = () => {
                 <div className="inbox-message">{x.message}</div>
               ) : null}
 
-              <Button
-                className="inbox-actions"
-                size="sm"
-                onClick={async() => {
-                  if (!x.read) {
-                    await markAsRead({ inboxItemId: x.id }).unwrap();
-                  }
-                  nav(`/posts/${x.postId}`);
-                }}
-              >
-                Open post
-              </Button>
+              <div className="d-flex justify-content-between">
+                <Button
+                  className="inbox-actions"
+                  size="sm"
+                  onClick={async () => {
+                    if (x.kind === "POST") {
+                      if (!x.read) {
+                        await markAsRead({ inboxItemId: x.id }).unwrap();
+                      }
+                      nav(`/posts/${x.postId}`);
+                      return;
+                    }
+                    if (x.kind === "NOTIFICATION") {
+                      if (!x.read) {
+                        await markNotificationAsRead({
+                          notificationId: x.id,
+                        }).unwrap();
+                      }
+
+                      if (x.eventId) {
+                        nav(`/events/${x.eventId}`);
+                      }
+
+                      return;
+                    }
+                  }}
+                >
+                  {x.kind === "POST" ? "Open post" : "Open event"}
+                </Button>
+                <Button
+                className="delete-inbox-btn"
+                  variant="outline-danger"
+                  size="sm"
+                  onClick={async () => {
+                    const ok = window.confirm("Delete this item?");
+                    if (!ok) return;
+
+                    if (x.kind === "POST") {
+                      await deleteInboxItem({
+                        inboxItemId: x.id,
+                      }).unwrap();
+                    }
+
+                    if (x.kind === "NOTIFICATION") {
+                      await deleteNotifications({
+                        notificationId: x.id,
+                      }).unwrap();
+                    }
+                  }}
+                >
+                 <BsTrash/>
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         ))}

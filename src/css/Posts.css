@@ -55,6 +55,22 @@
   min-height: 180px;
   resize: vertical;
 }
+.delete-inbox-btn{
+  color: var(--danger);
+    background: var(--danger-soft);
+    border-color: rgba(217, 45, 32, 0.2);
+    border-radius: var(--radius);
+        margin-top: 10px;
+}
+.delete-inbox-btn:hover{
+    background: var(--danger);
+  color: var(--white);
+  border-color: rgba(217, 45, 32, 0.2);
+}
+.delete-inbox-btn svg{
+  width: 25px;
+  padding: auto;
+}
 
 /* Post card */
 .post-card {

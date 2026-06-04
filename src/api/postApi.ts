@@ -184,6 +184,16 @@ export const postsApi = emptyApi.injectEndpoints({
             }),
             providesTags: (_res, _err, arg) => [{ type: "Posts" as const, id: arg.postId }],
         }),
+        //-----------------------  delete post inbox -----------------------
+        deleteInboxItem: build.mutation<void, { inboxItemId: string }>({
+            query: ({ inboxItemId }) => ({
+                url: `/me/inbox/${inboxItemId}`,
+                method: "DELETE",
+            }), invalidatesTags: (_res, _err, arg) => [
+                { type: "PostInbox" as const, id: arg.inboxItemId },
+                { type: "PostInbox" as const, id: "LIST" },
+            ],
+        }),
 
         //-------------------------POSTS COMMENTS ---------------------------------------
         //-------------------------create comment -----------------
@@ -275,6 +285,7 @@ export const {
     useSharePostMutation,
     useGetMyInboxQuery,
     useGetPostByIdQuery,
+    useDeleteInboxItemMutation,
     useCreateCommentMutation,
     useGetCommentsQuery,
     useDeleteCommentMutation,
