@@ -249,6 +249,18 @@ export const postsApi = emptyApi.injectEndpoints({
             providesTags: (_res, _err, arg) => [{ type: "PostLike" as const, id: arg.postId }],
         }),
 
+        //----------------------Mark post as read--------------------------
+        markInboxItemAsRead: build.mutation<void, { inboxItemId: string }>({
+            query: ({ inboxItemId }) => ({
+                url: `/posts/me/inbox/${inboxItemId}/read`,
+                method: "PATCH",
+            }),
+            invalidatesTags: (_res, _err, arg) => [
+                { type: "PostInbox" as const, id: arg.inboxItemId },
+                { type: "PostInbox" as const, id: "LIST" },
+            ],
+        }),
+
     }),
     // non sovrascrivere endpoint se già iniettati altrove
     overrideExisting: false,
@@ -270,4 +282,5 @@ export const {
     useUnlikePostMutation,
     useGetPostLikeStatusQuery,
     useGetPostLikeUsersQuery,
+    useMarkInboxItemAsReadMutation,
 } = postsApi;

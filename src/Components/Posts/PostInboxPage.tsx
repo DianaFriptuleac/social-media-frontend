@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useGetMyInboxQuery } from "../../api/postApi";
+import {
+  useGetMyInboxQuery,
+  useMarkInboxItemAsReadMutation,
+} from "../../api/postApi";
 import { Alert, Button, Container, Spinner, Card } from "react-bootstrap";
 
 const PostPageInbox = () => {
@@ -8,6 +11,7 @@ const PostPageInbox = () => {
     page: 0,
     size: 20,
   });
+   const [markAsRead] = useMarkInboxItemAsReadMutation();
 
   if (isLoading) return <Spinner />;
 
@@ -66,7 +70,12 @@ const PostPageInbox = () => {
               <Button
                 className="inbox-actions"
                 size="sm"
-                onClick={() => nav(`/posts/${x.postId}`)}
+                onClick={async() => {
+                  if (!x.read) {
+                    await markAsRead({ inboxItemId: x.id }).unwrap();
+                  }
+                  nav(`/posts/${x.postId}`);
+                }}
               >
                 Open post
               </Button>

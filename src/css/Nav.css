@@ -1,16 +1,3 @@
-/*:root {
-  --nav-h: 40px;
-  --bottom-nav-h: 78px;
-
-  --nav-bg: rgba(238, 240, 247, 1);
-  --nav-border: rgba(31, 34, 48, 0.08);
-  --nav-text: #7d8191;
-  --nav-text-active: #2144b7;
-  --nav-brand: #2144b7;
-  --nav-icon-bg: #f3f1f8;
-  --nav-pill: #9be52c;
-  --nav-shadow: 0 10px 30px rgba(24, 30, 56, 0.08);
-}*/
 :root {
   --nav-h: 72px;
   --bottom-nav-h: 86px;
