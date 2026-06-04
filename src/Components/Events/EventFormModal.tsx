@@ -13,6 +13,7 @@ import { useGetDepartmentsQuery } from "../../api/departmentApi";
 import { useGetAllUsersQuery } from "../../api/userApi";
 import DepartmentMultiSelect from "../DepartmentMultiSelect";
 import UserMultiSelect from "../UserMultiSelect";
+import "../../css/Events.css";
 
 interface Props {
   show: boolean;
@@ -24,8 +25,10 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
-  const [startAt, setStartAt] = useState("");
-  const [endAt, setEndAt] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [type, setType] = useState<EventType>("MEETING");
   const [audienceType, setAudienceType] =
     useState<EventAudienceType>("SPECIFIC_USERS");
@@ -51,8 +54,10 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
       setName(eventData.name);
       setLocation(eventData.location || "");
       setDescription(eventData.description || "");
-      setStartAt(eventData.startAt.slice(0, 16));
-      setEndAt(eventData.endAt.slice(0, 16));
+      setStartDate(eventData.startAt.slice(0, 10));
+      setStartTime(eventData.startAt.slice(11, 16));
+      setEndDate(eventData.endAt.slice(0, 10));
+      setEndTime(eventData.endAt.slice(11, 16));
       setType(eventData.type);
       setAudienceType(eventData.audienceType);
       setDepartmentIds(eventData.departments?.map((d) => d.id) ?? []);
@@ -61,8 +66,10 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
       setName("");
       setLocation("");
       setDescription("");
-      setStartAt("");
-      setEndAt("");
+      setStartDate("");
+      setStartTime("");
+      setEndDate("");
+      setEndTime("");
       setType("MEETING");
       setAudienceType("SPECIFIC_USERS");
       setDepartmentIds([]);
@@ -76,8 +83,8 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
       name,
       location,
       description,
-      startAt,
-      endAt,
+      startAt: `${startDate}T${startTime}`,
+      endAt: `${endDate}T${endTime}`,
       type,
       audienceType,
       departmentIds,
@@ -96,7 +103,7 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
     }
   };
   return (
-    <Modal show={show} onHide={onHide} size="lg">
+    <Modal show={show} onHide={onHide} size="lg" centered className="app-modal">
       <Form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>
@@ -133,23 +140,40 @@ const EventFormModal = ({ show, onHide, mode, eventData }: Props) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Start</Form.Label>
+            <Form.Label>Start date</Form.Label>
             <Form.Control
-              type="datetime-local"
-              step="60"
-              value={startAt}
-              onChange={(e) => setStartAt(e.target.value)}
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
               required
             />
           </Form.Group>
-
           <Form.Group className="mb-3">
-            <Form.Label>End</Form.Label>
+            <Form.Label>Start time</Form.Label>
             <Form.Control
-              type="datetime-local"
-              step="60"
-              value={endAt}
-              onChange={(e) => setEndAt(e.target.value)}
+              type="text"
+              placeholder="15:00"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>End date</Form.Label>
+            <Form.Control
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>End time</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="16:00"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
               required
             />
           </Form.Group>

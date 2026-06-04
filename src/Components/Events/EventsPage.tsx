@@ -13,7 +13,15 @@ import { useNavigate } from "react-router-dom";
 import EventFormModal from "./EventFormModal";
 import { useGetAllEventsQuery } from "../../api/EventApi";
 import { getPaginationRange } from "../../utils/pagination";
-
+import {
+  FaPeopleGroup,
+  FaLaptop,
+  FaChalkboardUser,
+  FaCalendarDays,
+} from "react-icons/fa6";
+import { LiaCocktailSolid } from "react-icons/lia";
+import { GrWorkshop } from "react-icons/gr";
+import "../../css/Events.css";
 
 const EventsPage = () => {
   const navigate = useNavigate();
@@ -25,15 +33,40 @@ const EventsPage = () => {
     page,
     size: 6,
   });
+  const getEventIcon = (type: string) => {
+    switch (type) {
+      case "MEETING":
+        return <FaPeopleGroup />;
 
+      case "PARTY":
+        return <LiaCocktailSolid />;
+
+      case "TRAINING":
+        return <FaChalkboardUser />;
+
+      case "WORKSHOP":
+        return <GrWorkshop />;
+
+      case "WEBINAR":
+        return <FaLaptop />;
+
+      default:
+        return <FaCalendarDays />;
+    }
+  };
   return (
-    <Container className="mt-4">
+    <Container className="events-page">
       <Row className="mb-3 align-items-center">
         <Col>
-          <h2>Events</h2>
+          <h2 className="events-title">Events</h2>
         </Col>
         <Col xs="auto">
-          <Button onClick={() => setShowCreate(true)}>Create event</Button>
+          <Button
+            className="event-btn-primary"
+            onClick={() => setShowCreate(true)}
+          >
+            Create event
+          </Button>
         </Col>
       </Row>
 
@@ -59,9 +92,14 @@ const EventsPage = () => {
       <Row>
         {data?.content.map((event) => (
           <Col xs={12} md={6} lg={4} key={event.id} className="mb-4">
-            <Card className="h-100 shadow-sm">
+            <Card className="event-card h-100">
               <Card.Body className="d-flex flex-column">
-                <Card.Title>{event.name}</Card.Title>
+                <Card.Title className="event-card-title">
+                  <span className="event-card-icon">
+                    {getEventIcon(event.type)}
+                  </span>
+                  {event.name}
+                </Card.Title>
                 <Card.Text className="mb-1">
                   <strong>Location:</strong> {event.location || "-"}
                 </Card.Text>
@@ -93,7 +131,7 @@ const EventsPage = () => {
 
                 <div className="mt-auto">
                   <Button
-                    variant="primary"
+                    className="event-btn-primary"
                     onClick={() => navigate(`/events/${event.id}`)}
                   >
                     Open details

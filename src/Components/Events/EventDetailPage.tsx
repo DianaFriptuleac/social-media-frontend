@@ -18,6 +18,8 @@ import {
   ListGroup,
 } from "react-bootstrap";
 import EventFormModal from "./EventFormModal";
+import EventMap from "./EventMap";
+import "../../css/Events.css";
 
 const EventDetailPage = () => {
   const { id } = useParams();
@@ -42,7 +44,7 @@ const EventDetailPage = () => {
   }
   if (isError || !data) {
     return (
-      <Container className="mt-4">
+      <Container className="event-detail-page">
         <Alert variant="danger">
           Error loading event.
           <Button variant="link" onClick={() => refetch()}>
@@ -81,35 +83,71 @@ const EventDetailPage = () => {
     }
   };
   return (
-    <Container className="mt-4">
-      <Row className="mb-3">
-        <Col>
-          <h2>{data.name}</h2>
-        </Col>
-        <Col xs="auto" className="d-flex gap-2">
-          {isCreator && (
-            <>
-              <Button
-                variant="outline-primary"
-                onClick={() => setShowEdit(true)}
-              >
-                Edit
-              </Button>
-              <Button
-                variant="outline-danger"
-                onClick={handleDelete}
-                disabled={deleting}
-              >
-                {deleting ? "Deleting..." : "Delete"}
-              </Button>
-            </>
-          )}
-        </Col>
-      </Row>
+    <Container className="event-detail-page">
+  <Card className="event-card event-hero-card mb-4">
+  <Card.Body>
+    <div className="event-hero-top">
+      <div>
+        <span className="event-kicker">{data.type}</span>
 
-      <Row>
-        <Col md={8}>
-          <Card className="mb-4">
+        <h2 className="event-detail-title">{data.name}</h2>
+
+        <p className="event-hero-sub">
+          {data.location || "No location"} •{" "}
+          {new Date(data.startAt).toLocaleString("it-IT", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </p>
+      </div>
+
+      {isCreator && (
+        <div className="event-hero-actions">
+          <Button variant="outline-primary" onClick={() => setShowEdit(true)}>
+            Edit
+          </Button>
+
+          <Button
+            variant="outline-danger"
+            onClick={handleDelete}
+            disabled={deleting}
+          >
+            {deleting ? "Deleting..." : "Delete"}
+          </Button>
+        </div>
+      )}
+    </div>
+
+    <div className="event-stats-inline">
+      <div className="event-stat event-stat--total">
+        <span className="event-stat-label">Total</span>
+        <span className="event-stat-value">{data.totalInvited}</span>
+      </div>
+
+      <div className="event-stat event-stat--accepted">
+        <span className="event-stat-label">Accepted</span>
+        <span className="event-stat-value">{data.acceptedCount}</span>
+      </div>
+
+      <div className="event-stat event-stat--declined">
+        <span className="event-stat-label">Declined</span>
+        <span className="event-stat-value">{data.declinedCount}</span>
+      </div>
+
+      <div className="event-stat event-stat--pending">
+        <span className="event-stat-label">Pending</span>
+        <span className="event-stat-value">{data.pendingCount}</span>
+      </div>
+    </div>
+  </Card.Body>
+</Card>
+
+      <Row className="align-items-stretch g-4 mb-4">
+        <Col md={8} className="d-flex">
+          <Card className="event-card flex-fill">
             <Card.Body>
               <p>
                 <strong>Description:</strong> {data.description || "-"}
@@ -163,6 +201,7 @@ const EventDetailPage = () => {
                   </p>
                   <div className="d-flex gap-2">
                     <Button
+                      variant="outline-primary"
                       onClick={() => handleParticipation("ACCEPTED")}
                       disabled={participationLoading}
                     >
@@ -182,28 +221,24 @@ const EventDetailPage = () => {
           </Card>
         </Col>
 
-        <Col md={4}>
-          <Card className="mb-4">
+        <Col md={4} className="d-flex">
+          <Card className="event-card event-map-card flex-fill">
             <Card.Body>
-              <h5>Stats</h5>
-              <p>
-                <strong>Total:</strong> {data.totalInvited}
-              </p>
-              <p>
-                <strong>Accepted:</strong> {data.acceptedCount}
-              </p>
-              <p>
-                <strong>Declined:</strong> {data.declinedCount}
-              </p>
-              <p>
-                <strong>Pending:</strong> {data.pendingCount}
-              </p>
+              <div className="d-flex justify-content-between">
+              <div>
+                <h5 className="event-section-title">Location</h5>
+              </div>
+              <div>
+                <p className="event-muted mb-3">{data.location || "-"}</p>
+              </div>
+              </div>
+              <EventMap location={data.location} />
             </Card.Body>
           </Card>
         </Col>
       </Row>
 
-      <Card>
+      <Card className="event-card">
         <Card.Body>
           <h4>Participants</h4>
           <ListGroup variant="flush">
