@@ -21,15 +21,23 @@ const authSlice = createSlice({
 
         authSuccess(
             state,
-            action: PayloadAction<{ user: User; token: string }>
+            action: PayloadAction<{ user: User; token: string; rememberMe: boolean }>
         ) {
             state.loading = false;
             state.user = action.payload.user;
             state.token = action.payload.token;
 
             // salvo nel localStorage
-            localStorage.setItem('token', action.payload.token);
-            localStorage.setItem('user', JSON.stringify(action.payload.user));
+            const storage = action.payload.rememberMe ? localStorage : sessionStorage;
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user");
+
+            storage.setItem("token", action.payload.token);
+            storage.setItem("user", JSON.stringify(action.payload.user));
+            // localStorage.setItem('token', action.payload.token);
+            // localStorage.setItem('user', JSON.stringify(action.payload.user));
         },
         authFailed(state, action: PayloadAction<string>) {
             state.loading = false;
@@ -41,14 +49,21 @@ const authSlice = createSlice({
             state.user = null;
             state.token = null;
             state.error = null;
+            // localStorage.removeItem("token");
+            // localStorage.removeItem("user");
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+            sessionStorage.removeItem("token");
+            sessionStorage.removeItem("user");
         },
 
         // Ricarica utente/token salvati nel localStorage quando l’app parte
         loadFromStorage(state) {
-            const token = localStorage.getItem('token');
-            const userStr = localStorage.getItem('user');
+            const token =
+                localStorage.getItem("token") || sessionStorage.getItem("token");
+
+            const userStr =
+                localStorage.getItem("user") || sessionStorage.getItem("user");
             if (token && userStr) {
                 state.token = token;
                 state.user = JSON.parse(userStr) as User;

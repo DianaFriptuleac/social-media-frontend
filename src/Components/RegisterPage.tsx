@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useRegisterMutation } from "../api/authApi";
@@ -30,7 +30,13 @@ const RegisterPage = () => {
   // messaggio errore dalla mutation
   const errorMessage =
     (error as any)?.data?.message || (error as any)?.message || null;
+  useEffect(() => {
+    document.body.classList.add("auth-layout");
 
+    return () => {
+      document.body.classList.remove("auth-layout");
+    };
+  }, []);
   return (
     <Container className="auth-page">
       <Row className="justify-content-center w-100">

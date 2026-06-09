@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store/hooks";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useLoginMutation } from "../api/authApi";
@@ -22,13 +22,20 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       // chiamata API tramite RTK Query
-      await login({ email, password }).unwrap();
+      await login({ email, password, rememberMe }).unwrap();
       // se arrivo qui → login ok, authSlice è già stato aggiornato
       navigate("/home");
     } catch (err) {
       // l’errore viene già salvato in auth.error da authFailed
     }
   };
+  useEffect(() => {
+  document.body.classList.add("auth-layout");
+
+  return () => {
+    document.body.classList.remove("auth-layout");
+  };
+}, []);
   return (
     <Container className="auth-page">
       <Row className="justify-content-center w-100">

@@ -24,6 +24,7 @@ interface RegisterBody {
 interface LoginBody {
   email: string;
   password: string;
+  rememberMe: boolean;
 }
 
 
@@ -55,7 +56,7 @@ export const authApi = emptyApi.injectEndpoints({
             role: data.role,
           };
 
-          dispatch(authSuccess({ user, token: data.accessToken }));
+          dispatch(authSuccess({ user, token: data.accessToken, rememberMe: arg.rememberMe }));
         } catch (err: any) {
           const msg =
             err?.error?.data?.message ||
