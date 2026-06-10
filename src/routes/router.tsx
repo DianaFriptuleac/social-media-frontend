@@ -14,6 +14,8 @@ import PostDetailPage from "../Components/Posts/PostDetailPage";
 import MessagesPage from "../Components/Messages/MessagePage";
 import EventsPage from "../Components/Events/EventsPage";
 import EventDetailPage from "../Components/Events/EventDetailPage";
+import ForgotPasswordPage from "../Components/ForgotPasswordPage";
+import ResetPasswordPage from "../Components/ResetPasswordPage";
 
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
@@ -40,6 +42,14 @@ export const router = createBrowserRouter([
     path: "/register",
     element: <RegisterPage />,
   },
+  {
+  path: "/forgot_password",
+  element: <ForgotPasswordPage />,
+},
+{
+  path: "/reset_password",
+  element: <ResetPasswordPage />,
+},
   // Rotte protette
   {
     element: <ProtectedLayout />,

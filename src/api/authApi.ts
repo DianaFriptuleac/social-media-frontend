@@ -77,6 +77,23 @@ export const authApi = emptyApi.injectEndpoints({
       // qui di solito NON salvo niente nello slice
       // l'utente poi farà login normalmente
     }),
+    // Forgot password
+    forgotPassword: build.mutation<void, { email: string }>({
+      query: (body) => ({
+        url: "/auth/forgot_password",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    //Reset Password
+    resetPassword: build.mutation<void, { token: string; newPassword: string }>({
+      query: (body) => ({
+        url: "/auth/reset_password",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -84,4 +101,6 @@ export const authApi = emptyApi.injectEndpoints({
 export const {
   useLoginMutation,
   useRegisterMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = authApi;

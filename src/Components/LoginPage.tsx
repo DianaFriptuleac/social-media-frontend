@@ -77,9 +77,9 @@ const LoginPage = () => {
                 <Form.Group controlId="formPassword">
                   <div className="auth-row-inline">
                     <Form.Label>Password</Form.Label>
-                    <a href="#" className="auth-forgot">
+                    <Link to="/forgot_password" className="auth-forgot">
                       Forgot?
-                    </a>
+                    </Link>
                   </div>
                   <Form.Control
                     type="password"
