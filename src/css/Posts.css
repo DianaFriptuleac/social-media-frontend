@@ -55,19 +55,19 @@
   min-height: 180px;
   resize: vertical;
 }
-.delete-inbox-btn{
+.delete-inbox-btn {
   color: var(--danger);
-    background: var(--danger-soft);
-    border-color: rgba(217, 45, 32, 0.2);
-    border-radius: var(--radius);
-        margin-top: 10px;
+  background: var(--danger-soft);
+  border-color: rgba(217, 45, 32, 0.2);
+  border-radius: var(--radius);
+  margin-top: 10px;
 }
-.delete-inbox-btn:hover{
-    background: var(--danger);
+.delete-inbox-btn:hover {
+  background: var(--danger);
   color: var(--white);
   border-color: rgba(217, 45, 32, 0.2);
 }
-.delete-inbox-btn svg{
+.delete-inbox-btn svg {
   width: 25px;
   padding: auto;
 }
@@ -182,6 +182,9 @@
 /* ---------------------Inbox Page------------------------------- */
 .inbox-page {
   max-width: 720px;
+  min-height: calc(100vh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header */
@@ -208,6 +211,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 1;
 }
 
 /* Card styling */
@@ -400,7 +404,10 @@
 .comment-actions button:hover,
 .comment-dots:hover,
 .comment-delete:hover {
-  color: #0d6efd;
+  border: 1px solid var(--accent);
+  background-color: transparent;
+  padding: 0 3px;
+  color: var(--brand-700);
 }
 .comment-dots {
   border: 0 !important;
@@ -538,6 +545,42 @@
 
 .like-count:hover {
   text-decoration: underline;
+}
+/* Inbox pagination */
+.inbox-pagination {
+  margin-top: auto !important;
+  padding-top: 24px;
+  gap: 6px;
+}
+
+.inbox-pagination .page-link {
+  min-width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill) !important;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--brand-700);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  margin: 0 3px;
+}
+
+.inbox-pagination .page-item.active .page-link {
+  background: var(--brand-700);
+  border-color: var(--brand-700);
+  color: var(--white);
+}
+
+.inbox-pagination .page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(33, 68, 183, 0.14);
+}
+
+.inbox-pagination .page-item.disabled .page-link {
+  color: var(--muted);
+  background: var(--card-soft);
+  border-color: var(--border-soft);
 }
 
 @media (max-width: 767.98px) {

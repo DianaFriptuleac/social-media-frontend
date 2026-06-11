@@ -4,14 +4,23 @@ import {
   useGetMyInboxQuery,
   useMarkInboxItemAsReadMutation,
 } from "../../api/postApi";
-import { Alert, Button, Container, Spinner, Card } from "react-bootstrap";
+import {
+  Alert,
+  Button,
+  Container,
+  Spinner,
+  Card,
+  Pagination,
+} from "react-bootstrap";
 import {
   useDeleteNotificationMutation,
   useGetMyNotificationsQuery,
   useMarkNotificationAsReadMutation,
 } from "../../api/notificationsApi";
 import { BsTrash } from "react-icons/bs";
-import "../../css/Posts.css"
+import "../../css/Posts.css";
+import { useEffect, useState } from "react";
+import { getPaginationRange } from "../../utils/pagination";
 
 const PostPageInbox = () => {
   const nav = useNavigate();
@@ -31,6 +40,9 @@ const PostPageInbox = () => {
   const [markAsRead] = useMarkInboxItemAsReadMutation();
   const [deleteNotifications] = useDeleteNotificationMutation();
   const [deleteInboxItem] = useDeleteInboxItemMutation();
+  //pagination
+  const [page, setPage] = useState(0);
+  const pageSize = 6;
 
   if (isLoading || notificationsLoading) return <Spinner />;
 
@@ -77,7 +89,19 @@ const PostPageInbox = () => {
   const inboxItems = [...postItems, ...notificationItems].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
+  //pagination
+  const totalPages = Math.ceil(inboxItems.length / pageSize);
 
+  const paginatedInboxItems = inboxItems.slice(
+    page * pageSize,
+    page * pageSize + pageSize,
+  );
+  useEffect(() => {
+    if (totalPages > 0 && page >= totalPages) {
+      setPage(totalPages - 1);
+    }
+  }, [page, totalPages]);
+  const pages = getPaginationRange(page, totalPages);
   return (
     <Container className="mt-3 inbox-page">
       <div className="inbox-header">
@@ -98,7 +122,7 @@ const PostPageInbox = () => {
         <div className="inbox-empty">No shared posts.</div>
       )}
       <div className="inbox-list">
-        {inboxItems.map((x) => (
+        {paginatedInboxItems.map((x) => (
           <Card
             key={`${x.kind}-${x.id}`}
             className={`inbox-card ${x.read ? "" : "inbox-card--unread"}`}
@@ -150,7 +174,7 @@ const PostPageInbox = () => {
                   {x.kind === "POST" ? "Open post" : "Open event"}
                 </Button>
                 <Button
-                className="delete-inbox-btn"
+                  className="delete-inbox-btn"
                   variant="outline-danger"
                   size="sm"
                   onClick={async () => {
@@ -170,13 +194,34 @@ const PostPageInbox = () => {
                     }
                   }}
                 >
-                 <BsTrash/>
+                  <BsTrash />
                 </Button>
               </div>
             </Card.Body>
           </Card>
         ))}
       </div>
+      {totalPages > 1 && (
+        <Pagination className="inbox-pagination justify-content-center mt-4">
+          <Pagination.Prev
+            disabled={page === 0}
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+          />
+          {pages.map((p) => (
+            <Pagination.Item
+              key={p}
+              active={p === page}
+              onClick={() => setPage(p)}
+            >
+              {p + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            disabled={page === totalPages - 1}
+            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+          />
+        </Pagination>
+      )}
     </Container>
   );
 };

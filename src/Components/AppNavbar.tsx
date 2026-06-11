@@ -26,6 +26,8 @@ import { useEffect } from "react";
 import { useGetMyConversationsQuery } from "../api/messageApi";
 import { resetMessageState } from "../store/messageSlice";
 import emptyApi from "../api/emptyApi";
+import { useGetMyInboxQuery } from "../api/postApi";
+import { useGetMyNotificationsQuery } from "../api/notificationsApi";
 
 const AppNavbar = () => {
   const dispatch = useAppDispatch();
@@ -40,10 +42,20 @@ const AppNavbar = () => {
   const { data: conversations } = useGetMyConversationsQuery(undefined, {
     skip: !user,
   });
+  const { data: inboxData } = useGetMyInboxQuery({
+    page: 0,
+    size: 100,
+  });
+  const { data: notifications = [] } = useGetMyNotificationsQuery();
   const unreadTotal = (conversations ?? []).reduce(
     (sum, c) => sum + c.unreadCount,
     0,
   );
+  const unreadPosts = inboxData?.content.filter((x) => !x.read).length ?? 0;
+  const unreadNotifications = notifications.filter(
+    (n) => !n.read && n.type !== "EVENT_CANCELLED",
+  ).length;
+  const unreadInboxCount = unreadPosts + unreadNotifications;
 
   const handleLogout = () => {
     dispatch(resetMessageState());
@@ -142,8 +154,8 @@ const AppNavbar = () => {
               aria-label="Notifications"
             >
               <BsBell size={19} />
-              {unreadTotal > 0 && (
-                <span className="app-navbar__dot">{unreadTotal}</span>
+              {unreadInboxCount > 0 && (
+                <span className="app-navbar__dot">{unreadInboxCount}</span>
               )}
             </button>
 
