@@ -28,6 +28,7 @@ import { resetMessageState } from "../store/messageSlice";
 import emptyApi from "../api/emptyApi";
 import { useGetMyInboxQuery } from "../api/postApi";
 import { useGetMyNotificationsQuery } from "../api/notificationsApi";
+import ThemeToggle from "./ThemeToggl";
 
 const AppNavbar = () => {
   const dispatch = useAppDispatch();
@@ -158,6 +159,7 @@ const AppNavbar = () => {
                 <span className="app-navbar__dot">{unreadInboxCount}</span>
               )}
             </button>
+            <ThemeToggle/>
 
             {user && (
               <div

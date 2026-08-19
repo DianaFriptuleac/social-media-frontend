@@ -76,7 +76,8 @@
 
 .app-navbar__icon-btn,
 .app-navbar__menu-btn,
-.app-navbar__logout  {
+.app-navbar__logout,
+.theme-toggle  {
   width: 42px;
   height: 42px;
   border: 0;
@@ -92,7 +93,8 @@
 
 .app-navbar__icon-btn:hover,
 .app-navbar__menu-btn:hover,
-.app-navbar__logout:hover {
+.app-navbar__logout:hover,
+.theme-toggle:hover {
   background: var(--card-soft) !important;
   color: var(--brand-700) !important;
 }
