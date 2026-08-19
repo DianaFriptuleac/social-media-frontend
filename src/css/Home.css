@@ -11,7 +11,7 @@
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  background: url("/images/car1.jpg") center/cover no-repeat;
+  background: url("/images/ecoMotors.png") center/cover no-repeat;
 }
 
 .home-hero::before {
