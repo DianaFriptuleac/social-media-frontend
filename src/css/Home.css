@@ -1,7 +1,8 @@
 .home-wrap {
   /* margin-top: 32px;*/
   max-width: var(--content-max);
-  margin: 32px auto 0;
+  /*margin: 32px auto 0;*/
+  margin: 10px auto 0;
   padding: 0 20px 100px;
 }
 .home-hero {

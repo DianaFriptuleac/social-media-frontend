@@ -57,7 +57,7 @@ const HomePage = () => {
       ) ?? [];
 
   return (
-    <Container fluid className="home-wrap">
+    <Container className="home-wrap">
       {/* HERO */}
       <Row className="mb-3">
         <Col className="px-0">
