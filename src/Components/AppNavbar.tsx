@@ -137,6 +137,14 @@ const AppNavbar = () => {
               >
                 Events
               </Nav.Link>
+              <Nav.Link
+                className={
+                  location.pathname.startsWith("/jobs") ? "active" : ""
+                }
+                onClick={() => handleNavigate("/jobs")}
+              >
+                Careers
+              </Nav.Link>
             </Nav>
           </div>
 
@@ -159,7 +167,7 @@ const AppNavbar = () => {
                 <span className="app-navbar__dot">{unreadInboxCount}</span>
               )}
             </button>
-            <ThemeToggle/>
+            <ThemeToggle />
 
             {user && (
               <div
@@ -231,6 +239,7 @@ const AppNavbar = () => {
             <Nav.Link onClick={() => handleNavigate("/events")}>
               Events
             </Nav.Link>
+            <Nav.Link onClick={() => handleNavigate("/jobs")}>Careers</Nav.Link>
             <Nav.Link onClick={() => handleNavigate("/me")}>
               My Profile
             </Nav.Link>

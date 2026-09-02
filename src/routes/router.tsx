@@ -16,6 +16,7 @@ import EventsPage from "../Components/Events/EventsPage";
 import EventDetailPage from "../Components/Events/EventDetailPage";
 import ForgotPasswordPage from "../Components/ForgotPasswordPage";
 import ResetPasswordPage from "../Components/ResetPasswordPage";
+import JobsPage from "../Components/Jobs/JobsPage";
 
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
@@ -43,13 +44,13 @@ export const router = createBrowserRouter([
     element: <RegisterPage />,
   },
   {
-  path: "/forgot_password",
-  element: <ForgotPasswordPage />,
-},
-{
-  path: "/reset_password",
-  element: <ResetPasswordPage />,
-},
+    path: "/forgot_password",
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/reset_password",
+    element: <ResetPasswordPage />,
+  },
   // Rotte protette
   {
     element: <ProtectedLayout />,
@@ -94,6 +95,33 @@ export const router = createBrowserRouter([
         path: "/events/:id",
         element: <EventDetailPage />,
       },
+
+      // jobs
+      {
+        path: "/jobs",
+        element: <JobsPage />,
+      },
+
+      /*{
+  path: "/jobs/create",
+  element: <CreateJobPage />,
+},
+
+{
+  path: "/jobs/my-applications",
+  element: <MyApplicationsPage />,
+},
+
+{
+  path: "/jobs/:id",
+  element: <JobDetailPage />,
+},
+
+{
+  path: "/jobs/:id/applications",
+  element: <JobApplicationsPage />,
+},
+*/
     ],
   },
   // catch-all
