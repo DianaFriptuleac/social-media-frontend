@@ -17,6 +17,7 @@ import EventDetailPage from "../Components/Events/EventDetailPage";
 import ForgotPasswordPage from "../Components/ForgotPasswordPage";
 import ResetPasswordPage from "../Components/ResetPasswordPage";
 import JobsPage from "../Components/Jobs/JobsPage";
+import JobDetailPage from "../Components/Jobs/JobDetailPage";
 
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
@@ -111,12 +112,13 @@ export const router = createBrowserRouter([
   path: "/jobs/my-applications",
   element: <MyApplicationsPage />,
 },
+*/
 
 {
   path: "/jobs/:id",
   element: <JobDetailPage />,
 },
-
+/*
 {
   path: "/jobs/:id/applications",
   element: <JobApplicationsPage />,

@@ -1,63 +1,76 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import { useState } from "react";
-import { useCloseJobMutation, useDeleteJobMutation, useGetJobsQuery } from "../../api/jobApi";
-import { Alert, Badge, Button, Card, Container, Spinner } from "react-bootstrap";
+import {
+  useCloseJobMutation,
+  useDeleteJobMutation,
+  useGetJobsQuery,
+} from "../../api/jobApi";
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  Container,
+  Spinner,
+} from "react-bootstrap";
+import CreateJobModal from "./CreateJobModal";
 
 const JobsPage = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const user = useAppSelector((state) => state.auth.user);
-    const isAdmin = user?.role === "ADMIN";
+  const user = useAppSelector((state) => state.auth.user);
+  const isAdmin = user?.role === "ADMIN";
 
-    const [page, setPage] =  useState(0);
+  const [page, setPage] = useState(0);
 
-    const {data, isLoading, isError} = useGetJobsQuery({page, size: 10,});
-    const [closeJob] = useCloseJobMutation();
-    const [deleteJob] = useDeleteJobMutation();
+  const { data, isLoading, isError } = useGetJobsQuery({ page, size: 10 });
+  const [closeJob] = useCloseJobMutation();
+  const [deleteJob] = useDeleteJobMutation();
+  const [showCreateJobModal, setShowCreateJobModal] = useState(false);
 
-    // close job
-    const handleCloseJob = async(jobId: string) => {
-        try{
-            await closeJob(jobId).unwrap();
-        } catch (error) {
-            console.error("Error closing job: ", error);
-        }
-    };
-
-    // delete job
-    const handleDeleteJob = async(jobId: string) => {
-        const confirmed = window.confirm("Are you sure you want to delete this job?");
-
-        if(!confirmed) return;
-
-        try{
-            await deleteJob(jobId).unwrap();
-        } catch(error) {
-            console.error("Error deleting job: ", error);
-        };
-    };
-
-    if(isLoading) {
-        return(
-            <div className="text-center mt-5">
-                <Spinner animation="border"/>
-            </div>
-        )
+  // close job
+  const handleCloseJob = async (jobId: string) => {
+    try {
+      await closeJob(jobId).unwrap();
+    } catch (error) {
+      console.error("Error closing job: ", error);
     }
+  };
 
-    if(isError){
-        return(
-            <Container className="mt-5">
-                <Alert variant="danger">
-                    Unable to load job openings.
-                </Alert>
-            </Container>
-        );
+  // delete job
+  const handleDeleteJob = async (jobId: string) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this job?",
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await deleteJob(jobId).unwrap();
+    } catch (error) {
+      console.error("Error deleting job: ", error);
     }
+  };
 
+  if (isLoading) {
     return (
-   <Container className="py-4">
+      <div className="text-center mt-5">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Container className="mt-5">
+        <Alert variant="danger">Unable to load job openings.</Alert>
+      </Container>
+    );
+  }
+
+  return (
+    <Container className="py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2>Careers</h2>
@@ -68,11 +81,7 @@ const JobsPage = () => {
         {/* ADMIN */}
 
         {isAdmin && (
-          <Button
-            onClick={() =>
-              navigate("/jobs/create")
-            }
-          >
+          <Button onClick={() => setShowCreateJobModal(true)}>
             Create position
           </Button>
         )}
@@ -82,9 +91,7 @@ const JobsPage = () => {
       <div className="mb-4">
         <Button
           variant="outline-primary"
-          onClick={() =>
-            navigate("/jobs/my-applications")
-          }
+          onClick={() => navigate("/jobs/my-applications")}
         >
           My applications
         </Button>
@@ -92,11 +99,8 @@ const JobsPage = () => {
 
       {/* NO JOBS */}
       {data?.content.length === 0 && (
-        <Alert variant="light">
-          There are currently no open positions.
-        </Alert>
+        <Alert variant="light">There are currently no open positions.</Alert>
       )}
-
 
       {/* JOB cards */}
       <div className="d-grid gap-3">
@@ -105,23 +109,15 @@ const JobsPage = () => {
             <Card.Body>
               <div className="d-flex justify-content-between gap-3">
                 <div>
-                  <Card.Title>
-                    {job.title}
-                  </Card.Title>
+                  <Card.Title>{job.title}</Card.Title>
                   {job.department && (
-                    <div className="text-muted mb-2">
-                      {job.department.name}
-                    </div>
+                    <div className="text-muted mb-2">{job.department.name}</div>
                   )}
 
                   <div className="d-flex gap-2 flex-wrap mb-3">
-                    <Badge bg="secondary">
-                      {job.employmentType}
-                    </Badge>
+                    <Badge bg="secondary">{job.employmentType}</Badge>
 
-                    <Badge bg="info">
-                      {job.workMode}
-                    </Badge>
+                    <Badge bg="info">{job.workMode}</Badge>
 
                     {job.location && (
                       <Badge bg="light" text="dark">
@@ -133,19 +129,12 @@ const JobsPage = () => {
                   {job.applicationDeadline && (
                     <small className="text-muted">
                       Apply before:{" "}
-                      {new Date(
-                        job.applicationDeadline
-                      ).toLocaleDateString()}
+                      {new Date(job.applicationDeadline).toLocaleDateString()}
                     </small>
                   )}
                 </div>
                 <div className="d-flex flex-column gap-2">
-                  <Button
-                    size="sm"
-                    onClick={() =>
-                      navigate(`/jobs/${job.id}`)
-                    }
-                  >
+                  <Button size="sm" onClick={() => navigate(`/jobs/${job.id}`)}>
                     View
                   </Button>
 
@@ -156,11 +145,7 @@ const JobsPage = () => {
                       <Button
                         size="sm"
                         variant="outline-primary"
-                        onClick={() =>
-                          navigate(
-                            `/jobs/${job.id}/applications`
-                          )
-                        }
+                        onClick={() => navigate(`/jobs/${job.id}/applications`)}
                       >
                         Applications
                       </Button>
@@ -168,9 +153,7 @@ const JobsPage = () => {
                       <Button
                         size="sm"
                         variant="outline-warning"
-                        onClick={() =>
-                          handleCloseJob(job.id)
-                        }
+                        onClick={() => handleCloseJob(job.id)}
                       >
                         Close
                       </Button>
@@ -178,9 +161,7 @@ const JobsPage = () => {
                       <Button
                         size="sm"
                         variant="outline-danger"
-                        onClick={() =>
-                          handleDeleteJob(job.id)
-                        }
+                        onClick={() => handleDeleteJob(job.id)}
                       >
                         Delete
                       </Button>
@@ -197,34 +178,30 @@ const JobsPage = () => {
 
       {data && data.totalPages > 1 && (
         <div className="d-flex justify-content-center gap-2 mt-4">
-
           <Button
             variant="outline-secondary"
             disabled={data.first}
-            onClick={() =>
-              setPage((prev) => prev - 1)
-            }
+            onClick={() => setPage((prev) => prev - 1)}
           >
             Previous
           </Button>
           <span className="align-self-center">
-
-            {data.number + 1} /{" "}
-            {data.totalPages}
-
+            {data.number + 1} / {data.totalPages}
           </span>
           <Button
             variant="outline-secondary"
             disabled={data.last}
-            onClick={() =>
-              setPage((prev) => prev + 1)
-            }
+            onClick={() => setPage((prev) => prev + 1)}
           >
             Next
           </Button>
         </div>
       )}
 
+      <CreateJobModal
+        show={showCreateJobModal}
+        onHide={() => setShowCreateJobModal(false)}
+      />
     </Container>
   );
 };
