@@ -65,8 +65,8 @@ const ApplyJobModal = ({
       console.error("Application error:", err);
 
       // Se il backend restituisce un messaggio
-      if (err?.data?.message) {
-        setError(err.data.message);
+      if (err?.data?.msg) {
+        setError(err.data.msg);
       } else {
         setError("Unable to submit your application.");
       }

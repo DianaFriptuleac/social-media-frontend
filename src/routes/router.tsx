@@ -18,6 +18,8 @@ import ForgotPasswordPage from "../Components/ForgotPasswordPage";
 import ResetPasswordPage from "../Components/ResetPasswordPage";
 import JobsPage from "../Components/Jobs/JobsPage";
 import JobDetailPage from "../Components/Jobs/JobDetailPage";
+import JobApplicationsPage from "../Components/Jobs/JobApplicationsPage";
+import MyApplications from "../Components/Jobs/MyApplications";
 
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
@@ -103,22 +105,21 @@ export const router = createBrowserRouter([
         element: <JobsPage />,
       },
 
-      /*{
-  path: "/jobs/create",
-  element: <CreateJobPage />,
-},
+      {
+        path: "/jobs/:id/applications",
+        element: <JobApplicationsPage />,
+      },
 
-{
-  path: "/jobs/my-applications",
-  element: <MyApplicationsPage />,
-},
-*/
+      {
+        path: "/jobs/my-applications",
+        element: <MyApplications />,
+      },
 
-{
-  path: "/jobs/:id",
-  element: <JobDetailPage />,
-},
-/*
+      {
+        path: "/jobs/:id",
+        element: <JobDetailPage />,
+      },
+      /*
 {
   path: "/jobs/:id/applications",
   element: <JobApplicationsPage />,

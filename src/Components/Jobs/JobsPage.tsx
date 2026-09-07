@@ -13,8 +13,10 @@ import {
   Card,
   Container,
   Spinner,
+  Pagination,
 } from "react-bootstrap";
 import CreateJobModal from "./CreateJobModal";
+import { getPaginationRange } from "../../utils/pagination";
 
 const JobsPage = () => {
   const navigate = useNavigate();
@@ -25,6 +27,10 @@ const JobsPage = () => {
   const [page, setPage] = useState(0);
 
   const { data, isLoading, isError } = useGetJobsQuery({ page, size: 10 });
+  const paginationRange = data
+    ? getPaginationRange(data.number, data.totalPages)
+    : [];
+    
   const [closeJob] = useCloseJobMutation();
   const [deleteJob] = useDeleteJobMutation();
   const [showCreateJobModal, setShowCreateJobModal] = useState(false);
@@ -177,25 +183,26 @@ const JobsPage = () => {
       {/* PAGINATION */}
 
       {data && data.totalPages > 1 && (
-        <div className="d-flex justify-content-center gap-2 mt-4">
-          <Button
-            variant="outline-secondary"
+        <Pagination className="justify-content-center mt-4">
+          <Pagination.Prev
             disabled={data.first}
             onClick={() => setPage((prev) => prev - 1)}
-          >
-            Previous
-          </Button>
-          <span className="align-self-center">
-            {data.number + 1} / {data.totalPages}
-          </span>
-          <Button
-            variant="outline-secondary"
+          />
+          {/*Nr. pagination */}
+          {paginationRange.map((pageNumber) => (
+            <Pagination.Item
+              key={pageNumber}
+              active={pageNumber === data.number}
+              onClick={() => setPage(pageNumber)}
+            >
+              {pageNumber + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
             disabled={data.last}
             onClick={() => setPage((prev) => prev + 1)}
-          >
-            Next
-          </Button>
-        </div>
+          />
+        </Pagination>
       )}
 
       <CreateJobModal

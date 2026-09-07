@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCreateJobMutation } from "../../api/jobApi";
 import { Modal, Form, Alert, Button, Spinner } from "react-bootstrap";
+import { useGetDepartmentsQuery } from "../../api/departmentApi";
 
 interface CreateJobModalProps {
   show: boolean;
@@ -19,6 +20,12 @@ const CreateJobModal = ({ show, onHide }: CreateJobModalProps) => {
   const [departmentId, setDepartmentId] = useState("");
   const [applicationDeadline, setApplicationDeadline] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  const {
+    data: departmentsData,
+    isLoading: isLoadingDepartments,
+    isError: isDepartmentsError,
+  } = useGetDepartmentsQuery();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -131,13 +138,28 @@ const CreateJobModal = ({ show, onHide }: CreateJobModalProps) => {
 
           <Form.Group className="mb-3">
             <Form.Label>Department</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Department ID"
+            <Form.Select
               value={departmentId}
               onChange={(e) => setDepartmentId(e.target.value)}
+              disabled={isLoadingDepartments}
               required
-            />
+            >
+              <option value="">
+                {isLoadingDepartments
+                  ? "Loading departments..."
+                  : "Select department"}
+              </option>
+              {departmentsData?.map((department) => (
+                <option key={department.id} value={department.id}>
+                  {department.name}
+                </option>
+              ))}
+            </Form.Select>
+            {isDepartmentsError && (
+              <Form.Text className="text-danger">
+                Unable to load departments.
+              </Form.Text>
+            )}
           </Form.Group>
 
           <Form.Group>

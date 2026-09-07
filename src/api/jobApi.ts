@@ -11,14 +11,23 @@ import type {
     UpdateApplicationStatusBody,
 } from "../types/jobs";
 
+// aggiungo nuovi endpoind alla emptyApi
 export const jobApi = emptyApi.injectEndpoints({
+
+    // Definisce tutti gli endpoint relativi ai jobs
     endpoints: (build) => ({
 
         // --------- Get open jobs
         getJobs: build.query<
+
+            // Tipo risposta BE - pagina con oggetti JobOpening
             PageResponse<JobOpening>,
+
+            // Tipo argomento da passare alla query (in questo caso page e size sono opzionali)
             { page?: number; size?: number }
         >({
+
+            //Richiesta HTTP da effettuare
             query: ({ page = 0, size = 10 } = {}) => ({
                 url: "/jobs",
                 method: "GET",
@@ -28,18 +37,28 @@ export const jobApi = emptyApi.injectEndpoints({
                 },
             }),
 
+            // Tag associati ai dati restituiti dalla query
+            // RTK Query usa questi tag per sapere quali dati
+            // devono essere aggiornati/refetchati dopo una mutation
             providesTags: (result) =>
+                // controlla se BE ha restituito un risultato
                 result
                     ? [
+                        // Prende tutti i jobs presenti nella pagina e crea un tag specifico per ogni job
                         ...result.content.map((job) => ({
+                            // Tipo di tag
                             type: "Jobs" as const,
+                            // Id specifico del job
                             id: job.id,
                         })),
+                        // Aggiunge un tag genmerare per l'intera lista
                         {
                             type: "Jobs" as const,
+                            // LIST - tutta la lista dei jobs
                             id: "LIST",
                         },
                     ]
+                    // Se result non esiste non crea i tag dei singoli jobs, ma mantiene il tag generale della lista
                     : [
                         {
                             type: "Jobs" as const,
@@ -64,33 +83,66 @@ export const jobApi = emptyApi.injectEndpoints({
         }),
 
         // --------------- create job
-        createJob: build.mutation<JobOpening, JobCreateBody>({
-            query: (body) => ({
-                url: "/jobs",
-                method: "POST",
-                body,
-            }),
+        createJob: build.mutation
+            // Tipo della risposta dal BE (dopo la creazione, il BE restituisce il JobOpening creato)
+            <JobOpening,
+                // Tipo dati da inviare al BE
+                JobCreateBody>({
 
-            invalidatesTags: [
-                {
-                    type: "Jobs", id: "LIST",
-                },
-            ],
-        }),
+                    // body - contiene i dati ricevuti quando chiamo createJob(...)
+                    query: (body) => ({
+                        url: "/jobs",
+                        method: "POST",
+                        body,
+                    }),
+
+                    // Indica a RTK Query quali dati presenti nella cache
+                    invalidatesTags: [
+                        {
+                            // Tipo cache che inviamo
+                            type: "Jobs",
+                            // LIST - lista completa dei jobs 
+                            id: "LIST",
+                        },
+                    ],
+                }),
 
         // ------------- update job
-        updateJob: build.mutation<JobOpening, { jobId: string; body: JobUpdateBody }>({
-            query: ({ jobId, body }) => ({
-                url: `/jobs/${jobId}`,
-                method: "PUT",
-                body,
-            }),
+        updateJob: build.mutation<JobOpening,
+            // Tipo dati da passare alla mutation:
+            // - jobId - ID del job da modificare
+            // - body  - nuovi dati del job
+            { jobId: string; body: JobUpdateBody }>({
 
-            invalidatesTags: (_result, _error, { jobId }) => [
-                { type: "Jobs", id: jobId, },
-                { type: "Jobs", id: "LIST", },
-            ],
-        }),
+                query: ({ jobId, body }) => ({
+                    url: `/jobs/${jobId}`,
+                    method: "PUT",
+                    body,
+                }),
+
+                // indica a RTK Query quali dati nella cache non sono più considerati aggiornati
+                invalidatesTags:
+                    // Risultato restituito dalla mutation - non serve qui quindi utilizzo _result
+                    (_result,
+                        // Eventuale error - non serve, utilizzo _error
+                        _error,
+                        // Terzo parametro = argomento passato alla mutation - da questo recupero jobId
+                        { jobId }) => [
+
+                            // Invalida la cache dello specifico job modificato
+                            {
+                                type: "Jobs",
+                                // ID del job appena aggiornato
+                                id: jobId,
+                            },
+
+                            // Invalida anche la cache generale dei Jobs
+                            {
+                                type: "Jobs",
+                                id: "LIST",
+                            },
+                        ],
+            }),
 
         // -------------- close job
         closeJob: build.mutation<JobOpening, string>({

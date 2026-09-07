@@ -10,6 +10,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import ApplyJobModal from "./ApplyJobModal";
+import { formatLabel } from "../../utils/formatLabel";
 
 const JobDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,12 +48,6 @@ const JobDetailPage = () => {
     );
   }
 
-  const formatLabel = (value: string) => {
-    return value
-      .replaceAll("_", " ")
-      .toLowerCase()
-      .replace(/\b\w/g, (letter) => letter.toUpperCase());
-  };
 
   return (
     <Container className="py-4">
