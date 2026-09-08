@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCreateJobMutation } from "../../api/jobApi";
 import { Modal, Form, Alert, Button, Spinner } from "react-bootstrap";
 import { useGetDepartmentsQuery } from "../../api/departmentApi";
+import "../../css/Jobs.css";
 
 interface CreateJobModalProps {
   show: boolean;
@@ -62,7 +63,7 @@ const CreateJobModal = ({ show, onHide }: CreateJobModalProps) => {
     }
   };
   return (
-    <Modal show={show} onHide={onHide} centered size="lg">
+    <Modal show={show} onHide={onHide} centered className="job-modal">
       <Modal.Header closeButton>
         <Modal.Title>Create job position</Modal.Title>
       </Modal.Header>
@@ -172,11 +173,11 @@ const CreateJobModal = ({ show, onHide }: CreateJobModalProps) => {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={onHide} disabled={isLoading}>
+          <Button variant="secondary" className="job-btn-secondary" onClick={onHide} disabled={isLoading}>
             Cancel
           </Button>
 
-          <Button type="submit" disabled={isLoading}>
+          <Button className="job-btn-primary" type="submit" disabled={isLoading}>
             {isLoading ? (
               <>
                 <Spinner size="sm" className="me-2" />

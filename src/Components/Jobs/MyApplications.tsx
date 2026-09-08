@@ -16,6 +16,7 @@ import {
 } from "react-bootstrap";
 import type { ApplicationStatus } from "../../types/jobs";
 import { formatLabel } from "../../utils/formatLabel";
+import "../../css/Jobs.css";
 
 const MyApplications = () => {
   const navigate = useNavigate();
@@ -95,19 +96,19 @@ const MyApplications = () => {
   }
 
   return (
-    <Container className="py-4">
+    <Container className="my-applications-page">
       <Button
         variant="link"
-        className="px-0 mb-3 text-decoration-none"
+        className="job-back-btn mb-3"
         onClick={() => navigate("/jobs")}
       >
         Back to jobs
       </Button>
 
-      <div className="mb-4">
-        <h2>My applications</h2>
+      <div>
+        <h2 className="job-page-title">My applications</h2>
 
-        <p className="text-muted mb-0">
+        <p className="job-page-subtitle">
           View and manage your job applications.
         </p>
       </div>
@@ -124,11 +125,13 @@ const MyApplications = () => {
             application.status === "INTERVIEW";
 
           return (
-            <Card key={application.id}>
+            <Card key={application.id} className="job-application-card">
               <Card.Body>
-                <div className="d-flex justify-content-between align-items-start flex-wrap gap-3">
-                  <div>
-                    <h5 className="mb-1">{application.job.title}</h5>
+                <div className="job-application-layout">
+                  <div className="job-application-content">
+                    <h5 className="my-application-title">
+                      {application.job.title}
+                    </h5>
 
                     {application.job.department && (
                       <div className="text-muted mb-3">
@@ -186,6 +189,7 @@ const MyApplications = () => {
                       <Button
                         size="sm"
                         variant="outline-primary"
+                        className="job-btn-secondary"
                         onClick={() => navigate(`/jobs/${application.job.id}`)}
                       >
                         View job
@@ -194,6 +198,7 @@ const MyApplications = () => {
                       <Button
                         size="sm"
                         variant="outline-secondary"
+                        className="job-btn-secondary"
                         href={application.cvUrl}
                         target="_blank"
                         rel="noreferrer"
@@ -205,6 +210,7 @@ const MyApplications = () => {
                         <Button
                           size="sm"
                           variant="outline-secondary"
+                          className="job-btn-secondary"
                           href={application.coverLetterUrl}
                           target="_blank"
                           rel="noreferrer"
@@ -215,7 +221,7 @@ const MyApplications = () => {
                     </div>
 
                     {application.coverLetterText && (
-                      <div className="mt-3">
+                      <div className="job-cover-letter">
                         <strong>Cover letter</strong>
 
                         <p
@@ -230,7 +236,7 @@ const MyApplications = () => {
                     )}
                   </div>
 
-                  <div>
+                  <div className="job-status-panel">
                     {canWithdraw && (
                       <Button
                         variant="outline-danger"

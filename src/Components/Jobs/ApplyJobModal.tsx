@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useApplyToJobMutation } from "../../api/jobApi";
 import { Alert, Button, Form, Modal, Spinner } from "react-bootstrap";
+import "../../css/Jobs.css";
 
 interface ApplyJobModaProps {
   show: boolean;
@@ -77,7 +78,7 @@ const ApplyJobModal = ({
       show={show}
       onHide={handleClose}
       centered
-      size="lg"
+      className="job-modal"
     >
       <Modal.Header closeButton>
         <Modal.Title>
@@ -126,7 +127,6 @@ const ApplyJobModal = ({
                   Cover letter
                 </Form.Label>
                 <Form.Control
-                  className="rounded-3"
                   as="textarea"
                   rows={6}
                   placeholder="Write your cover letter..."
@@ -167,6 +167,7 @@ const ApplyJobModal = ({
         <Modal.Footer>
           <Button
             variant="secondary"
+            className="job-btn-secondary"
             onClick={handleClose}
             disabled={isLoading}
           >
@@ -177,6 +178,7 @@ const ApplyJobModal = ({
           {!success && (
             <Button
               type="submit"
+              className="job-btn-primary"
               disabled={
                 isLoading ||
                 !cv

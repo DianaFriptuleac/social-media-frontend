@@ -17,6 +17,7 @@ import {
 } from "react-bootstrap";
 import CreateJobModal from "./CreateJobModal";
 import { getPaginationRange } from "../../utils/pagination";
+import "../../css/Jobs.css";
 
 const JobsPage = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const JobsPage = () => {
   const paginationRange = data
     ? getPaginationRange(data.number, data.totalPages)
     : [];
-    
+
   const [closeJob] = useCloseJobMutation();
   const [deleteJob] = useDeleteJobMutation();
   const [showCreateJobModal, setShowCreateJobModal] = useState(false);
@@ -76,18 +77,19 @@ const JobsPage = () => {
   }
 
   return (
-    <Container className="py-4">
-      <div className="d-flex justify-content-between align-items-center mb-4">
+    <Container className="jobs-page">
+      <div className="jobs-header">
         <div>
-          <h2>Careers</h2>
-          <p className="text-muted mb-0">
-            Discover internal job opportunities.
-          </p>
+          <h2 className="jobs-title">Careers</h2>
+          <p className="jobs-subtitle">Discover internal job opportunities.</p>
         </div>
-        {/* ADMIN */}
 
+        {/* ADMIN */}
         {isAdmin && (
-          <Button onClick={() => setShowCreateJobModal(true)}>
+          <Button
+            className="job-btn-primary"
+            onClick={() => setShowCreateJobModal(true)}
+          >
             Create position
           </Button>
         )}
@@ -97,6 +99,7 @@ const JobsPage = () => {
       <div className="mb-4">
         <Button
           variant="outline-primary"
+          className="job-btn-secondary"
           onClick={() => navigate("/jobs/my-applications")}
         >
           My applications
@@ -111,16 +114,20 @@ const JobsPage = () => {
       {/* JOB cards */}
       <div className="d-grid gap-3">
         {data?.content.map((job) => (
-          <Card key={job.id}>
+          <Card key={job.id} className="job-card">
             <Card.Body>
-              <div className="d-flex justify-content-between gap-3">
-                <div>
-                  <Card.Title>{job.title}</Card.Title>
+              <div className="job-card-main">
+                <div className="job-card-content">
+                  <Card.Title className="job-card-title">
+                    {job.title}
+                  </Card.Title>
                   {job.department && (
-                    <div className="text-muted mb-2">{job.department.name}</div>
+                    <div className="job-department mb-2">
+                      {job.department.name}
+                    </div>
                   )}
 
-                  <div className="d-flex gap-2 flex-wrap mb-3">
+                  <div className="job-badges">
                     <Badge bg="secondary">{job.employmentType}</Badge>
 
                     <Badge bg="info">{job.workMode}</Badge>
@@ -133,24 +140,28 @@ const JobsPage = () => {
                   </div>
 
                   {job.applicationDeadline && (
-                    <small className="text-muted">
+                    <small className="job-deadline">
                       Apply before:{" "}
                       {new Date(job.applicationDeadline).toLocaleDateString()}
                     </small>
                   )}
                 </div>
-                <div className="d-flex flex-column gap-2">
-                  <Button size="sm" onClick={() => navigate(`/jobs/${job.id}`)}>
+                <div className="job-card-actions">
+                  <Button
+                    className="job-btn-primary"
+                    size="sm"
+                    onClick={() => navigate(`/jobs/${job.id}`)}
+                  >
                     View
                   </Button>
 
                   {/* ADMIN */}
-
                   {isAdmin && (
                     <>
                       <Button
                         size="sm"
                         variant="outline-primary"
+                        className="job-btn-secondary"
                         onClick={() => navigate(`/jobs/${job.id}/applications`)}
                       >
                         Applications
