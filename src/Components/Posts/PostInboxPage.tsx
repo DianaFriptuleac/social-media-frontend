@@ -34,7 +34,7 @@ const PostPageInbox = () => {
     isError: notificationsError,
     refetch: refetchNotifications,
     isFetching: notificationsFetching,
-  } = useGetMyNotificationsQuery();
+  } = useGetMyNotificationsQuery(undefined, {pollingInterval: 150000});  // controlla ogni 15 sec. se ci sono notifiche
 
   const [markNotificationAsRead] = useMarkNotificationAsReadMutation();
   const [markAsRead] = useMarkInboxItemAsReadMutation();
@@ -43,6 +43,49 @@ const PostPageInbox = () => {
   //pagination
   const [page, setPage] = useState(0);
   const pageSize = 6;
+
+  const postItems = data?.content?.map((x) => ({
+    id: x.id,
+    kind: "POST" as const,
+    createdAt: x.createdAt,
+    read: x.read,
+    title: `${x.sender.name} ${x.sender.surname}`,
+    message: x.message || "Shared a post with you",
+    postId: x.postId,
+  })) ?? [];
+
+  const notificationItems = notifications
+    .filter((n) => n.type !== "EVENT_CANCELLED")
+    .map((n) => ({
+      id: n.id,
+      kind: "NOTIFICATION" as const,
+      createdAt: n.createdAt,
+      read: n.read,
+      title: n.title,
+      message: n.message,
+      type: n.type,
+      eventId: n.eventId,
+    }));
+
+  const inboxItems = [...postItems, ...notificationItems].sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
+
+  //pagination
+  const totalPages = Math.ceil(inboxItems.length / pageSize);
+
+  const paginatedInboxItems = inboxItems.slice(
+    page * pageSize,
+    page * pageSize + pageSize,
+  );
+
+  useEffect(() => {
+    if (totalPages > 0 && page >= totalPages) {
+      setPage(totalPages - 1);
+    }
+  }, [page, totalPages]);
+
+  const pages = getPaginationRange(page, totalPages);
 
   if (isLoading || notificationsLoading) return <Spinner />;
 
@@ -64,44 +107,7 @@ const PostPageInbox = () => {
       </Container>
     );
   }
-  const postItems = data?.content.map((x) => ({
-    id: x.id,
-    kind: "POST" as const,
-    createdAt: x.createdAt,
-    read: x.read,
-    title: `${x.sender.name} ${x.sender.surname}`,
-    message: x.message || "Shared a post with you",
-    postId: x.postId,
-  }));
-  const notificationItems = notifications
-    .filter((n) => n.type !== "EVENT_CANCELLED")
-    .map((n) => ({
-      id: n.id,
-      kind: "NOTIFICATION" as const,
-      createdAt: n.createdAt,
-      read: n.read,
-      title: n.title,
-      message: n.message,
-      type: n.type,
-      eventId: n.eventId,
-    }));
 
-  const inboxItems = [...postItems, ...notificationItems].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  );
-  //pagination
-  const totalPages = Math.ceil(inboxItems.length / pageSize);
-
-  const paginatedInboxItems = inboxItems.slice(
-    page * pageSize,
-    page * pageSize + pageSize,
-  );
-  useEffect(() => {
-    if (totalPages > 0 && page >= totalPages) {
-      setPage(totalPages - 1);
-    }
-  }, [page, totalPages]);
-  const pages = getPaginationRange(page, totalPages);
   return (
     <Container className="mt-3 inbox-page">
       <div className="inbox-header">
@@ -162,16 +168,45 @@ const PostPageInbox = () => {
                           notificationId: x.id,
                         }).unwrap();
                       }
+                      // Eventi
+                      if (
+                        x.type === "EVENT_INVITATION" ||
+                        x.type === "EVENT_UPDATED"
+                      ) {
+                        if (x.eventId) {
+                          nav(`/events/${x.eventId}`);
+                        }
 
-                      if (x.eventId) {
-                        nav(`/events/${x.eventId}`);
+                        return;
+                      }
+                      // JOB STATUS
+                      if (x.type === "JOB_APPLICATION_STATUS") {
+                         nav(`/jobs/${x.eventId}`);
+                        return;
                       }
 
-                      return;
+                      // JOB CLOSED
+                      if (x.type === "JOB_CLOSED") {
+                        if (x.eventId) {
+                          nav(`/jobs/${x.eventId}`);
+                        }
+
+                        return;
+                      }
+
+                      // JOB DELETED
+                      if (x.type === "JOB_DELETED") {
+                        nav("/jobs/my-applications");
+                        return;
+                      }
                     }
                   }}
                 >
-                  {x.kind === "POST" ? "Open post" : "Open event"}
+                  {x.kind === "POST"
+                    ? "Open post"
+                    : x.type?.startsWith("JOB_")
+                      ? "View application"
+                      : "Open event"}
                 </Button>
                 <Button
                   className="delete-inbox-btn"

@@ -47,7 +47,8 @@ const AppNavbar = () => {
     page: 0,
     size: 100,
   });
-  const { data: notifications = [] } = useGetMyNotificationsQuery();
+  const { data: notifications = [] } = useGetMyNotificationsQuery
+  (undefined, {pollingInterval: 15000,});   // controlla ogni 15 sec. se ci sono notifiche
   const unreadTotal = (conversations ?? []).reduce(
     (sum, c) => sum + c.unreadCount,
     0,
