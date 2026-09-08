@@ -119,12 +119,7 @@ export const router = createBrowserRouter([
         path: "/jobs/:id",
         element: <JobDetailPage />,
       },
-      /*
-{
-  path: "/jobs/:id/applications",
-  element: <JobApplicationsPage />,
-},
-*/
+      
     ],
   },
   // catch-all

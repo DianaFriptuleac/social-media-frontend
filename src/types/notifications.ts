@@ -6,4 +6,5 @@ export type NotificationDTO = {
   eventId?: string | null;
   read: boolean;
   createdAt: string;
+  targetAvailable: boolean;
 };

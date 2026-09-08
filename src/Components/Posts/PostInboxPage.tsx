@@ -34,7 +34,7 @@ const PostPageInbox = () => {
     isError: notificationsError,
     refetch: refetchNotifications,
     isFetching: notificationsFetching,
-  } = useGetMyNotificationsQuery(undefined, {pollingInterval: 150000});  // controlla ogni 15 sec. se ci sono notifiche
+  } = useGetMyNotificationsQuery(undefined, { pollingInterval: 150000 }); // controlla ogni 15 sec. se ci sono notifiche
 
   const [markNotificationAsRead] = useMarkNotificationAsReadMutation();
   const [markAsRead] = useMarkInboxItemAsReadMutation();
@@ -44,15 +44,16 @@ const PostPageInbox = () => {
   const [page, setPage] = useState(0);
   const pageSize = 6;
 
-  const postItems = data?.content?.map((x) => ({
-    id: x.id,
-    kind: "POST" as const,
-    createdAt: x.createdAt,
-    read: x.read,
-    title: `${x.sender.name} ${x.sender.surname}`,
-    message: x.message || "Shared a post with you",
-    postId: x.postId,
-  })) ?? [];
+  const postItems =
+    data?.content?.map((x) => ({
+      id: x.id,
+      kind: "POST" as const,
+      createdAt: x.createdAt,
+      read: x.read,
+      title: `${x.sender.name} ${x.sender.surname}`,
+      message: x.message || "Shared a post with you",
+      postId: x.postId,
+    })) ?? [];
 
   const notificationItems = notifications
     .filter((n) => n.type !== "EVENT_CANCELLED")
@@ -65,6 +66,7 @@ const PostPageInbox = () => {
       message: n.message,
       type: n.type,
       eventId: n.eventId,
+      targetAvailable: n.targetAvailable,
     }));
 
   const inboxItems = [...postItems, ...notificationItems].sort(
@@ -154,6 +156,11 @@ const PostPageInbox = () => {
                 <Button
                   className="inbox-actions"
                   size="sm"
+                  disabled={
+                    x.kind === "NOTIFICATION" &&
+                    !x.type.startsWith("JOB_") &&
+                    x.targetAvailable === false
+                  }
                   onClick={async () => {
                     if (x.kind === "POST") {
                       if (!x.read) {
@@ -163,16 +170,15 @@ const PostPageInbox = () => {
                       return;
                     }
                     if (x.kind === "NOTIFICATION") {
+                      // console.log("NOTIFICATION TYPE:", x.type);
+                      //  console.log("FULL NOTIFICATION:", x);
                       if (!x.read) {
                         await markNotificationAsRead({
                           notificationId: x.id,
                         }).unwrap();
                       }
                       // Eventi
-                      if (
-                        x.type === "EVENT_INVITATION" ||
-                        x.type === "EVENT_UPDATED"
-                      ) {
+                      if (x.type?.startsWith("Event_")) {
                         if (x.eventId) {
                           nav(`/events/${x.eventId}`);
                         }
@@ -181,7 +187,7 @@ const PostPageInbox = () => {
                       }
                       // JOB STATUS
                       if (x.type === "JOB_APPLICATION_STATUS") {
-                         nav(`/jobs/${x.eventId}`);
+                        nav(`/jobs/${x.eventId}`);
                         return;
                       }
 
@@ -206,7 +212,9 @@ const PostPageInbox = () => {
                     ? "Open post"
                     : x.type?.startsWith("JOB_")
                       ? "View application"
-                      : "Open event"}
+                      : x.targetAvailable === false
+                        ? "Event ended"
+                        : "Open event"}
                 </Button>
                 <Button
                   className="delete-inbox-btn"
