@@ -20,6 +20,7 @@ import JobsPage from "../Components/Jobs/JobsPage";
 import JobDetailPage from "../Components/Jobs/JobDetailPage";
 import JobApplicationsPage from "../Components/Jobs/JobApplicationsPage";
 import MyApplications from "../Components/Jobs/MyApplications";
+import SearchPage from "../Components/SearchPage";
 
 const ProtectedLayout: React.FC = () => (
   <ProtectedRoute>
@@ -119,7 +120,10 @@ export const router = createBrowserRouter([
         path: "/jobs/:id",
         element: <JobDetailPage />,
       },
-      
+      {
+        path: "/search",
+        element: <SearchPage />,
+      },
     ],
   },
   // catch-all
