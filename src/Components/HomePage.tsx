@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetAllEventsQuery } from "../api/EventApi";
 import { getPaginationRange } from "../utils/pagination";
+import { useGetJobsQuery } from "../api/jobApi";
 import CreatePostBox from "./Posts/CreatePostBox";
 import PostCard from "./Posts/PostCard";
 const HomePage = () => {
@@ -56,6 +57,15 @@ const HomePage = () => {
         (a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime(),
       ) ?? [];
 
+  const {
+    data: jobsPage,
+    isLoading: jobsLoading,
+    isError: jobsError,
+  } = useGetJobsQuery({
+    page: 0,
+    size: 10,
+  });
+
   return (
     <Container className="home-wrap">
       {/* HERO */}
@@ -88,7 +98,59 @@ const HomePage = () => {
         <Col lg={3} className="d-none d-lg-block">
           <Card className="home-side-card">
             <Card.Body>
-              <Card.Title className="home-side-title">Quick Access</Card.Title>
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <Card.Title className="home-side-title mb-0">
+                  Available Jobs
+                </Card.Title>
+
+                <Button
+                  variant="link"
+                  className="home-jobs-view-all"
+                  onClick={() => navigate("/jobs")}
+                >
+                  View all
+                </Button>
+              </div>
+
+              {jobsLoading && (
+                <div className="text-center py-3">
+                  <Spinner size="sm" />
+                </div>
+              )}
+
+              {jobsError && (
+                <div className="home-job">
+                  <div className="home-job-title">Error loading jobs</div>
+                </div>
+              )}
+
+              {!jobsLoading && !jobsError && jobsPage?.content.length === 0 && (
+                <div className="home-job">
+                  <div className="home-job-title">No open positions</div>
+                  <div className="home-job-sub">Check back later.</div>
+                </div>
+              )}
+
+              {jobsPage?.content.map((job) => (
+                <div
+                  key={job.id}
+                  className="home-job home-job-clickable"
+                  onClick={() => navigate(`/jobs/${job.id}`)}
+                >
+                  <div className="home-job-title">{job.title}</div>
+                  {job.department && (
+                    <div className="home-job-sub">{job.department.name}</div>
+                  )}
+
+                  <div className="home-job-meta">
+                    <span>{job.employmentType.replaceAll("_", " ")}</span>
+                  </div>
+
+                  {job.location && (
+                    <div className="home-job-sub"> {job.location}</div>
+                  )}
+                </div>
+              ))}
             </Card.Body>
           </Card>
         </Col>
