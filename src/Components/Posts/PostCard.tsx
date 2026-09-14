@@ -30,6 +30,7 @@ import {
 } from "react-icons/io5";
 import { FiEdit2 } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const PostCard = ({
   post,
@@ -52,6 +53,8 @@ const PostCard = ({
 
   const [showComments, setShowComments] = useState(false);
   const commentCount = post.commentCount ?? 0;
+
+  const navigate = useNavigate();
 
   // Likes
   const [showLikes, setShowLikes] = useState(false);
@@ -106,6 +109,38 @@ const PostCard = ({
   return (
     <Card className="post-card mb-3">
       <Card.Body>
+        {/*Author */}
+        <div className="post-header d-flex justify-content-between align-items-center mb-3">
+        <div 
+        className="post-author d-flex align-items-center gap-2"
+        onClick={() => navigate(`/users/${post.author.id}`)}
+        >
+          {post.author.avatar ? (
+            <Image
+              src={post.author.avatar}
+              roundedCircle
+              width={40}
+              height={40}
+              alt={`${post.author.name} ${post.author.surname}`}
+              className="post-author-avatar"
+            />
+          ) : (
+            <div className="post-author-avatar-placeholder">
+              {post.author.name.charAt(0)}
+              {post.author.surname.charAt(0)}
+            </div>
+          )}
+
+            <span className="post-author-name">
+              {post.author.name} {post.author.surname}
+            </span>
+            </div>
+
+            <small className="post-date text-muted">
+              {new Date(post.createdAt).toLocaleDateString()}
+            </small>
+          </div>
+
         {!isEditing ? (
           <>
             <Card.Title>{post.title}</Card.Title>
@@ -174,7 +209,7 @@ const PostCard = ({
         )}
 
         {/* ACTIONS */}
-        <div className="post-actions d-flex justify-content-between align-items-center mt-2">
+        <div className="post-actions mt-2">
           {/* LEFT SIDE - SHARE */}
           <div className="post-actions-bar">
             <Button

@@ -288,6 +288,12 @@ const AppNavbar = () => {
         >
           <BsCalendar size={18} />
         </button>
+         <button
+              className={`app-bottom-nav__item ${isActive("/search") ? "active" : ""}`}
+              onClick={() => handleNavigate("/search")}
+            >
+              <BsSearch size={19} />
+            </button>
       </nav>
     </>
   );

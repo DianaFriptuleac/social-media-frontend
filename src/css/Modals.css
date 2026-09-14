@@ -254,7 +254,7 @@
   }
 
   .app-modal .modal-footer {
-    display: grid;
+   /* display: grid;*/
     gap: 10px;
   }
 }

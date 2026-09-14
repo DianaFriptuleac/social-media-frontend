@@ -17,10 +17,10 @@ const MessagesPage = () => {
         }`}
         //style={{ height: "calc(100vh - 90px)" }}
       >
-        <Col md={3} className="messages-sidebar">
+        <Col md={5} xl={3} className="messages-sidebar">
           <ConversationList />
         </Col>
-        <Col md={9} className="messages-panel">
+        <Col md={7} xl={9} className="messages-panel">
           <ConversationPanel />
         </Col>
       </Row>

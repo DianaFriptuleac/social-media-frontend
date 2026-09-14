@@ -31,6 +31,9 @@
 /* ===== LISTA CONVERSAZIONI ===== */
 
 .messages-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   min-height: 72px;
   padding: 18px 20px !important;
   background: linear-gradient(135deg, var(--card), var(--card-soft));
@@ -233,14 +236,15 @@
 }
 
 .message-action-icon {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill) !important;
   background: transparent !important;
   transition: all 0.18s ease;
+  padding: 0;
 }
 
 .message-action-icon svg {
@@ -396,6 +400,7 @@
     min-height: calc(100vh - var(--nav-h) - var(--bottom-nav-h) - 28px);
     border-radius: 24px;
     overflow: hidden;
+    --bs-gutter-x: 0;
   }
 
   .messages-sidebar {

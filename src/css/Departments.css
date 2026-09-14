@@ -125,7 +125,7 @@
 
 .dept-metrics{
   display: flex;
-   align-items: flex-start;
+  align-items: flex-start;
   gap: 14px;
   flex-shrink: 0;
 }
@@ -579,14 +579,29 @@
     flex-direction: column;
   }
 
-  .dept-btn-primary,
-  .dept-btn-secondary,
-  .dept-btn-outline{
-    width: 100%;
-  }
   .dept-modal .modal-content{
     border-radius: 22px;
   }
+  .dept-metrics{
+  display: flex;
+ flex-direction: column-reverse;
+ 
+}
+
+  .dept-metric{
+  min-width: 127px;
+  border-radius: 15px;
+  padding: 8px;
+  border: 1px solid var(--border-soft);
+}
+.dept-metric__value{
+  font-size: 1rem;
+}
+.dept-actions{
+  display: block;
+  margin: auto;
+}
+
   /*Table mobile*/
   .dept-table-panel {
     border-radius: 24px;

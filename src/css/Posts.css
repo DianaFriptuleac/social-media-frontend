@@ -79,6 +79,51 @@
   border: 1px solid var(--border);
 }
 
+/*Post author*/
+.post-header{
+  width: 100%;
+}
+
+.post-author {
+ cursor: pointer;
+ width: fit-content;
+}
+
+.post-author:hover .post-author-name{
+  text-decoration: underline;
+}
+
+.post-author-avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+
+.post-author-avatar-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.post-author-name {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.post-date{
+  white-space: nowrap;
+  font-size: 13px;
+}
 .post-media {
   width: 100%;
   max-height: 360px;
@@ -172,6 +217,9 @@
 
 /*btn di post -> Edit, Delete, Share*/
 .post-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-top: 10px;
   border-top: 1px solid var(--border);
 }
@@ -635,6 +683,10 @@
   .post-text {
     font-size: 0.92rem;
     line-height: 1.45;
+  }
+
+  .post-actions {
+    display: block;
   }
 
   .post-actions-bar {

@@ -84,7 +84,7 @@ const HomePage = () => {
                 <Button className="home-hero-btn home-hero-btn--primary">
                   Explore Feed
                 </Button>
-                <Button className="home-hero-btn home-hero-btn--secondary">
+                <Button className="home-hero-btn home-hero-btn--secondary"  onClick={() => navigate("/events")}>
                   View Events
                 </Button>
               </div>

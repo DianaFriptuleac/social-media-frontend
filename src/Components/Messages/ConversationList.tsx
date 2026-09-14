@@ -31,7 +31,7 @@ const ConversationList = () => {
 
   return (
     <div className="messages-sidebar h-100 d-flex flex-column">
-      <div className="messages-sidebar-header p-3 d-flex justify-content-between align-items-center">
+      <div className="messages-sidebar-header p-3">
         <h5 className="messages-title mb-0">Messages</h5>
         <Button
           className="messages-new-btn"
