@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useLoginMutation } from "../api/authApi";
-import "../css/auth.css";
+import "../css/Auth.css";
 
 const LoginPage = () => {
   const navigate = useNavigate();

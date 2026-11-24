@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 import { useRegisterMutation } from "../api/authApi";
-import "../css/auth.css";
+import "../css/Auth.css";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
