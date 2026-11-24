@@ -4,7 +4,8 @@ import type { RootState } from '../store/store';
 // da RTK Query:
 // - createApi: crea il "service" con tutte le chiamate
 // - fetchBaseQuery: una fetch semplificata
-const baseUrl = 'http://localhost:3001';
+//const baseUrl = 'http://localhost:3001';
+const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 const emptyApi = createApi({
     // nome del "pezzo" di store dove RTK Query salverà cache, stato, ecc.
